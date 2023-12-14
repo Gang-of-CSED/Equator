@@ -228,6 +228,13 @@ class Ui_MainWindow(object):
         self.vectorLabel.setObjectName(u"vectorLabel")
         self.vectorLabel.setGeometry(QRect(480, 40, 131, 16))
         self.vectorLabel.setFont(font)
+        self.solutionErrorLabel = QLabel(self.centralwidget)
+        self.solutionErrorLabel.setObjectName(u"solutionErrorLabel")
+        self.solutionErrorLabel.setGeometry(QRect(720, 30, 301, 16))
+        font2 = QFont()
+        font2.setPointSize(11)
+        font2.setBold(True)
+        self.solutionErrorLabel.setFont(font2)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -352,5 +359,6 @@ class Ui_MainWindow(object):
 
         self.matrixLabel.setText(QCoreApplication.translate("MainWindow", u"matrix_label", None))
         self.vectorLabel.setText(QCoreApplication.translate("MainWindow", u"vector_label", None))
+        self.solutionErrorLabel.setText("")
     # retranslateUi
 

@@ -19,6 +19,8 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.add_validatitors()
         self.noRowsLine.setText("3")
         self.noRowsLine.textChanged.connect(self.noRowsLine_changed)
+        # change solutionErrorLabel to red
+        self.solutionErrorLabel.setStyleSheet("QLabel { color : red; }")
     
     def comboBox_changed(self, index):
         self.operation_index=index
@@ -88,6 +90,8 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         
     def solveButton_clicked(self):
+        self.solutionErrorLabel.setText("")
+
         # get items from qt table to numpy array
         matrix_data = []
         for row in range(self.matrixTable.rowCount()):
@@ -98,22 +102,40 @@ class MainWindow(QMainWindow, MainWindowUI):
         matrix_data = np.array(matrix_data).astype(np.float64)
     
         vector_data = []
-        for row in range(self.vectorTable.rowCount()):
-            vector_data.append([])
-            for column in range(self.vectorTable.columnCount()):
-                print(row,column,self.vectorTable.itemAt(row,column))
-                vector_data[row].append(self.vectorTable.item(row,column).text())
-        vector_data = np.array(vector_data).astype(np.float64)
+        if self.operation_index in [0,1,2,3]:
+            for row in range(self.vectorTable.rowCount()):
+                vector_data.append([])
+                for column in range(self.vectorTable.columnCount()):
+                    print(row,column,self.vectorTable.itemAt(row,column))
+                    vector_data[row].append(self.vectorTable.item(row,column).text())
+            vector_data = np.array(vector_data).astype(np.float64)
 
         if self.operation_index == 0:
             # gauss elimination
             solvable,solution,steps = gauss_elimination(matrix_data,vector_data)
+            print("solvable",solvable)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
             print(solution)
             print(steps)
             self.solutionMatrix_1.setRowCount(len(solution))
             self.solutionMatrix_1.setColumnCount(1)
             for i in range(len(solution)):
                 self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+        
+        if self.operation_index == 1:
+            # gauss elimination
+            solvable,solution,steps = gauss_Jordan(matrix_data,vector_data)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+        
             
         
     def update_labels(self):
