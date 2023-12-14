@@ -26,6 +26,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -172,6 +175,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -240,6 +246,9 @@
      <bool>true</bool>
     </property>
     <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>
     <row>
@@ -368,6 +377,9 @@
      </rect>
     </property>
     <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>
     <row>
@@ -539,6 +551,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -631,6 +646,25 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="themeButton">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>10</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Dark</string>
     </property>
    </widget>
   </widget>

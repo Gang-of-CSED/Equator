@@ -9,6 +9,7 @@ import numpy as np
 from gauss_operations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
 from CholeskyLU import Cholesky
+from PySide6.QtGui import QColor
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -23,7 +24,72 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.noRowsLine.textChanged.connect(self.noRowsLine_changed)
         # change solutionErrorLabel to red
         self.solutionErrorLabel.setStyleSheet("QLabel { color : red; }")
+        self.color_theme = "Light"
+        self.update_color_theme()
+
+        self.themeButton.clicked.connect(self.themeButton_clicked)
+        # #1c284f
+    def themeButton_clicked(self):
+        self.themeButton.setText(self.color_theme)
+        if self.color_theme == "Light":
+            self.color_theme = "Dark"
+        else:
+            self.color_theme = "Light"
+        self.update_color_theme()
+
+
+    def update_color_theme(self):
+        background_color = "#FFFFFF"
+        text_color = "#000000"
+        table_color = "#f5f6f8"
+        input_color = "#f5f6f8"
+        label_color = "#69B6E3"
+        error_color = "#b13600"
+        cells_border="#e2e2f1"
+        if self.color_theme == "Dark":
+            background_color = "#14171d"
+            text_color = "#FFFFFF"
+            cells_border="#FFFFFF"
+            table_color = "#1b1e25"
+            input_color = "#21252c"
+            label_color = "rgb( 84, 105, 212 )"
+            error_color = "#f27400"
+        
+        
+        self.setStyleSheet(f"background-color: {background_color}; color: {text_color};")
+        #  change tables background color and header color to table color
+        self.matrixTable.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.vectorTable.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.initialTable.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.solutionMatrix_1.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.solutionMatrix_2.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+
     
+        # change input background color and border color to background color
+        self.noRowsLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.precisionLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.iterationLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.errorLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.solveButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.operationComboBox.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.themeButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
+
+        # change labels color to label color
+        self.matrixLabel.setStyleSheet(f"color: {label_color};")
+        self.vectorLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionLabel_1.setStyleSheet(f"color: {label_color};")
+        self.solutionLabel_2.setStyleSheet(f"color: {label_color};")
+        self.parametersLabel.setStyleSheet(f"color: {label_color};")
+        self.iteartionsLabel.setStyleSheet(f"color: {label_color};")
+        self.errorLabel.setStyleSheet(f"color: {label_color};")
+        self.initialLabel.setStyleSheet(f"color: {label_color};")
+        self.noRowsLabel.setStyleSheet(f"color: {label_color};")
+        self.precisionLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionErrorLabel.setStyleSheet(f"color: {error_color};")
+
+
+
     def comboBox_changed(self, index):
         self.operation_index=index
         self.update_visiblity()
@@ -36,6 +102,10 @@ class MainWindow(QMainWindow, MainWindowUI):
         else:
             self.vectorTable.setVisible(True)
         
+        if self.operation_index in [4,5,6]:
+            self.vectorLabel.setVisible(False)
+        else:
+            self.vectorLabel.setVisible(True)
         # solutionMatrix_2
         if self.operation_index in [4,5,6]:
             self.solutionMatrix_2.setVisible(True)
