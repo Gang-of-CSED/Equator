@@ -8,6 +8,7 @@ from PySide6.QtCore import SIGNAL
 import numpy as np
 from gauss_operations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
+from CholeskyLU import Cholesky
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -151,6 +152,26 @@ class MainWindow(QMainWindow, MainWindowUI):
                 for j in range(len(output)):
                     self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
                     self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+        
+        if self.operation_index == 6:
+            # Cholesky LU
+            output,steps = Cholesky(matrix_data)
+            L=output
+            if len(output)==0:
+                self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
+                return
+            print(L)
+            U=np.transpose(output)
+            print(U)
+            self.solutionMatrix_1.setRowCount(len(output))
+            self.solutionMatrix_1.setColumnCount(len(output))
+            self.solutionMatrix_2.setRowCount(len(output))
+            self.solutionMatrix_2.setColumnCount(len(output))
+            for i in range(len(output)):
+                for j in range(len(output)):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i][j])))
+                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i][j])))
+
 
         
             
