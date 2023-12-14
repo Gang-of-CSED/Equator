@@ -192,6 +192,21 @@
       <string>X</string>
      </property>
     </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="1" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="2" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="solutionLabel">
     <property name="geometry">
@@ -375,6 +390,21 @@
       <string>X</string>
      </property>
     </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
+    <item row="1" column="0">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
+    <item row="2" column="0">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="initialLabel">
     <property name="geometry">

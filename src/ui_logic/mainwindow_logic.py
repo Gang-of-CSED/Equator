@@ -6,7 +6,7 @@ from PySide6.QtGui import QRegularExpressionValidator
 from src.ui.mainwindow_ui import Ui_MainWindow as MainWindowUI
 from PySide6.QtCore import SIGNAL
 import numpy as np
-
+from gauss_operations import gauss_elimination,gauss_Jordan
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -96,8 +96,25 @@ class MainWindow(QMainWindow, MainWindowUI):
                 matrix_data[row].append(self.matrixTable.item(row, column).text())
         
         matrix_data = np.array(matrix_data).astype(np.float64)
+    
+        vector_data = []
+        for row in range(self.vectorTable.rowCount()):
+            vector_data.append([])
+            for column in range(self.vectorTable.columnCount()):
+                print(row,column,self.vectorTable.itemAt(row,column))
+                vector_data[row].append(self.vectorTable.item(row,column).text())
+        vector_data = np.array(vector_data).astype(np.float64)
 
-        pass
+        if self.operation_index == 0:
+            # gauss elimination
+            solvable,solution,steps = gauss_elimination(matrix_data,vector_data)
+            print(solution)
+            print(steps)
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+            
         
     def update_labels(self):
         if self.operation_index in [0,1,2,3]:
