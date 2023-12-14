@@ -6,7 +6,6 @@ from PySide6.QtGui import QRegularExpressionValidator
 from src.ui.mainwindow_ui import Ui_MainWindow as MainWindowUI
 from PySide6.QtCore import SIGNAL
 import numpy as np
-from src.operations.placeholder import CroutLU
 
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
@@ -98,19 +97,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         
         matrix_data = np.array(matrix_data).astype(np.float64)
 
-        solution_L,solution_U=CroutLU(matrix_data)
-        
-
-        print(matrix_data)
-        print(solution_L[-1]['L'])
-        solution=solution_L[-1]['L']
-
-        # put solution to solution table
-        self.solutionMatrix.setRowCount(len(solution))
-        self.solutionMatrix.setColumnCount(len(solution[0]))
-        for row in range(self.solutionMatrix.rowCount()):
-            for column in range(self.solutionMatrix.columnCount()):
-                self.solutionMatrix.setItem(row, column, QTableWidgetItem(str(solution[row][column])))
+        pass
         
     def update_labels(self):
         if self.operation_index in [0,1,2,3]:
