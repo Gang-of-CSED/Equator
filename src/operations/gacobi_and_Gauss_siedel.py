@@ -47,49 +47,6 @@ def is_diagonally_dominant(coeff_matrix):
     return False
 
 
-# Define the gauß-seidel_method function
-def gauß_seidel_method(coeff_matrix, const_matrix, initial_values, num_iterations, tolarent_error, n):
-    """
-    This function implements the Gauss-Seidel method for solving a system of linear equations.
-    """
-    # Check if the input matrices are correct
-    if (not is_correct(coeff_matrix, const_matrix, initial_values)):
-        # Return False if the input matrices are incorrect
-        return False
-
-    # Round the input matrices to n significant figures
-    coeff_matrix = round_to_n_significant(coeff_matrix, n)
-    const_matrix = round_to_n_significant(const_matrix, n)
-
-    # Calculate the inverse of the diagonal matrix
-    D_inv = round_to_n_significant(np.linalg.inv(np.diag(np.diag(coeff_matrix))), n)
-
-    # Initialize the solution vector with the initial values
-    ans = np.array(initial_values).astype(float)
-
-    # Create a list to store the solution steps
-    steps_list = []
-
-    # Iterate through the specified number of iterations
-    for i in range(num_iterations):
-        # Store the previous values
-        previous_values = ans.copy()
-
-        # Calculate the next solution vector
-        ans = round_to_n_significant(np.matmul(D_inv, round_to_n_significant(const_matrix - (round_to_n_significant(np.matmul(coeff_matrix, ans), n)), n)), n)
-
-        # Calculate the relative approximation error
-        relative_aprox_error = np.round(np.abs((((ans - previous_values)/ans)*100)), n)
-
-        # Store the solution step in the list
-        steps_list.append(np.column_stack((ans, relative_aprox_error)))
-
-        # Check if the maximum relative approximation error is less than the specified tolerance
-        if (relative_aprox_error.max() <= tolarent_error):
-            # Return the solution steps list if the maximum relative approximation error is less than the specified tolerance
-            return np.array(steps_list)
-
-
 # Define the gauss_seidel_method function
 def gauss_seidel_method(coeff_matrix, const_matrix, initial_values, num_iterations, tolarent_error, n):
     """
