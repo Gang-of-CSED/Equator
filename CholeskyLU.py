@@ -1,6 +1,15 @@
 import numpy as np 
 import math
 
+def getU(L):
+    if L==[]: return[]
+    n = matrix.shape[0]
+    U = [[0.0] * n for i in range(n)]
+    for i in range (n):
+        for j in range(n):
+            U[i][j] = L[j][i]
+    return U
+
 def isPDM(matrix):
     n = matrix.shape[0]
     for i in range(n):
@@ -25,36 +34,37 @@ def isSPDM(matrix):
 
 def Cholesky(matrix):
     steps = []
-    
+    NSPDM = "Non Symmetric Positive Definite Matrices"
     if not isSPDM(matrix):
-        steps.append("Non Symmetric Positive Definite Matrices")
-        return [],steps
-    
-    n = matrix.shape[0]
-    L = [[0] * n for i in range(n)]
-    
-    for i in range(n):
-        for j in range(i+1):
-            sigma = 0 
-            for k in range(j):
-                sigma += L[i][k] * L[j][k]
-                #sum_step = f"{L[i][k]}+{L[j][k]} "
-                #steps.append(sum_step)
-            
-            if i == j:
-                L[i][j] = math.sqrt(matrix[i][j] - sigma)
-                step = f"L[{i+1}][{j+1}] = sqrt(({matrix[i][i]}) - ({sigma})) = {L[i][j]}"
-                steps.append(step)
-            else:
-                L[i][j] = (matrix[i][j] - sigma) / (L[j][j])
-                step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
-                steps.append(step)
-    return L, steps
+        return [],[NSPDM]
+    try:
+        n = matrix.shape[0]
+        L = [[0.0] * n for i in range(n)]
+        
+        for i in range(n):
+            for j in range(i+1):
+                sigma = 0 
+                for k in range(j):
+                    sigma += L[i][k] * L[j][k]
+                
+                if i == j:
+                    L[i][j] = math.sqrt(matrix[i][j] - sigma)
+                    step = f"L[{i+1}][{j+1}] = sqrt(({matrix[i][i]}) - ({sigma})) = {L[i][j]}"
+                    steps.append(step)
+                else:
+                    if(L[j][j] == 0): return [],[NSPDM]
+                    L[i][j] = (1.0 / L[j][j]) * (matrix[i][j] - sigma)
+                    step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
+                    steps.append(step)
+        return L, steps
+    except:
+        return [],[NSPDM]
+
 
 #####################################################################
-matrix = np.array([[6,15, 55],
-                   [15, 55, 225],
-                   [55, 225, 979]])
+matrix = np.array([[1, 1, 1],
+                   [1, 2, 1],
+                   [1, 1, 1]])
 
 L, steps = Cholesky(matrix)
 for step in steps:
@@ -63,6 +73,10 @@ for step in steps:
     
 for row in L:
     print(row)
+print('*' * 50)    
+for row in getU(L):
+    print(row)
+
 
 
 
