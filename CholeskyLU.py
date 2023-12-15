@@ -52,7 +52,7 @@ def Cholesky(matrix):
                     step = f"L[{i+1}][{j+1}] = sqrt(({matrix[i][i]}) - ({sigma})) = {L[i][j]}"
                     steps.append(step)
                 else:
-                    if(L[j][j] == 0): return [],[NSPDM]
+                    if(L[j][j] == 0): return [],["ERROR Dividing by ZERO"]
                     L[i][j] = (1.0 / L[j][j]) * (matrix[i][j] - sigma)
                     step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
                     steps.append(step)
