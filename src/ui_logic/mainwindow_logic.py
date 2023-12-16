@@ -10,6 +10,7 @@ from gauss_operations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
 from CholeskyLU import Cholesky
 from PySide6.QtGui import QColor
+from src.ui_logic.steps_window_logic import StepsWindow
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -28,6 +29,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.update_color_theme()
 
         self.themeButton.clicked.connect(self.themeButton_clicked)
+        self.stepsButton.clicked.connect(self.stepsButton_clicked)
         # #1c284f
     def themeButton_clicked(self):
         self.themeButton.setText(self.color_theme)
@@ -72,6 +74,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.errorLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.solveButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.operationComboBox.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.stepsButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.themeButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
 
         # change labels color to label color
@@ -307,5 +310,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.solutionMatrix_2.setRowCount(no_rows)
         self.solutionMatrix_2.setColumnCount(no_rows)
         
-
+    def stepsButton_clicked(self,output=[],comments=[]):
+        print("stepsButton_clicked")
+        # self.steps_window = StepsWindow(output=[{"L":[[1,2],[3,4]],"U":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]}],comments=["hello","iam fine","tmam"])
+        self.steps_window = StepsWindow(output=output,comments=comments)
+        self.steps_window.show_steps()
         

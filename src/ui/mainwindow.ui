@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Equator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTableWidget" name="matrixTable">
@@ -665,6 +665,19 @@
     </property>
     <property name="text">
      <string>Dark</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="stepsButton">
+    <property name="geometry">
+     <rect>
+      <x>450</x>
+      <y>570</y>
+      <width>151</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Steps</string>
     </property>
    </widget>
   </widget>
