@@ -30,6 +30,8 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         self.themeButton.clicked.connect(self.themeButton_clicked)
         self.stepsButton.clicked.connect(self.stepsButton_clicked)
+        self.output=[]
+        self.comments=[]
         # #1c284f
     def themeButton_clicked(self):
         self.themeButton.setText(self.color_theme)
@@ -214,6 +216,8 @@ class MainWindow(QMainWindow, MainWindowUI):
         if self.operation_index == 5:
             # crout LU
             output,steps = CroutLU(matrix_data)
+            self.output= output
+            self.comments =steps
             L= output[-1]['L']
             U= output[-1]['U']
 
@@ -310,9 +314,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.solutionMatrix_2.setRowCount(no_rows)
         self.solutionMatrix_2.setColumnCount(no_rows)
         
-    def stepsButton_clicked(self,output=[],comments=[]):
+    def stepsButton_clicked(self):
         print("stepsButton_clicked")
         # self.steps_window = StepsWindow(output=[{"L":[[1,2],[3,4]],"U":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]}],comments=["hello","iam fine","tmam"])
-        self.steps_window = StepsWindow(output=output,comments=comments)
+        self.steps_window = StepsWindow(output=self.output,comments=self.comments)
         self.steps_window.show_steps()
         
