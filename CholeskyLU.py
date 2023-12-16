@@ -42,6 +42,7 @@ def Cholesky(matrix):
                 #steps.append(sum_step)
             
             if i == j:
+                print(i,j,matrix[i][i],sigma,matrix[i][i] - sigma)
                 L[i][j] = math.sqrt(matrix[i][j] - sigma)
                 step = f"L[{i+1}][{j+1}] = sqrt(({matrix[i][i]}) - ({sigma})) = {L[i][j]}"
                 steps.append(step)

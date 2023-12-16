@@ -51,7 +51,7 @@ def upperAug(cof_matrix, const_matrix):
     return steps, aug_matrix
 
 def gauss_elimination(cof_matrix, const_matrix):#returns 3 values isSolveAble,answer,steps 
-    
+    print(cof_matrix,const_matrix)
     n=len(const_matrix)
     answer=[0]*n
     

@@ -26,6 +26,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -172,6 +175,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -192,6 +198,21 @@
       <string>X</string>
      </property>
     </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="1" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
+    <item row="2" column="0">
+     <property name="text">
+      <string>0</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="solutionLabel">
     <property name="geometry">
@@ -225,6 +246,9 @@
      <bool>true</bool>
     </property>
     <attribute name="horizontalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
+    <attribute name="verticalHeaderVisible">
      <bool>false</bool>
     </attribute>
     <row>
@@ -355,6 +379,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -375,6 +402,21 @@
       <string>X</string>
      </property>
     </column>
+    <item row="0" column="0">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
+    <item row="1" column="0">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
+    <item row="2" column="0">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="initialLabel">
     <property name="geometry">
@@ -509,6 +551,9 @@
     <attribute name="horizontalHeaderVisible">
      <bool>false</bool>
     </attribute>
+    <attribute name="verticalHeaderVisible">
+     <bool>false</bool>
+    </attribute>
     <row>
      <property name="text">
       <string>1</string>
@@ -581,6 +626,45 @@
     </property>
     <property name="text">
      <string>vector_label</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="solutionErrorLabel">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>30</y>
+      <width>301</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="themeButton">
+    <property name="geometry">
+     <rect>
+      <x>970</x>
+      <y>10</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Dark</string>
     </property>
    </widget>
   </widget>

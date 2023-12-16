@@ -6,7 +6,10 @@ from PySide6.QtGui import QRegularExpressionValidator
 from src.ui.mainwindow_ui import Ui_MainWindow as MainWindowUI
 from PySide6.QtCore import SIGNAL
 import numpy as np
-
+from gauss_operations import gauss_elimination,gauss_Jordan
+from src.operations.CroutLU import CroutLU
+from CholeskyLU import Cholesky
+from PySide6.QtGui import QColor
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -19,7 +22,74 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.add_validatitors()
         self.noRowsLine.setText("3")
         self.noRowsLine.textChanged.connect(self.noRowsLine_changed)
+        # change solutionErrorLabel to red
+        self.solutionErrorLabel.setStyleSheet("QLabel { color : red; }")
+        self.color_theme = "Light"
+        self.update_color_theme()
+
+        self.themeButton.clicked.connect(self.themeButton_clicked)
+        # #1c284f
+    def themeButton_clicked(self):
+        self.themeButton.setText(self.color_theme)
+        if self.color_theme == "Light":
+            self.color_theme = "Dark"
+        else:
+            self.color_theme = "Light"
+        self.update_color_theme()
+
+
+    def update_color_theme(self):
+        background_color = "#FFFFFF"
+        text_color = "#000000"
+        table_color = "#f5f6f8"
+        input_color = "#f5f6f8"
+        label_color = "#69B6E3"
+        error_color = "#b13600"
+        cells_border="#e2e2f1"
+        if self.color_theme == "Dark":
+            background_color = "#14171d"
+            text_color = "#FFFFFF"
+            cells_border="#FFFFFF"
+            table_color = "#1b1e25"
+            input_color = "#21252c"
+            label_color = "rgb( 84, 105, 212 )"
+            error_color = "#f27400"
+        
+        
+        self.setStyleSheet(f"background-color: {background_color}; color: {text_color};")
+        #  change tables background color and header color to table color
+        self.matrixTable.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.vectorTable.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.initialTable.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.solutionMatrix_1.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+        self.solutionMatrix_2.setStyleSheet(f"background-color: {table_color}; color: {text_color}; border: 1px solid {background_color}; gridline-color: {cells_border}; ")
+
     
+        # change input background color and border color to background color
+        self.noRowsLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.precisionLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.iterationLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.errorLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.solveButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.operationComboBox.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.themeButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
+
+        # change labels color to label color
+        self.matrixLabel.setStyleSheet(f"color: {label_color};")
+        self.vectorLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionLabel_1.setStyleSheet(f"color: {label_color};")
+        self.solutionLabel_2.setStyleSheet(f"color: {label_color};")
+        self.parametersLabel.setStyleSheet(f"color: {label_color};")
+        self.iteartionsLabel.setStyleSheet(f"color: {label_color};")
+        self.errorLabel.setStyleSheet(f"color: {label_color};")
+        self.initialLabel.setStyleSheet(f"color: {label_color};")
+        self.noRowsLabel.setStyleSheet(f"color: {label_color};")
+        self.precisionLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionErrorLabel.setStyleSheet(f"color: {error_color};")
+
+
+
     def comboBox_changed(self, index):
         self.operation_index=index
         self.update_visiblity()
@@ -32,6 +102,10 @@ class MainWindow(QMainWindow, MainWindowUI):
         else:
             self.vectorTable.setVisible(True)
         
+        if self.operation_index in [4,5,6]:
+            self.vectorLabel.setVisible(False)
+        else:
+            self.vectorLabel.setVisible(True)
         # solutionMatrix_2
         if self.operation_index in [4,5,6]:
             self.solutionMatrix_2.setVisible(True)
@@ -88,6 +162,8 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         
     def solveButton_clicked(self):
+        self.solutionErrorLabel.setText("")
+
         # get items from qt table to numpy array
         matrix_data = []
         for row in range(self.matrixTable.rowCount()):
@@ -96,8 +172,79 @@ class MainWindow(QMainWindow, MainWindowUI):
                 matrix_data[row].append(self.matrixTable.item(row, column).text())
         
         matrix_data = np.array(matrix_data).astype(np.float64)
+    
+        vector_data = []
+        if self.operation_index in [0,1,2,3]:
+            for row in range(self.vectorTable.rowCount()):
+                vector_data.append([])
+                for column in range(self.vectorTable.columnCount()):
+                    print(row,column,self.vectorTable.itemAt(row,column))
+                    vector_data[row].append(self.vectorTable.item(row,column).text())
+            vector_data = np.array(vector_data).astype(np.float64)
 
-        pass
+        if self.operation_index == 0:
+            # gauss elimination
+            solvable,solution,steps = gauss_elimination(matrix_data,vector_data)
+            print("solvable",solvable)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            print(solution)
+            print(steps)
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+        
+        if self.operation_index == 1:
+            # gauss elimination
+            solvable,solution,steps = gauss_Jordan(matrix_data,vector_data)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+        
+        if self.operation_index == 5:
+            # crout LU
+            output,steps = CroutLU(matrix_data)
+            L= output[-1]['L']
+            U= output[-1]['U']
+
+            self.solutionMatrix_1.setRowCount(len(output))
+            self.solutionMatrix_1.setColumnCount(len(output))
+            self.solutionMatrix_2.setRowCount(len(output))
+            self.solutionMatrix_2.setColumnCount(len(output))
+            for i in range(len(output)):
+                for j in range(len(output)):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
+                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+        
+        if self.operation_index == 6:
+            # Cholesky LU
+            output,steps = Cholesky(matrix_data)
+            L=output
+            if len(output)==0:
+                self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
+                return
+            print(L)
+            U=np.transpose(output)
+            print(U)
+            self.solutionMatrix_1.setRowCount(len(output))
+            self.solutionMatrix_1.setColumnCount(len(output))
+            self.solutionMatrix_2.setRowCount(len(output))
+            self.solutionMatrix_2.setColumnCount(len(output))
+            for i in range(len(output)):
+                for j in range(len(output)):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i][j])))
+                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i][j])))
+
+
+        
+            
         
     def update_labels(self):
         if self.operation_index in [0,1,2,3]:
