@@ -26,13 +26,13 @@ def is_correct(coeff_matrix, const_matrix, initial_values):
     return False
 
 
-# Function to check if the given coefficient matrix is diagonally dominant
-def is_diagonally_dominant(coeff_matrix):
-    # Calculate the comparison result by subtracting the product of the diagonal elements and 2 from the sum of the elements along the diagonal
-    comparison_result = np.subtract(np.multiply(np.diag(coeff_matrix), 2), np.sum(coeff_matrix, axis=1))
-    # Check if all the elements in the comparison result are greater than or equal to zero
-    if (np.all(comparison_result >= 0) and np.any(comparison_result > 0)):
-        # Return true if there are elements greater than zero
-        return True
-    # Return false if there are no elements greater than zero
-    return False
+# # Function to check if the given coefficient matrix is diagonally dominant
+# def is_diagonally_dominant(coeff_matrix):
+#     # Calculate the comparison result by subtracting the product of the diagonal elements and 2 from the sum of the elements along the diagonal
+#     comparison_result = np.subtract(np.multiply(np.diag(coeff_matrix), 2), np.sum(coeff_matrix, axis=1))
+#     # Check if all the elements in the comparison result are greater than or equal to zero
+#     if (np.all(comparison_result >= 0) and np.any(comparison_result > 0)):
+#         # Return true if there are elements greater than zero
+#         return True
+#     # Return false if there are no elements greater than zero
+#     return False
