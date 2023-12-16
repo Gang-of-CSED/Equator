@@ -1,5 +1,4 @@
 import numpy as np
-
 def round_to_n_significant(x, n):
     def round_element(val):
         if np.isclose(val, 0):
@@ -13,6 +12,7 @@ def isconsistent(cof_matrix,aug_matrix):
 def upperAug(cof_matrix, const_matrix,significantD):
     steps = []
     n = len(const_matrix)
+    # aug_matrix = np.hstack((cof_matrix, const_matrix))
     aug_matrix = np.hstack((cof_matrix, const_matrix)).astype(np.float64)
     aug_matrix=round_to_n_significant(aug_matrix,significantD)
     for i in range(n):
@@ -48,16 +48,20 @@ def upperAug(cof_matrix, const_matrix,significantD):
 
             if aug_matrix[i][i] != 0 and aug_matrix[j][i] != 0 :
 
-                factor = aug_matrix[j][i] / aug_matrix[i][i]
-                aug_matrix[j] = aug_matrix[j] - factor * aug_matrix[i]
-                aug_matrix=round_to_n_significant(aug_matrix,significantD)
+                factor = round_to_n_significant(aug_matrix[j][i] / aug_matrix[i][i],significantD)
+                for x in range (n+1):
+                            aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)                
 
                 step = {"message": f"R{j + 1} <- R{j + 1} - {factor:.6f}*R{i + 1}", "output": aug_matrix.copy()}
                 steps.append(step)
-
+            elif steps:#delete the last 2 steps if the element is zero already 
+             steps.pop()    
+             steps.pop()    
     return steps, aug_matrix
 
 def backSubstitutions(aug_matrix,significantD):
+    aug_matrix=round_to_n_significant(aug_matrix,5)
+
     n=len(aug_matrix)
     answer=[0]*n
     steps=[]
@@ -94,7 +98,7 @@ def backSubstitutions(aug_matrix,significantD):
             stringAccumelator+=str(answer[j])+'*'+str(aug_matrix[i][j])
 
         else:  
-         accumelator+=answer[j]*aug_matrix[i][j]
+         accumelator+=round_to_n_significant(answer[j]*aug_matrix[i][j],significantD)
          accumelator=round_to_n_significant(accumelator,significantD)
 
       if(isInfiniteSolns): 
@@ -109,7 +113,7 @@ def backSubstitutions(aug_matrix,significantD):
             answer[i]+='/'+ str(aug_matrix[i][i])
 
       else: 
-       answer[i]= (aug_matrix[i][n] - accumelator) / aug_matrix[i][i]
+       answer[i]= round_to_n_significant(aug_matrix[i][n] - accumelator,significantD) / aug_matrix[i][i]
        answer[i]=float(round_to_n_significant(answer[i],significantD))
 
       step = {"message": "Back substitutions", "output": f"X{i+1}={answer[i]}"}
@@ -149,6 +153,8 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD):
         #making the pivot =1
         temp=aug_matrix[i][i] 
         aug_matrix[i]/=aug_matrix[i][i]
+        aug_matrix = round_to_n_significant(aug_matrix,significantD)
+
         step = {"message":f"R{i+1} <- R{i+1} /{temp} ", "output": aug_matrix.copy()}
         steps.append(step)
        
@@ -158,8 +164,12 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD):
             if(aug_matrix[i][i]==0):
               continue 
 
-            factor = aug_matrix[j][i] / aug_matrix[i][i]
-            aug_matrix[j] = aug_matrix[j] - factor * aug_matrix[i]
+            factor = (round_to_n_significant(aug_matrix[j][i] / aug_matrix[i][i],significantD))
+            # print(aug_matrix)
+            for x in range (n+1):
+             aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)
+
+           
             step = {"message":f"R{j+1} <- R{j+1} - {factor}*R{i+1}", "output": aug_matrix.copy()}
             steps.append(step)
        
@@ -170,22 +180,21 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD):
   
     return True,answer,steps   
 
+_name="__main_"
 
-
-
-cof_matrix = np.array(
- [[1, 2, 3], [0, 0, 6], [0, 0, 9]]
- )
-const_matrix = np.array(
-    [[1], [2], [3]]
+if _name == "__main_" :
+    cof_matrix = np.array(
+    [[1, 2, 3], [0, 0, 6], [0, 0, 9]]
     )
+    const_matrix = np.array(
+        [[1], [2], [3]]
+        )
+  
+    issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,5)
 
-
-issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,5)
-
-for step in steps:
-    print("\n")
-    print(step["message"])
-    print(step["output"])
+    for step in steps:
+        print("\n")
+        print(step["message"])
+        print(step["output"])
 
 
