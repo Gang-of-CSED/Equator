@@ -29,7 +29,7 @@ class StepsWindow(QDialog,Ui_stepsDialog):
             data=step[key]
             step_matrix_label=QLabel(step_page)
             step_matrix_label.setText(key)            
-            step_matrix_label.setGeometry(0+key_i*360,130,50,50)
+            step_matrix_label.setGeometry(0+key_i*(740/len(step.keys())),130,(740/len(step.keys()))-10,30)
 
             step_matrix= QTableWidget(step_page)
             step_matrix.setRowCount(len(data))
@@ -37,7 +37,7 @@ class StepsWindow(QDialog,Ui_stepsDialog):
             for i in range(len(data)):
                 for j in range(len(data[0])):
                     step_matrix.setItem(i,j,QTableWidgetItem(str(data[i][j])))
-            step_matrix.setGeometry(0+key_i*360,170,350,300)
+            step_matrix.setGeometry(0+key_i*(740/len(step.keys())),170,(740/len(step.keys()))-10,300)
             # hide headers
             step_matrix.horizontalHeader().hide()
             step_matrix.verticalHeader().hide()

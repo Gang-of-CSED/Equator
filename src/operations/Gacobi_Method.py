@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils import is_correct, round_to_n_significant
+from .utils import is_correct, round_to_n_significant
 
 def gacobi_method(coeff_matrix, const_matrix, initial_values, num_iterations, tolarent_error, n):
     steps_list, comments, flag = [], [], True
@@ -26,7 +26,7 @@ def gacobi_method(coeff_matrix, const_matrix, initial_values, num_iterations, to
         # Calculate the relative approximation error
         relative_aprox_error = np.round(np.abs((((ans - previous_values)/ans)*100)), n)
         # Add the current values of the solution vector and the relative approximation error to the list
-        steps_list.append(np.row_stack((ans, relative_aprox_error)))
+        steps_list.append(np.column_stack((ans, relative_aprox_error)))
         # Check if the maximum relative approximation error is less than or equal to the given tolerance
         if (relative_aprox_error.max() < tolarent_error):
             comments.append(f"(max relative approximate error) {relative_aprox_error.max()} % < {tolarent_error} % (tolarent error)\n No need to more iterations")

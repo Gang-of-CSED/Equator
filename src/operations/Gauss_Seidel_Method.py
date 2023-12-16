@@ -1,6 +1,6 @@
 import numpy as np
 
-from utils import is_correct, round_to_n_significant
+from .utils import is_correct, round_to_n_significant
 
 def gauss_seidel_method(coeff_matrix, const_matrix, initial_values, num_iterations, tolarent_error, n):
     steps_list, comments, flag = [], [], True
@@ -31,7 +31,7 @@ def gauss_seidel_method(coeff_matrix, const_matrix, initial_values, num_iteratio
 
         # Calculate the relative approximation error and store it in the list
         relative_aprox_error = np.round(np.abs((ans - previous_values) / ans * 100), n)
-        steps_list.append(np.row_stack((ans, relative_aprox_error)))
+        steps_list.append(np.column_stack((ans, relative_aprox_error)))
 
         # Check if the relative approximation error is below the specified tolerance
         if relative_aprox_error.max() < tolarent_error:

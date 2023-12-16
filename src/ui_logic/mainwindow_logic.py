@@ -9,6 +9,8 @@ import numpy as np
 from gauss_operations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
 from CholeskyLU import Cholesky
+from src.operations.Gauss_Seidel_Method import gauss_seidel_method
+from src.operations.Gacobi_Method import gacobi_method
 from PySide6.QtGui import QColor
 from src.ui_logic.steps_window_logic import StepsWindow
 class MainWindow(QMainWindow, MainWindowUI):
@@ -213,6 +215,68 @@ class MainWindow(QMainWindow, MainWindowUI):
             for i in range(len(solution)):
                 self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
         
+        if self.operation_index == 2:
+            # gauss seidel
+            no_iterations = int(self.iterationLine.text())
+            tolerance = float(self.errorLine.text())
+            initial_values = []
+            for row in range(self.initialTable.rowCount()):
+                initial_values.append([])
+                for column in range(self.initialTable.columnCount()):
+                    initial_values[row].append(self.initialTable.item(row,column).text())
+            initial_values = np.array(initial_values).astype(np.float64)
+
+            precision=int(self.precisionLine.text())
+            solvable,steps,comments = gauss_seidel_method(matrix_data,vector_data,initial_values,no_iterations,tolerance,precision)
+            print("solvable",solvable)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            print(steps)
+            print(comments)
+            output=[]
+            for step in steps:
+                output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
+            self.output=output
+            self.comments =comments
+            solution = steps[-1]
+            print("solution",solution)
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
+
+        if self.operation_index == 3:
+            # gauss jacobi
+            no_iterations = int(self.iterationLine.text())
+            tolerance = float(self.errorLine.text())
+            initial_values = []
+            for row in range(self.initialTable.rowCount()):
+                initial_values.append([])
+                for column in range(self.initialTable.columnCount()):
+                    initial_values[row].append(self.initialTable.item(row,column).text())
+            initial_values = np.array(initial_values).astype(np.float64)
+
+            precision=int(self.precisionLine.text())
+            solvable,steps,comments = gacobi_method(matrix_data,vector_data,initial_values,no_iterations,tolerance,precision)
+            print("solvable",solvable)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            print(steps)
+            print(comments)
+            output=[]
+            for step in steps:
+                output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
+            self.output=output
+            self.comments =comments
+            solution = steps[-1]
+            print("solution",solution)
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
+
         if self.operation_index == 5:
             # crout LU
             output,steps = CroutLU(matrix_data)
