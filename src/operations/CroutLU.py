@@ -17,47 +17,47 @@ def SolveLU(L, U, b, steps, precision=5):
     n = L.shape[0]
     for i in range(n):
         b[i] = sp.N(b[i], n=precision)
-        y = sp.Matrix(np.zeros((n, 1), dtype=object))
-        # starting from letter 's' to avoid conflict with symbols
-        free_variable = 's'
-        step = "Forward substitution"
-        for i in range(n):
-            if not sp.Abs(L[i, i]).free_symbols and sp.Abs(L[i, i]) < eps:
-                if not sp.Abs(b[i] - sum(L[i, 0:i] * y[0:i])).free_symbols and sp.Abs(b[i] - sum(L[i, 0:i] * y[0:i])) < eps:
-                    step += f"\ny[{i}] = {free_variable} because L[{i},{i}] = 0 (infinite number of solutions)"
-                    # symbols.append(free_variable)
-                    y[i] = free_variable
-                    free_variable = chr(ord(free_variable) + 1)
-                else:
-                    step += f"\nno solution because L[{i},{i}] = 0 and b[{i}] != {sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)}"
-                    steps.append(step)
-                    return steps, answer
-            else: 
-                y[i] = (b[i] - sum(L[i, 0:i] * y[0:i])) / L[i, i]
-                y[i] = sp.N(y[i], n=precision)
-                step += f"\ny[{i}] = ({b[i]} - {sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)}) / {L[i, i]} = {y[i]}"
-        steps.append(step)
-        step = "Backward substitution"
-        x = sp.Matrix(np.zeros((n, 1), dtype=object))
-        for i in range(n - 1, -1, -1):
-            if not sp.Abs(U[i, i]).free_symbols and sp.Abs(U[i, i]) < eps:
-                if not sp.Abs(y[i] - sum(U[i, i + 1:n] * x[i + 1:n])).free_symbols and sp.Abs(y[i] - sum(U[i, i + 1:n] * x[i + 1:n])) < eps:
-                    step += f"\nx[{i}] = {free_variable} because U[{i},{i}] = 0 (infinite number of solutions)"
-                    # symbols.append(free_variable)
-                    x[i] = free_variable
-                    free_variable = chr(ord(free_variable) + 1)
-                else:
-                    step += f"\nno solution because U[{i},{i}] = 0 and y[{i}] != {sp.N(sum(U[i, i + 1:n] * x[i + 1:n]), n=precision)}"
-                    steps.append(step)
-                    return steps, answer
+    y = sp.Matrix(np.zeros((n, 1), dtype=object))
+    # starting from letter 's' to avoid conflict with symbols
+    free_variable = 's'
+    step = "Forward substitution"
+    for i in range(n):
+        if not sp.Abs(L[i, i]).free_symbols and sp.Abs(L[i, i]) < eps:
+            if not sp.Abs(b[i] - sum(L[i, 0:i] * y[0:i])).free_symbols and sp.Abs(b[i] - sum(L[i, 0:i] * y[0:i])) < eps:
+                step += f"\ny[{i}] = {free_variable} because L[{i},{i}] = 0 (infinite number of solutions)"
+                # symbols.append(free_variable)
+                y[i] = free_variable
+                free_variable = chr(ord(free_variable) + 1)
             else:
-                x[i] = (y[i] - sum(U[i, i + 1:n] * x[i + 1:n])) / U[i, i]
-                x[i] = sp.N(x[i], n=precision)
-                step += f"\nx[{i}] = ({y[i]} - {sp.N(sum(U[i, i + 1:n] * x[i + 1:n]), n=precision)}) / {U[i, i]} = {x[i]}"
-        steps.append(step)
-        x = np.array(x).astype(object)
-        y = np.array(y).astype(object)
-        answer = {'x': x, 'y': y}
+                step += f"\nno solution because L[{i},{i}] = 0 and b[{i}] != {sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)}"
+                steps.append(step)
+                return steps, answer
+        else: 
+            y[i] = (b[i] - sum(L[i, 0:i] * y[0:i])) / L[i, i]
+            y[i] = sp.N(y[i], n=precision)
+            step += f"\ny[{i}] = ({b[i]} - {sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)}) / {L[i, i]} = {y[i]}"
+    steps.append(step)
+    step = "Backward substitution"
+    x = sp.Matrix(np.zeros((n, 1), dtype=object))
+    for i in range(n - 1, -1, -1):
+        if not sp.Abs(U[i, i]).free_symbols and sp.Abs(U[i, i]) < eps:
+            if not sp.Abs(y[i] - sum(U[i, i + 1:n] * x[i + 1:n])).free_symbols and sp.Abs(y[i] - sum(U[i, i + 1:n] * x[i + 1:n])) < eps:
+                step += f"\nx[{i}] = {free_variable} because U[{i},{i}] = 0 (infinite number of solutions)"
+                # symbols.append(free_variable)
+                x[i] = free_variable
+                free_variable = chr(ord(free_variable) + 1)
+            else:
+                step += f"\nno solution because U[{i},{i}] = 0 and y[{i}] != {sp.N(sum(U[i, i + 1:n] * x[i + 1:n]), n=precision)}"
+                steps.append(step)
+                return steps, answer
+        else:
+            x[i] = (y[i] - sum(U[i, i + 1:n] * x[i + 1:n])) / U[i, i]
+            x[i] = sp.N(x[i], n=precision)
+            step += f"\nx[{i}] = ({y[i]} - {sp.N(sum(U[i, i + 1:n] * x[i + 1:n]), n=precision)}) / {U[i, i]} = {x[i]}"
+    steps.append(step)
+    x = np.array(x).astype(object)
+    y = np.array(y).astype(object)
+    answer = {'x': x, 'y': y}
     return steps, answer
 
 def CroutLU(matrix, b=None, precision=5):
@@ -127,6 +127,7 @@ if __name__ == '__main__':
     for i in range(len(LUs), len(steps)):
         print(steps[i])
         print('=' * 80)
+    print(len(steps),  len(LUs))
     if answer is not None:
         print('x = \n', answer['x'])
         print('y = \n', answer['y'])
