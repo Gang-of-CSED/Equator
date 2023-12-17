@@ -13,6 +13,9 @@ from src.operations.Gauss_Seidel_Method import gauss_seidel_method
 from src.operations.Gacobi_Method import gacobi_method
 from PySide6.QtGui import QColor
 from src.ui_logic.steps_window_logic import StepsWindow
+
+import time
+
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -169,6 +172,7 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         
     def solveButton_clicked(self):
+        start_time=time.time()
         self.solutionErrorLabel.setText("")
 
         # get items from qt table to numpy array
@@ -313,7 +317,10 @@ class MainWindow(QMainWindow, MainWindowUI):
                     self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i][j])))
                     self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i][j])))
 
-
+        end_time=time.time()
+        total_time =round(end_time-start_time,3)
+        print("time",total_time)
+        self.solutionErrorLabel.setText(f"Time: {total_time} seconds")
         
             
         
