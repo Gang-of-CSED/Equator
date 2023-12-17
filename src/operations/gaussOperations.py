@@ -76,7 +76,7 @@ def backSubstitutions(aug_matrix,significantD=5):
       if(aug_matrix[i][i]==0):
           answer[i]='t'+str(param_counter)
           param_counter+=1
-          step = {"message": "Back substitutions", "output": answer}
+          step = {"message": "Back substitutions", "output": answer.copy()}
           steps.append(step)
           continue
       
@@ -116,7 +116,7 @@ def backSubstitutions(aug_matrix,significantD=5):
        answer[i]= round_to_n_significant(aug_matrix[i][n] - accumelator,significantD) / aug_matrix[i][i]
        answer[i]=float(round_to_n_significant(answer[i],significantD))
 
-      step = {"message": "Back substitutions", "output": answer}
+      step = {"message": "Back substitutions", "output": answer.copy()}
       steps.append(step)
 
     return steps,answer     
