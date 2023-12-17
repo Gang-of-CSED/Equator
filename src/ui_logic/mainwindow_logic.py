@@ -107,15 +107,10 @@ class MainWindow(QMainWindow, MainWindowUI):
         print(index)
     
     def update_visiblity(self):
-        if self.operation_index in [4,5,6]:
-            self.vectorTable.setVisible(False)
-        else:
-            self.vectorTable.setVisible(True)
-        
-        if self.operation_index in [4,5,6]:
-            self.vectorLabel.setVisible(False)
-        else:
-            self.vectorLabel.setVisible(True)
+        # if self.operation_index in [4,5,6]:
+        #     self.vectorTable.setVisible(False)
+        # else:
+        #     self.vectorTable.setVisible(True)
         # solutionMatrix_2
         if self.operation_index in [4,5,6]:
             self.solutionMatrix_2.setVisible(True)
@@ -185,13 +180,12 @@ class MainWindow(QMainWindow, MainWindowUI):
         matrix_data = np.array(matrix_data).astype(np.float64)
     
         vector_data = []
-        if self.operation_index in [0,1,2,3]:
-            for row in range(self.vectorTable.rowCount()):
-                vector_data.append([])
-                for column in range(self.vectorTable.columnCount()):
-                    print(row,column,self.vectorTable.itemAt(row,column))
-                    vector_data[row].append(self.vectorTable.item(row,column).text())
-            vector_data = np.array(vector_data).astype(np.float64)
+        for row in range(self.vectorTable.rowCount()):
+            vector_data.append([])
+            for column in range(self.vectorTable.columnCount()):
+                print(row,column,self.vectorTable.itemAt(row,column))
+                vector_data[row].append(self.vectorTable.item(row,column).text())
+        vector_data = np.array(vector_data).astype(np.float64)
 
         if self.operation_index == 0:
             # gauss elimination
@@ -283,9 +277,12 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         if self.operation_index == 5:
             # crout LU
-            output,steps = CroutLU(matrix_data)
-            self.output= output
-            self.comments =steps
+            vector_data_flat = np.array(vector_data).astype(np.float64).flatten()
+            print("flat:",vector_data_flat)
+            output,steps,answer = CroutLU(matrix_data,vector_data_flat)
+            print("output: ",output)
+            print("steps: ",steps)
+            print("answer: ",answer)
             L= output[-1]['L']
             U= output[-1]['U']
 
@@ -297,6 +294,9 @@ class MainWindow(QMainWindow, MainWindowUI):
                 for j in range(len(output)):
                     self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
                     self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+            output.append(answer)
+            self.output= output
+            self.comments =steps
         
         if self.operation_index == 6:
             # Cholesky LU
