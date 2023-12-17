@@ -299,7 +299,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             # Doolittle LU
             vector_data_flat = vector_data.flatten()
             print("flat:",vector_data_flat)
-            output,steps,answer = DoolittleLU(matrix_data,vector_data_flat)
+            output,steps,answer = DoolittleLU(matrix_data,vector_data_flat,precision)
             print("output: ",output)
             print("steps: ",steps)
             print("answer: ",answer)
@@ -322,7 +322,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             # crout LU
             vector_data_flat = vector_data.flatten()
             print("flat:",vector_data_flat)
-            output,steps,answer = CroutLU(matrix_data,vector_data_flat)
+            output,steps,answer = CroutLU(matrix_data,vector_data_flat,percision=precision)
             print("output: ",output)
             print("steps: ",steps)
             print("answer: ",answer)
