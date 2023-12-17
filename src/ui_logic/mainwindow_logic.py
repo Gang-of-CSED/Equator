@@ -6,7 +6,7 @@ from PySide6.QtGui import QRegularExpressionValidator
 from src.ui.mainwindow_ui import Ui_MainWindow as MainWindowUI
 from PySide6.QtCore import SIGNAL
 import numpy as np
-from gauss_operations import gauss_elimination,gauss_Jordan
+from src.operations.gaussOperations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
 from src.operations.DoolittleLU import DoolittleLU
 from src.operations.CholeskyLU import Cholesky
@@ -170,6 +170,9 @@ class MainWindow(QMainWindow, MainWindowUI):
     def solveButton_clicked(self):
         start_time=time.time()
         self.solutionErrorLabel.setText("")
+        precision= 4
+        if self.precisionLine.text() != "":
+            precision=int(self.precisionLine.text())
 
         # get items from qt table to numpy array
         matrix_data = []
@@ -190,8 +193,10 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         if self.operation_index == 0:
             # gauss elimination
-            solvable,solution,steps = gauss_elimination(matrix_data.astype(np.float64),vector_data.astype(np.float64))
+            solvable,solution,steps = gauss_elimination(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
             print("solvable",solvable)
+            print("solution",solution)
+            print("steps",steps)
             if not solvable:
                 self.solutionErrorLabel.setText("No Solution")
                 return
@@ -201,10 +206,19 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.solutionMatrix_1.setColumnCount(1)
             for i in range(len(solution)):
                 self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+            
+            # convert solution to column vector
+            # reshape list from [1,2,3] to [[1],[2],[3]]
+            # convert list to numpy array
+        
+            self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
+
+            self.comments = [step["message"] for step in steps]
         
         if self.operation_index == 1:
             # gauss elimination
-            solvable,solution,steps = gauss_Jordan(matrix_data.astype(np.float64),vector_data.astype(np.float64))
+
+            solvable,solution,steps = gauss_Jordan(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
             if not solvable:
                 self.solutionErrorLabel.setText("No Solution")
                 return
@@ -213,6 +227,12 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.solutionMatrix_1.setColumnCount(1)
             for i in range(len(solution)):
                 self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+            
+            # convert solution to column vector
+            # reshape list from [1,2,3] to [[1],[2],[3]]
+            self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
+
+            self.comments = [step["message"] for step in steps]
         
         if self.operation_index == 2:
             # gauss seidel
