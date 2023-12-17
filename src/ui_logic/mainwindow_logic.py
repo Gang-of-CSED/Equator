@@ -8,7 +8,7 @@ from PySide6.QtCore import SIGNAL
 import numpy as np
 from gauss_operations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
-from CholeskyLU import Cholesky
+from src.operations.CholeskyLU import Cholesky
 from src.operations.Gauss_Seidel_Method import gauss_seidel_method
 from src.operations.Gacobi_Method import gacobi_method
 from PySide6.QtGui import QColor
