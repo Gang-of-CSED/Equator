@@ -36,8 +36,8 @@ def SolveLU(L, U, b, steps, precision=5):
             y[i] = (b[i] - sum(L[i, 0:i] * y[0:i])) / L[i, i]
             y[i] = sp.N(y[i], n=precision)
             step += f"\ny[{i}] = ({b[i]} - {sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)}) / {L[i, i]} = {y[i]}"
-    steps.append(step)
-    step = "Backward substitution"
+    #steps.append(step)
+    step += "\nBackward substitution"
     x = sp.Matrix(np.zeros((n, 1), dtype=object))
     for i in range(n - 1, -1, -1):
         if not sp.Abs(U[i, i]).free_symbols and sp.Abs(U[i, i]) < eps:
