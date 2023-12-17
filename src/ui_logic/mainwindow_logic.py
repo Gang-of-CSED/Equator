@@ -173,6 +173,24 @@ class MainWindow(QMainWindow, MainWindowUI):
         precision= 4
         if self.precisionLine.text() != "":
             precision=int(self.precisionLine.text())
+        no_iterations=10
+        if self.iterationLine.text() != "":    
+            no_iterations = int(self.iterationLine.text())
+        tolerance =30
+        if self.errorLine.text() != "":
+            tolerance = float(self.errorLine.text())
+        
+        
+        initial_values = []
+        for row in range(self.initialTable.rowCount()):
+            initial_values.append([])
+            for column in range(self.initialTable.columnCount()):
+                if self.initialTable.item(row,column).text() == "":
+                    initial_values[row].append(1)
+                else:
+                    initial_values[row].append(self.initialTable.item(row,column).text())
+        initial_values = np.array(initial_values).astype(np.float64)
+        print("initiallll",initial_values)
 
         # get items from qt table to numpy array
         matrix_data = []
@@ -236,16 +254,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         
         if self.operation_index == 2:
             # gauss seidel
-            no_iterations = int(self.iterationLine.text())
-            tolerance = float(self.errorLine.text())
-            initial_values = []
-            for row in range(self.initialTable.rowCount()):
-                initial_values.append([])
-                for column in range(self.initialTable.columnCount()):
-                    initial_values[row].append(self.initialTable.item(row,column).text())
-            initial_values = np.array(initial_values).astype(np.float64)
 
-            precision=int(self.precisionLine.text())
             solvable,steps,comments = gauss_seidel_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
             print("solvable",solvable)
             if not solvable:
@@ -267,16 +276,6 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         if self.operation_index == 3:
             # gauss jacobi
-            no_iterations = int(self.iterationLine.text())
-            tolerance = float(self.errorLine.text())
-            initial_values = []
-            for row in range(self.initialTable.rowCount()):
-                initial_values.append([])
-                for column in range(self.initialTable.columnCount()):
-                    initial_values[row].append(self.initialTable.item(row,column).text())
-            initial_values = np.array(initial_values).astype(np.float64)
-
-            precision=int(self.precisionLine.text())
             solvable,steps,comments = gacobi_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
             print("solvable",solvable)
             if not solvable:
