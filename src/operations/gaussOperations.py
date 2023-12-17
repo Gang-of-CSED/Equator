@@ -1,5 +1,5 @@
 import numpy as np
-def round_to_n_significant(x, n):
+def round_to_n_significant(x, n=5):
     def round_element(val):
         if np.isclose(val, 0):
             return 0
@@ -9,7 +9,7 @@ def round_to_n_significant(x, n):
 def isconsistent(cof_matrix,aug_matrix):
     return np.linalg.matrix_rank(cof_matrix)==np.linalg.matrix_rank(aug_matrix)
 
-def upperAug(cof_matrix, const_matrix,significantD):
+def upperAug(cof_matrix, const_matrix,significantD=5):
     steps = []
     n = len(const_matrix)
     # aug_matrix = np.hstack((cof_matrix, const_matrix))
@@ -59,7 +59,7 @@ def upperAug(cof_matrix, const_matrix,significantD):
              steps.pop()    
     return steps, aug_matrix
 
-def backSubstitutions(aug_matrix,significantD):
+def backSubstitutions(aug_matrix,significantD=5):
     aug_matrix=round_to_n_significant(aug_matrix,5)
 
     n=len(aug_matrix)
@@ -121,7 +121,7 @@ def backSubstitutions(aug_matrix,significantD):
 
     return steps,answer     
 
-def gauss_elimination(cof_matrix, const_matrix,significantD):#returns 3 values isSolveAble,answer,steps 
+def gauss_elimination(cof_matrix, const_matrix,significantD=5):#returns 3 values isSolveAble,answer,steps 
     
     #get the upper triabgle matrix 
     steps,aug_matrix=upperAug(cof_matrix, const_matrix,significantD)
@@ -136,7 +136,7 @@ def gauss_elimination(cof_matrix, const_matrix,significantD):#returns 3 values i
 
     return True,answer,steps
       
-def gauss_Jordan(cof_matrix, const_matrix,significantD):
+def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
    
     n=len(const_matrix)
     steps,aug_matrix=upperAug(cof_matrix, const_matrix,significantD)
