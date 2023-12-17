@@ -381,6 +381,6 @@ class MainWindow(QMainWindow, MainWindowUI):
     def stepsButton_clicked(self):
         print("stepsButton_clicked")
         # self.steps_window = StepsWindow(output=[{"L":[[1,2],[3,4]],"U":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]}],comments=["hello","iam fine","tmam"])
-        self.steps_window = StepsWindow(output=self.output,comments=self.comments)
+        self.steps_window = StepsWindow(output=self.output,comments=self.comments,theme=self.color_theme)
         self.steps_window.show_steps()
         
