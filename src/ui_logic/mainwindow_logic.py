@@ -209,10 +209,10 @@ class MainWindow(QMainWindow, MainWindowUI):
             
             # convert solution to column vector
             # reshape list from [1,2,3] to [[1],[2],[3]]
-            
+            # convert list to numpy array
         
-            self.output = [({"Aug. Matrix":step["output"]} if type(step["output"][0])!= float  else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
-            print("self.output",self.output)
+            self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
+
             self.comments = [step["message"] for step in steps]
         
         if self.operation_index == 1:
@@ -230,9 +230,8 @@ class MainWindow(QMainWindow, MainWindowUI):
             
             # convert solution to column vector
             # reshape list from [1,2,3] to [[1],[2],[3]]
-            
-            self.output = [({"Aug. Matrix":step["output"]} if type(step["output"][0])!= float  else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
-            print("self.output",self.output)
+            self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
+
             self.comments = [step["message"] for step in steps]
         
         if self.operation_index == 2:
