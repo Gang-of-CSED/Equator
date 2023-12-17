@@ -1,6 +1,6 @@
 import numpy as np
 import sympy as sp
-from CroutLU import SolveLU
+from src.operations.CroutLU import SolveLU
 def DoolittleLU(matrix, b=None, precision=5):
     eps = 1e-10
     n = matrix.shape[0]
