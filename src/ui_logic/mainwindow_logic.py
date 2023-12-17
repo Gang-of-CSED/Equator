@@ -8,6 +8,7 @@ from PySide6.QtCore import SIGNAL
 import numpy as np
 from src.operations.gaussOperations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
+from src.operations.DoolittleLU import DoolittleLU
 from src.operations.CholeskyLU import Cholesky
 from src.operations.Gauss_Seidel_Method import gauss_seidel_method
 from src.operations.Gacobi_Method import gacobi_method
@@ -180,7 +181,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             for column in range(self.matrixTable.columnCount()):
                 matrix_data[row].append(self.matrixTable.item(row, column).text())
         
-        matrix_data = np.array(matrix_data).astype(np.float64)
+        matrix_data = np.array(matrix_data).astype(object)
     
         vector_data = []
         for row in range(self.vectorTable.rowCount()):
@@ -188,11 +189,11 @@ class MainWindow(QMainWindow, MainWindowUI):
             for column in range(self.vectorTable.columnCount()):
                 print(row,column,self.vectorTable.itemAt(row,column))
                 vector_data[row].append(self.vectorTable.item(row,column).text())
-        vector_data = np.array(vector_data).astype(np.float64)
+        vector_data = np.array(vector_data).astype(object)
 
         if self.operation_index == 0:
             # gauss elimination
-            solvable,solution,steps = gauss_elimination(matrix_data,vector_data,significantD=precision)
+            solvable,solution,steps = gauss_elimination(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
             print("solvable",solvable)
             print("solution",solution)
             print("steps",steps)
@@ -216,7 +217,8 @@ class MainWindow(QMainWindow, MainWindowUI):
         
         if self.operation_index == 1:
             # gauss elimination
-            solvable,solution,steps = gauss_Jordan(matrix_data,vector_data,significantD=precision)
+
+            solvable,solution,steps = gauss_Jordan(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
             if not solvable:
                 self.solutionErrorLabel.setText("No Solution")
                 return
@@ -245,7 +247,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             initial_values = np.array(initial_values).astype(np.float64)
 
             precision=int(self.precisionLine.text())
-            solvable,steps,comments = gauss_seidel_method(matrix_data,vector_data,initial_values,no_iterations,tolerance,precision)
+            solvable,steps,comments = gauss_seidel_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
             print("solvable",solvable)
             if not solvable:
                 self.solutionErrorLabel.setText("No Solution")
@@ -276,7 +278,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             initial_values = np.array(initial_values).astype(np.float64)
 
             precision=int(self.precisionLine.text())
-            solvable,steps,comments = gacobi_method(matrix_data,vector_data,initial_values,no_iterations,tolerance,precision)
+            solvable,steps,comments = gacobi_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
             print("solvable",solvable)
             if not solvable:
                 self.solutionErrorLabel.setText("No Solution")
@@ -295,9 +297,32 @@ class MainWindow(QMainWindow, MainWindowUI):
             for i in range(len(solution)):
                 self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
 
+        if self.operation_index == 4:
+            # Doolittle LU
+            vector_data_flat = vector_data.flatten()
+            print("flat:",vector_data_flat)
+            output,steps,answer = DoolittleLU(matrix_data,vector_data_flat)
+            print("output: ",output)
+            print("steps: ",steps)
+            print("answer: ",answer)
+            L= output[-1]['L']
+            U= output[-1]['U']
+
+            self.solutionMatrix_1.setRowCount(len(output))
+            self.solutionMatrix_1.setColumnCount(len(output))
+            self.solutionMatrix_2.setRowCount(len(output))
+            self.solutionMatrix_2.setColumnCount(len(output))
+            for i in range(len(output)):
+                for j in range(len(output)):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
+                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+            output.append(answer)
+            self.output= output
+            self.comments =steps
+
         if self.operation_index == 5:
             # crout LU
-            vector_data_flat = np.array(vector_data).astype(np.float64).flatten()
+            vector_data_flat = vector_data.flatten()
             print("flat:",vector_data_flat)
             output,steps,answer = CroutLU(matrix_data,vector_data_flat)
             print("output: ",output)
@@ -320,7 +345,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         
         if self.operation_index == 6:
             # Cholesky LU
-            output,steps = Cholesky(matrix_data)
+            output,steps = Cholesky(matrix_data.astype(np.float64))
             L=output
             if len(output)==0:
                 self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
@@ -386,7 +411,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 if i >= len(filterd_text):
                     continue
                 print(filterd_text,i)
-                if filterd_text[i] not in ['0','1','2','3','4','5','6','7','8','9']:
+                if filterd_text[i] not in ['0','1','2','3','4','5','6','7','8','9','.','-','+','*','/','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r']:
                     print("filtering",i)
                     filterd_text=filterd_text.replace(filterd_text[i],'')
             
