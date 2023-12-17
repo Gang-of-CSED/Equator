@@ -76,7 +76,7 @@ def backSubstitutions(aug_matrix,significantD=5):
       if(aug_matrix[i][i]==0):
           answer[i]='t'+str(param_counter)
           param_counter+=1
-          step = {"message": "Back substitutions", "output": f"{answer}"}
+          step = {"message": "Back substitutions", "output": answer}
           steps.append(step)
           continue
       
@@ -116,7 +116,7 @@ def backSubstitutions(aug_matrix,significantD=5):
        answer[i]= round_to_n_significant(aug_matrix[i][n] - accumelator,significantD) / aug_matrix[i][i]
        answer[i]=float(round_to_n_significant(answer[i],significantD))
 
-      step = {"message": "Back substitutions", "output": f"{answer}"}
+      step = {"message": "Back substitutions", "output": answer}
       steps.append(step)
 
     return steps,answer     
@@ -127,7 +127,7 @@ def gauss_elimination(cof_matrix, const_matrix,significantD=5):#returns 3 values
     steps,aug_matrix=upperAug(cof_matrix, const_matrix,significantD)
    
     if not isconsistent(cof_matrix,aug_matrix):
-           return False,answer,steps
+           return False,[],steps
     
     steps2,answer=backSubstitutions(aug_matrix,significantD)
 
@@ -142,7 +142,7 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
     steps,aug_matrix=upperAug(cof_matrix, const_matrix,significantD)
        
     if not isconsistent(cof_matrix,aug_matrix):
-           return False,answer,steps
+           return False,[],steps
 
     for i in range(n-1,-1,-1):
         
