@@ -63,7 +63,7 @@ def backSubstitutions(aug_matrix,significantD):
     aug_matrix=round_to_n_significant(aug_matrix,5)
 
     n=len(aug_matrix)
-    answer=[0]*n
+    answer=['None']*n
     steps=[]
 
     param_counter = 1
@@ -76,7 +76,7 @@ def backSubstitutions(aug_matrix,significantD):
       if(aug_matrix[i][i]==0):
           answer[i]='t'+str(param_counter)
           param_counter+=1
-          step = {"message": "Back substitutions", "output": f"X{i+1}={answer[i]}"}
+          step = {"message": "Back substitutions", "output": f"{answer}"}
           steps.append(step)
           continue
       
@@ -116,7 +116,7 @@ def backSubstitutions(aug_matrix,significantD):
        answer[i]= round_to_n_significant(aug_matrix[i][n] - accumelator,significantD) / aug_matrix[i][i]
        answer[i]=float(round_to_n_significant(answer[i],significantD))
 
-      step = {"message": "Back substitutions", "output": f"X{i+1}={answer[i]}"}
+      step = {"message": "Back substitutions", "output": f"{answer}"}
       steps.append(step)
 
     return steps,answer     
@@ -180,9 +180,7 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD):
   
     return True,answer,steps   
 
-_name="__main_"
-
-if _name == "__main_" :
+if __name__ == '__main__':
     cof_matrix = np.array(
     [[1, 2, 3], [0, 0, 6], [0, 0, 9]]
     )
