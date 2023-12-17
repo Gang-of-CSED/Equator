@@ -9,7 +9,13 @@ import numpy as np
 from gauss_operations import gauss_elimination,gauss_Jordan
 from src.operations.CroutLU import CroutLU
 from CholeskyLU import Cholesky
+from src.operations.Gauss_Seidel_Method import gauss_seidel_method
+from src.operations.Gacobi_Method import gacobi_method
 from PySide6.QtGui import QColor
+from src.ui_logic.steps_window_logic import StepsWindow
+
+import time
+
 class MainWindow(QMainWindow, MainWindowUI):
     def __init__(self):
         super().__init__()
@@ -28,6 +34,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.update_color_theme()
 
         self.themeButton.clicked.connect(self.themeButton_clicked)
+        self.stepsButton.clicked.connect(self.stepsButton_clicked)
+        self.output=[]
+        self.comments=[]
         # #1c284f
     def themeButton_clicked(self):
         self.themeButton.setText(self.color_theme)
@@ -72,6 +81,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.errorLine.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.solveButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.operationComboBox.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.stepsButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.themeButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
 
         # change labels color to label color
@@ -162,6 +172,7 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         
     def solveButton_clicked(self):
+        start_time=time.time()
         self.solutionErrorLabel.setText("")
 
         # get items from qt table to numpy array
@@ -208,9 +219,73 @@ class MainWindow(QMainWindow, MainWindowUI):
             for i in range(len(solution)):
                 self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
         
+        if self.operation_index == 2:
+            # gauss seidel
+            no_iterations = int(self.iterationLine.text())
+            tolerance = float(self.errorLine.text())
+            initial_values = []
+            for row in range(self.initialTable.rowCount()):
+                initial_values.append([])
+                for column in range(self.initialTable.columnCount()):
+                    initial_values[row].append(self.initialTable.item(row,column).text())
+            initial_values = np.array(initial_values).astype(np.float64)
+
+            precision=int(self.precisionLine.text())
+            solvable,steps,comments = gauss_seidel_method(matrix_data,vector_data,initial_values,no_iterations,tolerance,precision)
+            print("solvable",solvable)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            print(steps)
+            print(comments)
+            output=[]
+            for step in steps:
+                output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
+            self.output=output
+            self.comments =comments
+            solution = steps[-1]
+            print("solution",solution)
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
+
+        if self.operation_index == 3:
+            # gauss jacobi
+            no_iterations = int(self.iterationLine.text())
+            tolerance = float(self.errorLine.text())
+            initial_values = []
+            for row in range(self.initialTable.rowCount()):
+                initial_values.append([])
+                for column in range(self.initialTable.columnCount()):
+                    initial_values[row].append(self.initialTable.item(row,column).text())
+            initial_values = np.array(initial_values).astype(np.float64)
+
+            precision=int(self.precisionLine.text())
+            solvable,steps,comments = gacobi_method(matrix_data,vector_data,initial_values,no_iterations,tolerance,precision)
+            print("solvable",solvable)
+            if not solvable:
+                self.solutionErrorLabel.setText("No Solution")
+                return
+            print(steps)
+            print(comments)
+            output=[]
+            for step in steps:
+                output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
+            self.output=output
+            self.comments =comments
+            solution = steps[-1]
+            print("solution",solution)
+            self.solutionMatrix_1.setRowCount(len(solution))
+            self.solutionMatrix_1.setColumnCount(1)
+            for i in range(len(solution)):
+                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
+
         if self.operation_index == 5:
             # crout LU
             output,steps = CroutLU(matrix_data)
+            self.output= output
+            self.comments =steps
             L= output[-1]['L']
             U= output[-1]['U']
 
@@ -242,7 +317,10 @@ class MainWindow(QMainWindow, MainWindowUI):
                     self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i][j])))
                     self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i][j])))
 
-
+        end_time=time.time()
+        total_time =round(end_time-start_time,3)
+        print("time",total_time)
+        self.solutionErrorLabel.setText(f"Time: {total_time} seconds")
         
             
         
@@ -307,5 +385,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.solutionMatrix_2.setRowCount(no_rows)
         self.solutionMatrix_2.setColumnCount(no_rows)
         
-
+    def stepsButton_clicked(self):
+        print("stepsButton_clicked")
+        # self.steps_window = StepsWindow(output=[{"L":[[1,2],[3,4]],"U":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]}],comments=["hello","iam fine","tmam"])
+        self.steps_window = StepsWindow(output=self.output,comments=self.comments,theme=self.color_theme)
+        self.steps_window.show_steps()
         

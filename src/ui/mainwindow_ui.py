@@ -244,6 +244,9 @@ class Ui_MainWindow(object):
         self.themeButton.setObjectName(u"themeButton")
         self.themeButton.setGeometry(QRect(970, 10, 93, 28))
         self.themeButton.setFont(font)
+        self.stepsButton = QPushButton(self.centralwidget)
+        self.stepsButton.setObjectName(u"stepsButton")
+        self.stepsButton.setGeometry(QRect(450, 570, 151, 28))
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -252,7 +255,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Equator", None))
         ___qtablewidgetitem = self.matrixTable.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"a", None));
         ___qtablewidgetitem1 = self.matrixTable.horizontalHeaderItem(1)
@@ -370,5 +373,6 @@ class Ui_MainWindow(object):
         self.vectorLabel.setText(QCoreApplication.translate("MainWindow", u"vector_label", None))
         self.solutionErrorLabel.setText("")
         self.themeButton.setText(QCoreApplication.translate("MainWindow", u"Dark", None))
+        self.stepsButton.setText(QCoreApplication.translate("MainWindow", u"Steps", None))
     # retranslateUi
 

@@ -1,15 +1,16 @@
 import numpy as np
 
-from my_functions import is_correct, is_diagonally_dominant, round_to_n_significant
+from .utils import is_correct, round_to_n_significant
 
 def gauss_seidel_method(coeff_matrix, const_matrix, initial_values, num_iterations, tolarent_error, n):
+    steps_list, comments, flag = [], [], True
     # Check if the input matrices are correct
-    if not is_diagonally_dominant(coeff_matrix) or not is_correct(coeff_matrix, const_matrix, initial_values):
-        return False
+    if not is_correct(coeff_matrix, const_matrix, initial_values):
+        flag = False
+        return flag, steps_list, comments
 
     # Initialize the solution vector and the list to store the iteration steps
     ans = np.array(initial_values).astype(float)
-    steps_list = []
 
     # Round the input matrices to a certain number of significant digits
     coeff_matrix = round_to_n_significant(coeff_matrix, n)
@@ -33,28 +34,31 @@ def gauss_seidel_method(coeff_matrix, const_matrix, initial_values, num_iteratio
         steps_list.append(np.column_stack((ans, relative_aprox_error)))
 
         # Check if the relative approximation error is below the specified tolerance
-        if relative_aprox_error.max() <= tolarent_error:
+        if relative_aprox_error.max() < tolarent_error:
+            comments.append(f"(max relative approximate error) {relative_aprox_error.max()} % < {tolarent_error} % (tolarent error)\n No need to more iterations")
             break
-
+        
+        comments.append(f"(max relative approximate error) {relative_aprox_error.max()} % > {tolarent_error} % (tolarent error)")
     # Return the list of iteration steps
-    return np.array(steps_list)
+    return flag, np.array(steps_list), np.array(comments)
 
 
 #Examples:
-b = np.array([10, 11, 3]) 
-i = np.array([0, 0, 0])
-a = np.array([[5, -1, 1],
-              [2, 8, -1],
-              [ -1, 1, 4]])
+if __name__ == "__main__":
+    b = np.array([10, 11, 3]) 
+    i = np.array([0, 0, 0])
+    a = np.array([[5, -1, 1],
+                [2, 8, -1],
+                [ -1, 1, 4]])
 
-print("gauss_seidel_method:")
-steps2 = gauss_seidel_method(a, b, i, 6, 5, 5)
-for i in range(steps2.shape[0]):
-    print(f"Iteration {i + 1}:")
-    print("Values:")
-    for j in range(steps2.shape[1]):
-        print(steps2[i][j][0], "  ", end=' ')    
-    print("\nRelative:")
-    for j in range(steps2.shape[1]):
-        print(steps2[i][j][1], "%  ", end=' ')
-    print("\n")
+    print("gauss_seidel_method:")
+    flag, steps, comments = gauss_seidel_method(a, b, i, 6, 5, 5)
+    for i, iteration in enumerate(steps):
+        print(f"Iteration {i + 1}:")
+        print("Values:")
+        for value in iteration[0]:
+            print(value, end='   ')    
+        print("\nRelative errors:")
+        for error in iteration[1]:
+            print(error, end='   ')
+        print("\n", comments[i], "\n")
