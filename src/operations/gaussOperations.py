@@ -1,6 +1,7 @@
 import numpy as np
 import sympy as sp
 
+#round to significant digits
 def round_to_n_significant(x, n=5):
     def round_element(val):
         if np.isclose(val, 0):
@@ -8,10 +9,12 @@ def round_to_n_significant(x, n=5):
         return round(val, -int(np.floor(np.log10(np.abs(val)))) + (n - 1))
     return np.vectorize(round_element)(x)
 
+#compare the rank of augmented matrix and coefficient matrix
 def isconsistent(cof_matrix,aug_matrix):
     return np.linalg.matrix_rank(cof_matrix)==np.linalg.matrix_rank(aug_matrix)
 
-def upperAug(cof_matrix, const_matrix,significantD=5):
+#return an upper_triangle matrix
+def upperAug(cof_matrix, const_matrix,significantD=5): 
     steps = []
     n = len(const_matrix)
     # aug_matrix = np.hstack((cof_matrix, const_matrix))
@@ -67,9 +70,8 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
              steps.pop()    
     return steps, aug_matrix
 
-import sympy as sp
-
-def backSubstitutions(aug_matrix, significantD=5):
+#return the answer of upper triangle
+def backSubstitutions(aug_matrix, significantD=5): 
     aug_matrix = round_to_n_significant(aug_matrix, significantD)
 
     n = len(aug_matrix)
@@ -105,12 +107,14 @@ def backSubstitutions(aug_matrix, significantD=5):
         steps.append(step)
 
     return steps, answer
+
      
-def gauss_elimination(cof_matrix, const_matrix,significantD=5):#returns 3 values isSolveAble,answer,steps 
+def gauss_elimination(cof_matrix, const_matrix,significantD=5): 
     
     #get the upper triabgle matrix 
     steps,aug_matrix=upperAug(cof_matrix, const_matrix,significantD)
-   
+
+    #test if there a solution 
     if not isconsistent(cof_matrix,aug_matrix):
            return False,[],steps
     
@@ -124,11 +128,14 @@ def gauss_elimination(cof_matrix, const_matrix,significantD=5):#returns 3 values
 def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
    
     n=len(const_matrix)
+
+    #get the upper triabgle matrix 
     steps,aug_matrix=upperAug(cof_matrix, const_matrix,significantD)
-       
+    
+    #test if there a solution
     if not isconsistent(cof_matrix,aug_matrix):
            return False,[],steps
-
+    
     for i in range(n-1,-1,-1):
         
         #avoid division by 0
@@ -144,6 +151,7 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
         steps.append(step)
        
         # aug_matrix = round_to_n_significant(aug_matrix,significantD)
+
         #eleminating elemnts above
         for j in range(i-1,-1,-1):
 
