@@ -161,229 +161,237 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         
     def solveButton_clicked(self):
-        start_time=time.time()
-        self.solutionErrorLabel.setText("")
-        precision= 4
-        if self.precisionLine.text() != "":
-            precision=int(self.precisionLine.text())
-        no_iterations=10
-        if self.iterationLine.text() != "":    
-            no_iterations = int(self.iterationLine.text())
-        tolerance =30
-        if self.errorLine.text() != "":
-            tolerance = float(self.errorLine.text())
-        
-
-        # get items from qt table to numpy array
-        matrix_data = []
-        for row in range(self.matrixTable.rowCount()):
-            matrix_data.append([])
-            for column in range(self.matrixTable.columnCount()):
-                matrix_data[row].append(self.matrixTable.item(row, column).text())
-        
-        matrix_data = np.array(matrix_data).astype(object)
-    
-        print("columns:",self.initialTable.columnCount(),"rows:",self.initialTable.rowCount())
-        initial_values = []
-        for row in range(self.initialTable.rowCount()):
-            initial_values.append([])
-            for column in range(self.initialTable.columnCount()):
-                print(row,column,self.initialTable.item(row,column))
-                if self.initialTable.item(row,column).text() == "":
-                    initial_values[row].append(1)
-                else:
-                    initial_values[row].append(self.initialTable.item(row,column).text())
-        initial_values = np.array(initial_values).astype(np.float64)
-        print("initiallll",initial_values)
-
-
-        vector_data = []
-        for row in range(self.vectorTable.rowCount()):
-            vector_data.append([])
-            for column in range(self.vectorTable.columnCount()):
-                print(row,column,self.vectorTable.itemAt(row,column))
-                vector_data[row].append(self.vectorTable.item(row,column).text())
-        vector_data = np.array(vector_data).astype(object)
-
-        if self.operation_index == 0:
-            # gauss elimination
-            solvable,solution,steps = gauss_elimination(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
-            print("solvable",solvable)
-            print("solution",solution)
-            print("steps",steps)
-            if not solvable:
-                self.solutionErrorLabel.setText("No Solution")
-                return
-            print(solution)
-            print(steps)
-            self.solutionMatrix_1.setRowCount(len(solution))
-            self.solutionMatrix_1.setColumnCount(1)
-            for i in range(len(solution)):
-                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+        try:
+            start_time=time.time()
+            self.solutionErrorLabel.setText("")
+            precision= 4
+            if self.precisionLine.text() != "":
+                precision=int(self.precisionLine.text())
+            no_iterations=10
+            if self.iterationLine.text() != "":    
+                no_iterations = int(self.iterationLine.text())
+            tolerance =30
+            if self.errorLine.text() != "":
+                tolerance = float(self.errorLine.text())
             
-            # convert solution to column vector
-            # reshape list from [1,2,3] to [[1],[2],[3]]
-            # convert list to numpy array
-        
-            self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
 
-            self.comments = [step["message"] for step in steps]
-        
-        if self.operation_index == 1:
-            # gauss elimination
-
-            solvable,solution,steps = gauss_Jordan(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
-            if not solvable:
-                self.solutionErrorLabel.setText("No Solution")
-                return
+            # get items from qt table to numpy array
+            matrix_data = []
+            for row in range(self.matrixTable.rowCount()):
+                matrix_data.append([])
+                for column in range(self.matrixTable.columnCount()):
+                    matrix_data[row].append(self.matrixTable.item(row, column).text())
             
-            self.solutionMatrix_1.setRowCount(len(solution))
-            self.solutionMatrix_1.setColumnCount(1)
-            for i in range(len(solution)):
-                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+            matrix_data = np.array(matrix_data).astype(object)
+        
+            print("columns:",self.initialTable.columnCount(),"rows:",self.initialTable.rowCount())
+            initial_values = []
+            for row in range(self.initialTable.rowCount()):
+                initial_values.append([])
+                for column in range(self.initialTable.columnCount()):
+                    print(row,column,self.initialTable.item(row,column))
+                    if self.initialTable.item(row,column).text() == "":
+                        initial_values[row].append(1)
+                    else:
+                        initial_values[row].append(self.initialTable.item(row,column).text())
+            initial_values = np.array(initial_values).astype(np.float64)
+            print("initiallll",initial_values)
+
+
+            vector_data = []
+            for row in range(self.vectorTable.rowCount()):
+                vector_data.append([])
+                for column in range(self.vectorTable.columnCount()):
+                    print(row,column,self.vectorTable.itemAt(row,column))
+                    vector_data[row].append(self.vectorTable.item(row,column).text())
+            vector_data = np.array(vector_data).astype(object)
+
+            if self.operation_index == 0:
+                # gauss elimination
+                solvable,solution,steps = gauss_elimination(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
+                print("solvable",solvable)
+                print("solution",solution)
+                print("steps",steps)
+                if not solvable:
+                    self.solutionErrorLabel.setText("No Solution")
+                    return
+                print(solution)
+                print(steps)
+                self.solutionMatrix_1.setRowCount(len(solution))
+                self.solutionMatrix_1.setColumnCount(1)
+                for i in range(len(solution)):
+                    self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+                
+                # convert solution to column vector
+                # reshape list from [1,2,3] to [[1],[2],[3]]
+                # convert list to numpy array
             
-            # convert solution to column vector
-            # reshape list from [1,2,3] to [[1],[2],[3]]
-            self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
+                self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
 
-            self.comments = [step["message"] for step in steps]
+                self.comments = [step["message"] for step in steps]
+            
+            if self.operation_index == 1:
+                # gauss elimination
+
+                solvable,solution,steps = gauss_Jordan(matrix_data.astype(np.float64),vector_data.astype(np.float64),significantD=precision)
+                if not solvable:
+                    self.solutionErrorLabel.setText("No Solution")
+                    return
+                
+                self.solutionMatrix_1.setRowCount(len(solution))
+                self.solutionMatrix_1.setColumnCount(1)
+                for i in range(len(solution)):
+                    self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
+                
+                # convert solution to column vector
+                # reshape list from [1,2,3] to [[1],[2],[3]]
+                self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
+
+                self.comments = [step["message"] for step in steps]
+            
+            if self.operation_index == 2:
+                # gauss seidel
+
+                solvable,steps,comments = gauss_seidel_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
+                print("solvable",solvable)
+                if not solvable:
+                    self.solutionErrorLabel.setText("No Solution")
+                    return
+                print(steps)
+                print(comments)
+                output=[]
+                for step in steps:
+                    output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
+                self.output=output
+                self.comments =comments
+                solution = steps[-1]
+                print("solution",solution)
+                self.solutionMatrix_1.setRowCount(len(solution))
+                self.solutionMatrix_1.setColumnCount(1)
+                for i in range(len(solution)):
+                    self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
+
+            if self.operation_index == 3:
+                # gauss jacobi
+                solvable,steps,comments = gacobi_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
+                print("solvable",solvable)
+                if not solvable:
+                    self.solutionErrorLabel.setText("No Solution")
+                    return
+                print(steps)
+                print(comments)
+                output=[]
+                for step in steps:
+                    output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
+                self.output=output
+                self.comments =comments
+                solution = steps[-1]
+                print("solution",solution)
+                self.solutionMatrix_1.setRowCount(len(solution))
+                self.solutionMatrix_1.setColumnCount(1)
+                for i in range(len(solution)):
+                    self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
+
+            if self.operation_index == 4:
+                # Doolittle LU
+                vector_data_flat = vector_data.flatten()
+                print("flat:",vector_data_flat)
+                output,steps,answer = DoolittleLU(matrix_data,vector_data_flat,precision)
+                print("output: ",output)
+                print("steps: ",steps)
+                print("answer: ",answer)
+                print(len(output),len(steps),answer)
+                # L= output[-1]['L']
+                # U= output[-1]['U']
+                X =answer['x']
+
+                self.solutionMatrix_1.setRowCount(len(X))
+                self.solutionMatrix_1.setColumnCount(len(X[0]))
+                # self.solutionMatrix_2.setRowCount(len(X))
+                # self.solutionMatrix_2.setColumnCount(len(X))
+                for i in range(len(X)):
+                    for j in range(len(X[0])):
+                        self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
+                        # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+                output.append(answer)
+                self.output= output
+                self.comments =steps
+
+            if self.operation_index == 5:
+                # crout LU
+                vector_data_flat = vector_data.flatten()
+                print("flat:",vector_data_flat)
+                output,steps,answer = CroutLU(matrix_data,vector_data_flat,precision)
+                print("output: ",output)
+                print("steps: ",steps)
+                print("answer: ",answer)
+                print(len(output),len(steps),answer)
+                # L= output[-1]['L']
+                # U= output[-1]['U']
+                X =answer['x']
+
+                self.solutionMatrix_1.setRowCount(len(X))
+                self.solutionMatrix_1.setColumnCount(len(X[0]))
+                # self.solutionMatrix_2.setRowCount(len(X))
+                # self.solutionMatrix_2.setColumnCount(len(X))
+                for i in range(len(X)):
+                    for j in range(len(X[0])):
+                        self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
+                        # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+                output.append(answer)
+                self.output= output
+                self.comments =steps
+            
+            if self.operation_index == 6:
+                # Cholesky LU
+                vector_data_flat = vector_data.flatten()
+                # convert to float
+                vector_data_flat = vector_data_flat.astype(np.float64)
+                # convert matrix to float
+                matrix_data = matrix_data.astype(np.float64)
+                print("flat:",vector_data_flat)
+                output,steps,answer = Cholesky(matrix_data,vector_data_flat,precision)
+                if len(output) == 0:
+                    if len(steps) == 0:
+                        self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
+                    else:
+                        self.solutionErrorLabel.setText(steps[0])
+                    return
+
+
+                print("output: ",output)
+                print("steps: ",steps)
+                print("answer: ",answer)
+
+                print(len(output),len(steps),answer)
+                # L= output[-1]['L']
+                # U= output[-1]['U']
+                X =answer['x']
+
+                self.solutionMatrix_1.setRowCount(len(X))
+                self.solutionMatrix_1.setColumnCount(len(X[0]))
+                # self.solutionMatrix_2.setRowCount(len(X))
+                # self.solutionMatrix_2.setColumnCount(len(X))
+                for i in range(len(X)):
+                    for j in range(len(X[0])):
+                        self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
+                        # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+                output.append(answer)
+                self.output= output
+                self.comments =steps
+
+            end_time=time.time()
+            total_time =round(end_time-start_time,3)
+            print("time",total_time)
+            self.solutionErrorLabel.setText(f"Time: {total_time} seconds")
         
-        if self.operation_index == 2:
-            # gauss seidel
-
-            solvable,steps,comments = gauss_seidel_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
-            print("solvable",solvable)
-            if not solvable:
-                self.solutionErrorLabel.setText("No Solution")
-                return
-            print(steps)
-            print(comments)
-            output=[]
-            for step in steps:
-                output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
-            self.output=output
-            self.comments =comments
-            solution = steps[-1]
-            print("solution",solution)
-            self.solutionMatrix_1.setRowCount(len(solution))
+        except:
+            self.solutionErrorLabel.setText("Sorry can't solve using this method!")
+            # clear solution matrix
+            self.solutionMatrix_1.setRowCount(1)
             self.solutionMatrix_1.setColumnCount(1)
-            for i in range(len(solution)):
-                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
-
-        if self.operation_index == 3:
-            # gauss jacobi
-            solvable,steps,comments = gacobi_method(matrix_data.astype(np.float64),vector_data.astype(np.float64),initial_values,no_iterations,tolerance,precision)
-            print("solvable",solvable)
-            if not solvable:
-                self.solutionErrorLabel.setText("No Solution")
-                return
-            print(steps)
-            print(comments)
-            output=[]
-            for step in steps:
-                output.append({"X":step[:,0:1],"Relative Approximate Error":step[:,1:]})
-            self.output=output
-            self.comments =comments
-            solution = steps[-1]
-            print("solution",solution)
-            self.solutionMatrix_1.setRowCount(len(solution))
-            self.solutionMatrix_1.setColumnCount(1)
-            for i in range(len(solution)):
-                self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i][0])))
-
-        if self.operation_index == 4:
-            # Doolittle LU
-            vector_data_flat = vector_data.flatten()
-            print("flat:",vector_data_flat)
-            output,steps,answer = DoolittleLU(matrix_data,vector_data_flat,precision)
-            print("output: ",output)
-            print("steps: ",steps)
-            print("answer: ",answer)
-            print(len(output),len(steps),answer)
-            # L= output[-1]['L']
-            # U= output[-1]['U']
-            X =answer['x']
-
-            self.solutionMatrix_1.setRowCount(len(X))
-            self.solutionMatrix_1.setColumnCount(len(X[0]))
-            # self.solutionMatrix_2.setRowCount(len(X))
-            # self.solutionMatrix_2.setColumnCount(len(X))
-            for i in range(len(X)):
-                for j in range(len(X[0])):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
-                    # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
-            output.append(answer)
-            self.output= output
-            self.comments =steps
-
-        if self.operation_index == 5:
-            # crout LU
-            vector_data_flat = vector_data.flatten()
-            print("flat:",vector_data_flat)
-            output,steps,answer = CroutLU(matrix_data,vector_data_flat,precision)
-            print("output: ",output)
-            print("steps: ",steps)
-            print("answer: ",answer)
-            print(len(output),len(steps),answer)
-            # L= output[-1]['L']
-            # U= output[-1]['U']
-            X =answer['x']
-
-            self.solutionMatrix_1.setRowCount(len(X))
-            self.solutionMatrix_1.setColumnCount(len(X[0]))
-            # self.solutionMatrix_2.setRowCount(len(X))
-            # self.solutionMatrix_2.setColumnCount(len(X))
-            for i in range(len(X)):
-                for j in range(len(X[0])):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
-                    # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
-            output.append(answer)
-            self.output= output
-            self.comments =steps
-        
-        if self.operation_index == 6:
-            # Cholesky LU
-            vector_data_flat = vector_data.flatten()
-            # convert to float
-            vector_data_flat = vector_data_flat.astype(np.float64)
-            # convert matrix to float
-            matrix_data = matrix_data.astype(np.float64)
-            print("flat:",vector_data_flat)
-            output,steps,answer = Cholesky(matrix_data,vector_data_flat,precision)
-            if len(output) == 0:
-                if len(steps) == 0:
-                    self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
-                else:
-                    self.solutionErrorLabel.setText(steps[0])
-                return
-
-
-            print("output: ",output)
-            print("steps: ",steps)
-            print("answer: ",answer)
-
-            print(len(output),len(steps),answer)
-            # L= output[-1]['L']
-            # U= output[-1]['U']
-            X =answer['x']
-
-            self.solutionMatrix_1.setRowCount(len(X))
-            self.solutionMatrix_1.setColumnCount(len(X[0]))
-            # self.solutionMatrix_2.setRowCount(len(X))
-            # self.solutionMatrix_2.setColumnCount(len(X))
-            for i in range(len(X)):
-                for j in range(len(X[0])):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
-                    # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
-            output.append(answer)
-            self.output= output
-            self.comments =steps
-
-        end_time=time.time()
-        total_time =round(end_time-start_time,3)
-        print("time",total_time)
-        self.solutionErrorLabel.setText(f"Time: {total_time} seconds")
-        
+            self.solutionMatrix_1.setItem(0,0,QTableWidgetItem("0"))
+            
             
         
     def update_labels(self):
