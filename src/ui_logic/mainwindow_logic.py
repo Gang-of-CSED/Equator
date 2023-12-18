@@ -108,11 +108,6 @@ class MainWindow(QMainWindow, MainWindowUI):
         print(index)
     
     def update_visiblity(self):
-        # if self.operation_index in [4,5,6]:
-        #     self.vectorTable.setVisible(False)
-        # else:
-        #     self.vectorTable.setVisible(True)
-        # solutionMatrix_2
         self.solutionMatrix_2.setVisible(False)
         self.solutionLabel_2.setVisible(False)
         
@@ -222,9 +217,6 @@ class MainWindow(QMainWindow, MainWindowUI):
                 for i in range(len(solution)):
                     self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
                 
-                # convert solution to column vector
-                # reshape list from [1,2,3] to [[1],[2],[3]]
-                # convert list to numpy array
             
                 self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
 
@@ -242,9 +234,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 self.solutionMatrix_1.setColumnCount(1)
                 for i in range(len(solution)):
                     self.solutionMatrix_1.setItem(i,0,QTableWidgetItem(str(solution[i])))
-                
                 # convert solution to column vector
-                # reshape list from [1,2,3] to [[1],[2],[3]]
                 self.output = [({"Aug. Matrix":step["output"]} if len(np.array(step["output"]).shape) != 1 else {"X": np.array(step["output"]).reshape(-1,1)}) for step in steps]
 
                 self.comments = [step["message"] for step in steps]
@@ -265,7 +255,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 self.output=output
                 self.comments =comments
                 solution = steps[-1]
-                print("solution",solution)
+                
                 self.solutionMatrix_1.setRowCount(len(solution))
                 self.solutionMatrix_1.setColumnCount(1)
                 for i in range(len(solution)):
@@ -301,18 +291,13 @@ class MainWindow(QMainWindow, MainWindowUI):
                 print("steps: ",steps)
                 print("answer: ",answer)
                 print(len(output),len(steps),answer)
-                # L= output[-1]['L']
-                # U= output[-1]['U']
                 X =answer['x']
 
                 self.solutionMatrix_1.setRowCount(len(X))
                 self.solutionMatrix_1.setColumnCount(len(X[0]))
-                # self.solutionMatrix_2.setRowCount(len(X))
-                # self.solutionMatrix_2.setColumnCount(len(X))
                 for i in range(len(X)):
                     for j in range(len(X[0])):
                         self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
-                        # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
                 output.append(answer)
                 self.output= output
                 self.comments =steps
@@ -326,18 +311,13 @@ class MainWindow(QMainWindow, MainWindowUI):
                 print("steps: ",steps)
                 print("answer: ",answer)
                 print(len(output),len(steps),answer)
-                # L= output[-1]['L']
-                # U= output[-1]['U']
                 X =answer['x']
 
                 self.solutionMatrix_1.setRowCount(len(X))
                 self.solutionMatrix_1.setColumnCount(len(X[0]))
-                # self.solutionMatrix_2.setRowCount(len(X))
-                # self.solutionMatrix_2.setColumnCount(len(X))
                 for i in range(len(X)):
                     for j in range(len(X[0])):
                         self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
-                        # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
                 output.append(answer)
                 self.output= output
                 self.comments =steps
@@ -364,18 +344,16 @@ class MainWindow(QMainWindow, MainWindowUI):
                 print("answer: ",answer)
 
                 print(len(output),len(steps),answer)
-                # L= output[-1]['L']
-                # U= output[-1]['U']
+                
                 X =answer['x']
 
                 self.solutionMatrix_1.setRowCount(len(X))
                 self.solutionMatrix_1.setColumnCount(len(X[0]))
-                # self.solutionMatrix_2.setRowCount(len(X))
-                # self.solutionMatrix_2.setColumnCount(len(X))
+                
                 for i in range(len(X)):
                     for j in range(len(X[0])):
                         self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
-                        # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+                        
                 output.append(answer)
                 self.output= output
                 self.comments =steps
@@ -395,6 +373,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             
         
     def update_labels(self):
+        # update labels
         self.solutionLabel_1.setText("X")
         self.matrixLabel.setText("Coefficient Matrix")
         self.vectorLabel.setText("Vector")
@@ -420,6 +399,7 @@ class MainWindow(QMainWindow, MainWindowUI):
 
     
     def matrixTable_changed(self,x,y):
+        # validate input
         print(x,y,self.matrixTable.item(x,y).text())
         number_regex = QRegularExpression("^[-+]?[0-9]*\.?[0-9]+$")
         if not number_regex.match(self.matrixTable.item(x,y).text()).hasMatch():
@@ -439,6 +419,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.matrixTable.item(x,y).setText(filterd_text)
     
     def noRowsLine_changed(self):
+        # update matrix table
         no_rows=int(self.noRowsLine.text())
         self.matrixTable.setRowCount(no_rows)
         self.matrixTable.setColumnCount(no_rows)
