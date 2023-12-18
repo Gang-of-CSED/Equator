@@ -173,17 +173,6 @@ class MainWindow(QMainWindow, MainWindowUI):
         if self.errorLine.text() != "":
             tolerance = float(self.errorLine.text())
         
-        
-        initial_values = []
-        for row in range(self.initialTable.rowCount()):
-            initial_values.append([])
-            for column in range(self.initialTable.columnCount()):
-                if self.initialTable.item(row,column).text() == "":
-                    initial_values[row].append(1)
-                else:
-                    initial_values[row].append(self.initialTable.item(row,column).text())
-        initial_values = np.array(initial_values).astype(np.float64)
-        print("initiallll",initial_values)
 
         # get items from qt table to numpy array
         matrix_data = []
@@ -194,6 +183,20 @@ class MainWindow(QMainWindow, MainWindowUI):
         
         matrix_data = np.array(matrix_data).astype(object)
     
+        print("columns:",self.initialTable.columnCount(),"rows:",self.initialTable.rowCount())
+        initial_values = []
+        for row in range(self.initialTable.rowCount()):
+            initial_values.append([])
+            for column in range(self.initialTable.columnCount()):
+                print(row,column,self.initialTable.item(row,column))
+                if self.initialTable.item(row,column).text() == "":
+                    initial_values[row].append(1)
+                else:
+                    initial_values[row].append(self.initialTable.item(row,column).text())
+        initial_values = np.array(initial_values).astype(np.float64)
+        print("initiallll",initial_values)
+
+
         vector_data = []
         for row in range(self.vectorTable.rowCount()):
             vector_data.append([])
@@ -426,12 +429,21 @@ class MainWindow(QMainWindow, MainWindowUI):
         no_rows=int(self.noRowsLine.text())
         self.matrixTable.setRowCount(no_rows)
         self.matrixTable.setColumnCount(no_rows)
+        for i in range(no_rows):
+            for j in range(no_rows):
+                self.matrixTable.setItem(i,j,QTableWidgetItem("0"))
         self.vectorTable.setRowCount(no_rows)
+        for i in range(no_rows):
+            self.vectorTable.setItem(i,0,QTableWidgetItem("0"))
+
         self.initialTable.setRowCount(no_rows)
+        for i in range(no_rows):
+            self.initialTable.setItem(i,0,QTableWidgetItem("0"))
         self.solutionMatrix_1.setRowCount(no_rows)
         self.solutionMatrix_1.setColumnCount(no_rows)
         self.solutionMatrix_2.setRowCount(no_rows)
         self.solutionMatrix_2.setColumnCount(no_rows)
+    
         
     def stepsButton_clicked(self):
         print("stepsButton_clicked")
