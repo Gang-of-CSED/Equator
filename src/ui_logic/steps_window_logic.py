@@ -11,6 +11,7 @@ class StepsWindow(QDialog,Ui_stepsDialog):
         super().__init__()
         self.setupUi(self)
         self.clear_steps()
+        # add steps
         for i in range(len(self.output)):
             step = self.output[i]
             comment = self.comments[i]
@@ -22,6 +23,7 @@ class StepsWindow(QDialog,Ui_stepsDialog):
 
         
     def get_step_page(self,index,step,comment):
+        # update theme
         background_color = "#FFFFFF"
         text_color = "#000000"
         table_color = "#f5f6f8"
@@ -37,7 +39,7 @@ class StepsWindow(QDialog,Ui_stepsDialog):
             input_color = "#21252c"
             label_color = "rgb( 84, 105, 212 )"
             error_color = "#f27400"
-
+        # create page
         self.setStyleSheet(f"background-color:{background_color};color:{text_color};")
         step_page=QWidget()
         for key_i in range(len(step.keys())):
@@ -66,13 +68,14 @@ class StepsWindow(QDialog,Ui_stepsDialog):
             # hide headers
             step_matrix.horizontalHeader().hide()
             step_matrix.verticalHeader().hide()
-        
+        # add comment
         step_comment =QTextBrowser(step_page)
         step_comment.setText(comment)
         step_comment.setGeometry(0,0,740,150)
         step_comment.setReadOnly(True)
         step_comment.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         
+        # add buttons
         if index != len(self.output)-1:
             next_button = QPushButton(step_page)
             next_button.setText("Next")
