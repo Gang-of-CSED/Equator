@@ -53,7 +53,7 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
                     aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)   
                     aug_matrix[j][x]=  round_to_n_significant(aug_matrix[j][x],significantD)          
 
-                step = {"message": f"R{j + 1} <- R{j + 1} - {factor:.6f}*R{i + 1}", "output": aug_matrix.copy()}
+                step = {"message": f"R{j + 1} <- R{j + 1} - {factor}*R{i + 1}", "output": aug_matrix.copy()}
                 steps.append(step)
             elif steps:#delete the last 2 steps if the element is zero already 
              steps.pop()    
@@ -170,8 +170,9 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
             # print(aug_matrix)
             for x in range (n+1):
              aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)
+             aug_matrix[j][x]=round_to_n_significant(aug_matrix[j][x])
 
-           
+            aug_matrix = round_to_n_significant(aug_matrix,significantD)
             step = {"message":f"R{j+1} <- R{j+1} - {factor}*R{i+1}", "output": aug_matrix.copy()}
             steps.append(step)
        
@@ -198,7 +199,7 @@ if __name__ == '__main__':
          [8]]
         )
   
-    issolvabe,answer,steps = gauss_elimination(cof_matrix, const_matrix,4)
+    issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,4)
 
     for step in steps:
         print("\n")
