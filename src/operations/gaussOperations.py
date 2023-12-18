@@ -1,4 +1,6 @@
 import numpy as np
+import sympy as sp
+
 def round_to_n_significant(x, n=5):
     def round_element(val):
         if np.isclose(val, 0):
@@ -14,7 +16,8 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
     n = len(const_matrix)
     # aug_matrix = np.hstack((cof_matrix, const_matrix))
     aug_matrix = np.hstack((cof_matrix, const_matrix)).astype(np.float64)
-    aug_matrix=round_to_n_significant(aug_matrix,significantD)
+    aug_matrix=round_to_n_significant(aug_matrix,significantD).astype(np.float64)
+    print(aug_matrix)
     for i in range(n):
 
         # Partial Pivoting with scalling 
@@ -23,8 +26,9 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
         for x in range(n):
             largestCoeff = max(abs(scaledAug[x, :n]))
             if largestCoeff != 0:
+
                 scaledAug[x, :] /= largestCoeff
-                scaledAug=round_to_n_significant(scaledAug,significantD)
+                scaledAug=round_to_n_significant(scaledAug,significantD).astype(np.float64)
         
         step = {"message": f"Matrix after scaling (just to choose the pivot)" , "output": scaledAug.copy()}
         steps.append(step)
@@ -60,69 +64,45 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
              steps.pop()    
     return steps, aug_matrix
 
-def backSubstitutions(aug_matrix,significantD=5):
-    aug_matrix=round_to_n_significant(aug_matrix,5)
+import sympy as sp
 
-    n=len(aug_matrix)
-    answer=['None']*n
-    steps=[]
+def backSubstitutions(aug_matrix, significantD=5):
+    aug_matrix = round_to_n_significant(aug_matrix, significantD)
+
+    n = len(aug_matrix)
+    answer = ['None']*n  # Initialize with SymPy zeros
+    steps = []
 
     param_counter = 1
-    for i in range(n-1,-1,-1):
-      isInfiniteSolns=False
-      stringAccumelator=""
-      accumelator=0.0
+    for i in range(n-1, -1, -1):
+        accumelator = sp.S.Zero
 
-       #if the coff is 0 then it has infinite number of solutions (we have checked already if it is consistent)
-      if(aug_matrix[i][i]==0):
-          answer[i]='t'+str(param_counter)
-          param_counter+=1
-          step = {"message": "Back substitutions", "output": answer.copy()}
-          steps.append(step)
-          continue
-      
-
-      for j in range(i+1,n):
-
-        #if the coff is zero then we shouldn't add it to the answer
-        if(aug_matrix[i][j]==0):
+        # if the coefficient is 0, it indicates infinite solutions
+        if aug_matrix[i][i] == 0:
+            param_name = 't{}'.format(param_counter)
+            answer[i] = sp.symbols(param_name)
+            param_counter += 1
+            step = {"message": "Back substitutions (infinite solutions)", "output": answer.copy()}
+            steps.append(step)
             continue
 
-        #deal with it as string if it has parameter like t1
-        if isinstance(answer[j], str) or isInfiniteSolns : 
-            isInfiniteSolns=True
+        for j in range(i + 1, n):
+            if aug_matrix[i][j] != 0:
+                accumelator += sp.N(answer[j] * aug_matrix[i][j],n=significantD)
+                accumelator=sp.N(accumelator,n=significantD)
+        # Simplify the expression
+        accumelator = sp.simplify(accumelator)
 
-             #if we have another values (stringAccumelator is not empty ) add + 
-            if(stringAccumelator):
-             stringAccumelator+='+'
-             
-            stringAccumelator+=str(answer[j])+'*'+str(aug_matrix[i][j])
+        if aug_matrix[i][i] != 0:
+            answer[i] = sp.N((aug_matrix[i][n] - accumelator),significantD) / aug_matrix[i][i]
+            answer[i]=sp.N(answer[i],significantD)
+            answer[i] = sp.simplify(answer[i])
 
-        else:  
+        step = {"message": "Back substitutions", "output": answer.copy()}
+        steps.append(step)
+
+    return steps, answer
      
-         accumelator+=(round_to_n_significant(answer[j]*aug_matrix[i][j],significantD))
-         accumelator=float(round_to_n_significant(accumelator,significantD))
-
-      if(isInfiniteSolns): 
-        
-        answer[i]='-'+'(' +stringAccumelator+')'
-
-        #just to not print 0-x or x/1
-        if (aug_matrix[i][n]!=0):
-            answer[i]=str(aug_matrix[i][n])+answer[i]
-
-        if(aug_matrix[i][i]!=1):
-            answer[i]+='/'+ str(aug_matrix[i][i])
-
-      else: 
-       answer[i]= round_to_n_significant(aug_matrix[i][n] - accumelator,significantD) / aug_matrix[i][i]
-       answer[i]=float(round_to_n_significant(answer[i],significantD))
-
-      step = {"message": "Back substitutions", "output": answer.copy()}
-      steps.append(step)
-
-    return steps,answer     
-
 def gauss_elimination(cof_matrix, const_matrix,significantD=5):#returns 3 values isSolveAble,answer,steps 
     
     #get the upper triabgle matrix 
@@ -160,6 +140,7 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
         step = {"message":f"R{i+1} <- R{i+1} /{temp} ", "output": aug_matrix.copy()}
         steps.append(step)
        
+        # aug_matrix = round_to_n_significant(aug_matrix,significantD)
         #eleminating elemnts above
         for j in range(i-1,-1,-1):
 
@@ -170,9 +151,8 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
             # print(aug_matrix)
             for x in range (n+1):
              aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)
-             aug_matrix[j][x]=round_to_n_significant(aug_matrix[j][x])
+             aug_matrix[j][x]=round_to_n_significant(aug_matrix[j][x],significantD)
 
-            aug_matrix = round_to_n_significant(aug_matrix,significantD)
             step = {"message":f"R{j+1} <- R{j+1} - {factor}*R{i+1}", "output": aug_matrix.copy()}
             steps.append(step)
        
@@ -185,21 +165,17 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
 
 if __name__ == '__main__':
     cof_matrix = np.array(
-   [[2,1, 1,  1,1],
-   [ 1,2,1,1,1],
-    [1,1,2,1,1],
-    [1,1,1,2,1],
-    [1,1,1,1,2]]
+   [[2,3,-1,4,-1],[1,2,3,-1,4],[3,1,-2,3,-4],[4,3,1,2,0],[1,-2,3,1,2]]
     )
     const_matrix = np.array(
-        [[4],
+        [[10],
          [5],
-         [6],
-         [7],
-         [8]]
+         [3],
+         [8],
+         [-2]]
         )
   
-    issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,4)
+    issolvabe,answer,steps = gauss_elimination(cof_matrix, const_matrix,4)
 
     for step in steps:
         print("\n")
