@@ -5,7 +5,7 @@ from src.operations.CroutLU import SolveLU
 
 def getU(L):
     if len(L)==0: return L
-    n = matrix.shape[0]
+    n = L.shape[0]
     U = np.zeros((n, n), dtype=object)
     for i in range (n):
         for j in range(n):
@@ -81,8 +81,9 @@ def Cholesky(matrix, b=None, precision=5):
         print("Answer = \n", answer)
 
         return LUs, steps, answer
-    except:
-       return [],[NSPDM],answer
+    except Exception as e:
+        print(e)
+        return [],[NSPDM],answer
 
 
 #####################################################################
