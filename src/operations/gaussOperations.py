@@ -17,19 +17,22 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
     # aug_matrix = np.hstack((cof_matrix, const_matrix))
     aug_matrix = np.hstack((cof_matrix, const_matrix)).astype(np.float64)
     aug_matrix=round_to_n_significant(aug_matrix,significantD).astype(np.float64)
-    print(aug_matrix)
     for i in range(n):
 
         # Partial Pivoting with scalling 
-        #scalling on the aug matrix just to determine the pivot 
         scaledAug = aug_matrix.copy()
+        #scalling on the aug matrix just to determine the pivot 
         for x in range(n):
             largestCoeff = max(abs(scaledAug[x, :n]))
             if largestCoeff != 0:
-
+                
+                
                 scaledAug[x, :] /= largestCoeff
-                scaledAug=round_to_n_significant(scaledAug,significantD).astype(np.float64)
-        
+                for z in range (n+1):
+                
+                 scaledAug[x][z]=round_to_n_significant(scaledAug[x][z],significantD)
+                 
+
         step = {"message": f"Matrix after scaling (just to choose the pivot)" , "output": scaledAug.copy()}
         steps.append(step)
         # Now find the pivot using the scaled matrix
@@ -165,17 +168,15 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
 
 if __name__ == '__main__':
     cof_matrix = np.array(
-   [[2,3,-1,4,-1],[1,2,3,-1,4],[3,1,-2,3,-4],[4,3,1,2,0],[1,-2,3,1,2]]
+   [[0,2,3],[4,5,6],[7,8,9]]
     )
     const_matrix = np.array(
-        [[10],
-         [5],
-         [3],
-         [8],
-         [-2]]
+        [[6],
+         [19],
+         [31]]
         )
   
-    issolvabe,answer,steps = gauss_elimination(cof_matrix, const_matrix,4)
+    issolvabe,answer,steps = gauss_elimination(cof_matrix, const_matrix,6)
 
     for step in steps:
         print("\n")
