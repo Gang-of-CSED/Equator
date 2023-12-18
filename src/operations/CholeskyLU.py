@@ -4,6 +4,16 @@ import math
 from src.operations.CroutLU import SolveLU
 
 def getU(L):
+    """
+    Transpose a lower triangular matrix to obtain the upper triangular matrix.
+
+    Parameters:
+        L (numpy.ndarray): Lower triangular matrix.
+
+    Returns:
+        numpy.ndarray: Upper triangular matrix.
+
+    """
     if len(L)==0: return L
     n = L.shape[0]
     U = np.zeros((n, n), dtype=object)
@@ -13,6 +23,16 @@ def getU(L):
     return U
 
 def isPDM(matrix):
+    """
+    Check if a matrix is positive definite.
+
+    Parameters:
+        matrix (numpy.ndarray): Input matrix.
+
+    Returns:
+        bool: True if the matrix is positive definite, False otherwise.
+
+    """
     n = matrix.shape[0]
     for i in range(n):
         if(matrix[i][i] <= 0):
@@ -20,6 +40,16 @@ def isPDM(matrix):
     return True
 
 def isSymmetric(matrix):
+    """
+    Check if a matrix is symmetric.
+
+    Parameters:
+        matrix (numpy.ndarray): Input matrix.
+
+    Returns:
+        bool: True if the matrix is symmetric, False otherwise.
+
+    """
     n = matrix.shape[0]
     m = matrix.shape[1]
     if n != m:
@@ -31,10 +61,32 @@ def isSymmetric(matrix):
     return True
 
 def isSPDM(matrix):
+    """
+    Check if a matrix is symmetric positive definite.
+
+    Parameters:
+        matrix (numpy.ndarray): Input matrix.
+
+    Returns:
+        bool: True if the matrix is symmetric positive definite, False otherwise.
+
+    """
     return (isSymmetric(matrix) and isPDM(matrix))
     
 
 def Cholesky(matrix, b=None, precision=5):
+    """
+    Perform Cholesky decomposition on a symmetric positive definite matrix.
+
+    Parameters:
+        matrix (numpy.ndarray): Symmetric positive definite matrix.
+        b (numpy.ndarray): Right-hand side vector for solving the system (optional).
+        precision (int): Number of decimal places for numerical precision.
+
+    Returns:
+        tuple: List of intermediate steps, list of LU decompositions, and the solution (if provided).
+        
+    """
     steps = []
     LUs = []
     answer = None
