@@ -351,8 +351,13 @@ class MainWindow(QMainWindow, MainWindowUI):
             print("flat:",vector_data_flat)
             output,steps,answer = Cholesky(matrix_data,vector_data_flat,precision)
             if len(output) == 0:
-                self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
+                if len(steps) == 0:
+                    self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
+                else:
+                    self.solutionErrorLabel.setText(steps[0])
                 return
+
+
             print("output: ",output)
             print("steps: ",steps)
             print("answer: ",answer)
