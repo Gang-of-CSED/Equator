@@ -102,6 +102,11 @@ def CroutLU(matrix, b=None, precision=5):
         # Ly = b
     if b is not None:
         steps, answer = SolveLU(L, U, b, steps, precision)
+        print("########### Crrout LU #############")
+        print("L = \n", L)
+        print("U = \n", U)
+        print("B = \n", b)
+        print("Answer = \n", answer)
     return LUs, steps, answer
 ######################################################################################################################
 ######################################################################################################################

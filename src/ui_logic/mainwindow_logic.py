@@ -322,7 +322,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             # crout LU
             vector_data_flat = vector_data.flatten()
             print("flat:",vector_data_flat)
-            output,steps,answer = CroutLU(matrix_data,vector_data_flat,percision=precision)
+            output,steps,answer = CroutLU(matrix_data,vector_data_flat,precision)
             print("output: ",output)
             print("steps: ",steps)
             print("answer: ",answer)
@@ -333,8 +333,8 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.solutionMatrix_1.setColumnCount(len(output))
             self.solutionMatrix_2.setRowCount(len(output))
             self.solutionMatrix_2.setColumnCount(len(output))
-            for i in range(len(output)):
-                for j in range(len(output)):
+            for i in range(len(L)):
+                for j in range(len(L)):
                     self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
                     self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
             output.append(answer)
@@ -343,22 +343,35 @@ class MainWindow(QMainWindow, MainWindowUI):
         
         if self.operation_index == 6:
             # Cholesky LU
-            output,steps = Cholesky(matrix_data.astype(np.float64))
-            L=output
-            if len(output)==0:
+            vector_data_flat = vector_data.flatten()
+            # convert to float
+            vector_data_flat = vector_data_flat.astype(np.float64)
+            # convert matrix to float
+            matrix_data = matrix_data.astype(np.float64)
+            print("flat:",vector_data_flat)
+            output,steps,answer = Cholesky(matrix_data,vector_data_flat,precision)
+            if len(output) == 0:
                 self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
                 return
-            print(L)
-            U=np.transpose(output)
-            print(U)
+            print("output: ",output)
+            print("steps: ",steps)
+            print("answer: ",answer)
+
+            print(len(output),len(steps),answer)
+            L= output[-1]['L']
+            U= output[-1]['U']
+
             self.solutionMatrix_1.setRowCount(len(output))
             self.solutionMatrix_1.setColumnCount(len(output))
             self.solutionMatrix_2.setRowCount(len(output))
             self.solutionMatrix_2.setColumnCount(len(output))
-            for i in range(len(output)):
-                for j in range(len(output)):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i][j])))
-                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i][j])))
+            for i in range(len(L)):
+                for j in range(len(L)):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
+                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+            output.append(answer)
+            self.output= output
+            self.comments =steps
 
         end_time=time.time()
         total_time =round(end_time-start_time,3)

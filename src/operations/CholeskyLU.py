@@ -71,9 +71,15 @@ def Cholesky(matrix, b=None, precision=5):
     
         U = getU(L)
         LU = {'L': np.copy(L), 'U': np.copy(U)}
-        LUs.append(LU)
+        # LUs.append(LU)
         if b is not None:
             steps, answer = SolveLU(L, U, b, steps, precision)
+        print("########### Cholesky LU #############")
+        print("L = \n", L)
+        print("U = \n", U)
+        print("B = \n", b)
+        print("Answer = \n", answer)
+
         return LUs, steps, answer
     except:
        return [],[NSPDM],answer
