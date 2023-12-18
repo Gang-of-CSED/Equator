@@ -25,7 +25,7 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
             if largestCoeff != 0:
                 scaledAug[x, :] /= largestCoeff
                 scaledAug=round_to_n_significant(scaledAug,significantD)
-
+        
         step = {"message": f"Matrix after scaling (just to choose the pivot)" , "output": scaledAug.copy()}
         steps.append(step)
         # Now find the pivot using the scaled matrix
@@ -34,14 +34,13 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
             if abs(scaledAug[j][i]) > abs(scaledAug[max_row][i]):
                 max_row = j
 
-
-
         if i != max_row:
             aug_matrix[[i, max_row]] = aug_matrix[[max_row, i]]
             step = {"message": f"Swapping R{i + 1} with R{max_row + 1}" , "output": aug_matrix.copy()}
+
             steps.append(step)
         else :
-            step = {"message": "we have already the correct pivot " , "output": aug_matrix.copy()}
+            step = {"message": "we already have  the correct pivot " , "output": aug_matrix.copy()}
             steps.append(step)
 
         for j in range(i + 1, n):
@@ -50,7 +49,9 @@ def upperAug(cof_matrix, const_matrix,significantD=5):
 
                 factor = round_to_n_significant(aug_matrix[j][i] / aug_matrix[i][i],significantD)
                 for x in range (n+1):
-                            aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)                
+                            
+                    aug_matrix[j][x] -=round_to_n_significant(factor * aug_matrix[i][x],significantD)   
+                    aug_matrix[j][x]=  round_to_n_significant(aug_matrix[j][x],significantD)          
 
                 step = {"message": f"R{j + 1} <- R{j + 1} - {factor:.6f}*R{i + 1}", "output": aug_matrix.copy()}
                 steps.append(step)
@@ -182,13 +183,17 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
 
 if __name__ == '__main__':
     cof_matrix = np.array(
-    [[1, 2, 3], [0, 0, 6], [0, 0, 9]]
+   [[-9, -1,  1],
+   [ 9, -9,  5],
+    [-5, -6, -8]]
     )
     const_matrix = np.array(
-        [[1], [2], [3]]
+        [[-8],
+ [-2],
+ [-8]]
         )
   
-    issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,5)
+    issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,4)
 
     for step in steps:
         print("\n")
