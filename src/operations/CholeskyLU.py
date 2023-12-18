@@ -1,15 +1,18 @@
 import numpy as np 
-import sympy as sp
+import sympy as sp 
 import math
 from src.operations.CroutLU import SolveLU
 
-def getU(L):
+def getU(L, steps):
+    if len(L)==0: return L
     n = matrix.shape[0]
     U = np.zeros((n, n), dtype=object)
     for i in range (n):
         for j in range(n):
             U[i][j] = L[j][i]
-    return U
+    steps.append("To get U we just transpose L\nU=")
+    steps.append(U)
+    return U, steps
 
 def isPDM(matrix):
     n = matrix.shape[0]
@@ -43,6 +46,8 @@ def Cholesky(matrix, b=None, precision=5):
     try:
         n = matrix.shape[0]
         L = np.zeros((n, n), dtype=object)
+        steps.append("To get L \nL=")
+        steps.append(np.copy(L))
 
         for i in range(n):
             for j in range(i+1):
@@ -65,7 +70,9 @@ def Cholesky(matrix, b=None, precision=5):
                     L[i][j] = sp.N(L[i][j], n=precision)
                     step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
                     steps.append(step)
-        U = getU(L)
+                steps.append(np.copy(L))
+    
+        U , steps= getU(L, steps)
         LU = {'L': np.copy(L), 'U': np.copy(U)}
         LUs.append(LU)
         if b is not None:
@@ -92,6 +99,5 @@ if answer is not None:
     print('y = \n', answer['y'])
     print('=' * 80)
 for i in range(len(steps)):
-    print(i+1)
-    print(steps[i])
-    print('=' * 80)
+    print(steps[i], '\n')
+print('=' * 80)
