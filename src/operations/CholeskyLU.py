@@ -1,10 +1,11 @@
 import numpy as np 
+import sympy as sp
 import math
+from src.operations.CroutLU import SolveLU
 
 def getU(L):
-    if L==[]: return[]
     n = matrix.shape[0]
-    U = [[0.0] * n for i in range(n)]
+    U = np.zeros((n, n), dtype=object)
     for i in range (n):
         for j in range(n):
             U[i][j] = L[j][i]
@@ -32,55 +33,65 @@ def isSPDM(matrix):
     return (isSymmetric(matrix) and isPDM(matrix))
     
 
-def Cholesky(matrix):
+def Cholesky(matrix, b=None, precision=5):
     steps = []
+    LUs = []
+    answer = None
     NSPDM = "Non Symmetric Positive Definite Matrices"
     if not isSPDM(matrix):
-        return [],[NSPDM]
+        return [],[NSPDM],answer
     try:
         n = matrix.shape[0]
-        L = [[0.0] * n for i in range(n)]
-        
+        L = np.zeros((n, n), dtype=object)
+
         for i in range(n):
             for j in range(i+1):
+                sp.N(matrix[i][j] , n=precision)
                 sigma = 0 
                 for k in range(j):
+                    L[i][k] = sp.N(L[i][k], n=precision)
+                    L[j][k] = sp.N(L[j][k], n=precision)
                     sigma += L[i][k] * L[j][k]
-                
+                    sigma = sp.N(sigma, n=precision)
+
                 if i == j:
                     L[i][j] = math.sqrt(matrix[i][j] - sigma)
+                    L[i][j] = sp.N(L[i][j], n=precision)
                     step = f"L[{i+1}][{j+1}] = sqrt(({matrix[i][i]}) - ({sigma})) = {L[i][j]}"
                     steps.append(step)
                 else:
-                    if(L[j][j] == 0): return [],["ERROR Dividing by ZERO"]
+                    if(L[j][j] == 0): return [],[NSPDM],answer
                     L[i][j] = (1.0 / L[j][j]) * (matrix[i][j] - sigma)
+                    L[i][j] = sp.N(L[i][j], n=precision)
                     step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
                     steps.append(step)
-        return L, steps
+        U = getU(L)
+        LU = {'L': np.copy(L), 'U': np.copy(U)}
+        LUs.append(LU)
+        if b is not None:
+            steps, answer = SolveLU(L, U, b, steps, precision)
+        return LUs, steps, answer
     except:
-        return [],[NSPDM]
+       return [],[NSPDM],answer
 
 
 #####################################################################
-matrix = np.array([[1, 1, 1],
-                   [1, 2, 1],
-                   [1, 1, 1]])
-
-L, steps = Cholesky(matrix)
-for step in steps:
-    print(step)
-    print('-' * 50)
-    
-for row in L:
-    print(row)
-print('*' * 50)    
-for row in getU(L):
-    print(row)
-
-
-
-
-
-
-
-
+matrix = np.array([[6, 15, 55],
+                   [15, 55, 225],
+                   [55, 225, 979]])
+b = np.array([0, 0, 0])
+LUs, steps, answer = Cholesky(matrix, b)
+print('matrix = \n', matrix)
+print('\nb = \n', b[:, np.newaxis])
+print('=' * 80)
+for i in range(len(LUs)):
+    print('L = \n', LUs[i]['L'], '\n')
+    print('U = \n', LUs[i]['U'], '\n')
+if answer is not None:
+    print('x = \n', answer['x'], '\n')
+    print('y = \n', answer['y'])
+    print('=' * 80)
+for i in range(len(steps)):
+    print(i+1)
+    print(steps[i])
+    print('=' * 80)
