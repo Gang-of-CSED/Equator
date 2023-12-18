@@ -3,16 +3,14 @@ import sympy as sp
 import math
 from src.operations.CroutLU import SolveLU
 
-def getU(L, steps):
+def getU(L):
     if len(L)==0: return L
     n = matrix.shape[0]
     U = np.zeros((n, n), dtype=object)
     for i in range (n):
         for j in range(n):
             U[i][j] = L[j][i]
-    steps.append("To get U we just transpose L\nU=")
-    steps.append(U)
-    return U, steps
+    return U
 
 def isPDM(matrix):
     n = matrix.shape[0]
@@ -46,8 +44,6 @@ def Cholesky(matrix, b=None, precision=5):
     try:
         n = matrix.shape[0]
         L = np.zeros((n, n), dtype=object)
-        steps.append("To get L \nL=")
-        steps.append(np.copy(L))
 
         for i in range(n):
             for j in range(i+1):
@@ -70,9 +66,10 @@ def Cholesky(matrix, b=None, precision=5):
                     L[i][j] = sp.N(L[i][j], n=precision)
                     step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
                     steps.append(step)
-                steps.append(np.copy(L))
+                LU = {'L': np.copy(L), 'U': np.copy(getU(L))}
+                LUs.append(LU)
     
-        U , steps= getU(L, steps)
+        U = getU(L)
         LU = {'L': np.copy(L), 'U': np.copy(U)}
         LUs.append(LU)
         if b is not None:
@@ -92,12 +89,16 @@ print('matrix = \n', matrix)
 print('\nb = \n', b[:, np.newaxis])
 print('=' * 80)
 for i in range(len(LUs)):
-    print('L = \n', LUs[i]['L'], '\n')
-    print('U = \n', LUs[i]['U'], '\n')
+        print(steps[i])
+        print('=' * 80)
+        print('L = \n', LUs[i]['L'])
+        print('U = \n', LUs[i]['U'])
+        print('=' * 80)
+for i in range(len(LUs), len(steps)):
+    print(i)
+    print(steps[i])
+    print('=' * 80)
 if answer is not None:
-    print('x = \n', answer['x'], '\n')
+    print('x = \n', answer['x'])
     print('y = \n', answer['y'])
     print('=' * 80)
-for i in range(len(steps)):
-    print(steps[i], '\n')
-print('=' * 80)
