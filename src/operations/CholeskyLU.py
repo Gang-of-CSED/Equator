@@ -85,7 +85,7 @@ def Cholesky(matrix, b=None, precision=5):
 
     Returns:
         tuple: List of intermediate steps, list of LU decompositions, and the solution (if provided).
-        
+
     """
     steps = []
     LUs = []
@@ -113,7 +113,7 @@ def Cholesky(matrix, b=None, precision=5):
                     step = f"L[{i+1}][{j+1}] = sqrt(({matrix[i][i]}) - ({sigma})) = {L[i][j]}"
                     steps.append(step)
                 else:
-                    if(L[j][j] == 0 and j != n-1): return [],["!!Dividing by ZERO!!"],answer
+                    if(L[j][j] == 0): return [],["!!Dividing by ZERO!!"],answer
                     L[i][j] = (1.0 / L[j][j]) * (matrix[i][j] - sigma)
                     L[i][j] = sp.N(L[i][j], n=precision)
                     step = f"L[{i+1}][{j+1}] = ({matrix[i][j]} - {sigma}) / ({L[j][j]}) = {L[i][j]}"
