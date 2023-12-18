@@ -11,7 +11,7 @@ def DoolittleLU(matrix, b=None, precision=5):
     if n != m:
         steps.append("matrix is not square")
         return LUs, steps, answer
-    # symbols = getSymbols(matrix)
+    # applying precision
     for i in range(n):
         for j in range(n):
             matrix[i, j] = sp.N(matrix[i, j], n=precision)
@@ -21,13 +21,16 @@ def DoolittleLU(matrix, b=None, precision=5):
     for i in range(n):
         #pivotting
         step = ""
+        # Checking if the pivot is zero
         if not sp.Abs(matrix[i, i]).free_symbols and sp.Abs(matrix[i, i]) < eps:
             pivotted, matrix, b, st = pivoting(matrix, b, i, n)
+            # Checking if the matrix is singular
             if pivotted:
                 step += st
             else:
                 steps.append("matrix is singular")
                 return LUs, steps, answer
+        # Calculating L[j, k] and U[k, i]
         L[i, i] = 1
         step = f"L[{i},{i}] = 1"
         for j in range(i, n):
