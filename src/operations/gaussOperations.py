@@ -71,7 +71,7 @@ def backSubstitutions(aug_matrix,significantD=5):
     for i in range(n-1,-1,-1):
       isInfiniteSolns=False
       stringAccumelator=""
-      accumelator=0
+      accumelator=0.0
 
        #if the coff is 0 then it has infinite number of solutions (we have checked already if it is consistent)
       if(aug_matrix[i][i]==0):
@@ -99,8 +99,9 @@ def backSubstitutions(aug_matrix,significantD=5):
             stringAccumelator+=str(answer[j])+'*'+str(aug_matrix[i][j])
 
         else:  
-         accumelator+=round_to_n_significant(answer[j]*aug_matrix[i][j],significantD)
-         accumelator=round_to_n_significant(accumelator,significantD)
+     
+         accumelator+=(round_to_n_significant(answer[j]*aug_matrix[i][j],significantD))
+         accumelator=float(round_to_n_significant(accumelator,significantD))
 
       if(isInfiniteSolns): 
         
@@ -183,17 +184,21 @@ def gauss_Jordan(cof_matrix, const_matrix,significantD=5):
 
 if __name__ == '__main__':
     cof_matrix = np.array(
-   [[-9, -1,  1],
-   [ 9, -9,  5],
-    [-5, -6, -8]]
+   [[2,1, 1,  1,1],
+   [ 1,2,1,1,1],
+    [1,1,2,1,1],
+    [1,1,1,2,1],
+    [1,1,1,1,2]]
     )
     const_matrix = np.array(
-        [[-8],
- [-2],
- [-8]]
+        [[4],
+         [5],
+         [6],
+         [7],
+         [8]]
         )
   
-    issolvabe,answer,steps = gauss_Jordan(cof_matrix, const_matrix,4)
+    issolvabe,answer,steps = gauss_elimination(cof_matrix, const_matrix,4)
 
     for step in steps:
         print("\n")
