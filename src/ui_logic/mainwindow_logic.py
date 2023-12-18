@@ -113,16 +113,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         # else:
         #     self.vectorTable.setVisible(True)
         # solutionMatrix_2
-        if self.operation_index in [4,5,6]:
-            self.solutionMatrix_2.setVisible(True)
-        else:
-            self.solutionMatrix_2.setVisible(False)
-            
-        # solutionLabel_2
-        if self.operation_index in [4,5,6]:
-            self.solutionLabel_2.setVisible(True)
-        else:
-            self.solutionLabel_2.setVisible(False)
+        self.solutionMatrix_2.setVisible(False)
+        self.solutionLabel_2.setVisible(False)
+        
 
         # parametersLabel
         if self.operation_index in [2,3]:
@@ -303,17 +296,19 @@ class MainWindow(QMainWindow, MainWindowUI):
             print("output: ",output)
             print("steps: ",steps)
             print("answer: ",answer)
-            L= output[-1]['L']
-            U= output[-1]['U']
+            print(len(output),len(steps),answer)
+            # L= output[-1]['L']
+            # U= output[-1]['U']
+            X =answer['x']
 
-            self.solutionMatrix_1.setRowCount(len(output))
-            self.solutionMatrix_1.setColumnCount(len(output))
-            self.solutionMatrix_2.setRowCount(len(output))
-            self.solutionMatrix_2.setColumnCount(len(output))
-            for i in range(len(output)):
-                for j in range(len(output)):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
-                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+            self.solutionMatrix_1.setRowCount(len(X))
+            self.solutionMatrix_1.setColumnCount(len(X[0]))
+            # self.solutionMatrix_2.setRowCount(len(X))
+            # self.solutionMatrix_2.setColumnCount(len(X))
+            for i in range(len(X)):
+                for j in range(len(X[0])):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
+                    # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
             output.append(answer)
             self.output= output
             self.comments =steps
@@ -322,43 +317,59 @@ class MainWindow(QMainWindow, MainWindowUI):
             # crout LU
             vector_data_flat = vector_data.flatten()
             print("flat:",vector_data_flat)
-            output,steps,answer = CroutLU(matrix_data,vector_data_flat,percision=precision)
+            output,steps,answer = CroutLU(matrix_data,vector_data_flat,precision)
             print("output: ",output)
             print("steps: ",steps)
             print("answer: ",answer)
-            L= output[-1]['L']
-            U= output[-1]['U']
+            print(len(output),len(steps),answer)
+            # L= output[-1]['L']
+            # U= output[-1]['U']
+            X =answer['x']
 
-            self.solutionMatrix_1.setRowCount(len(output))
-            self.solutionMatrix_1.setColumnCount(len(output))
-            self.solutionMatrix_2.setRowCount(len(output))
-            self.solutionMatrix_2.setColumnCount(len(output))
-            for i in range(len(output)):
-                for j in range(len(output)):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i,j])))
-                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+            self.solutionMatrix_1.setRowCount(len(X))
+            self.solutionMatrix_1.setColumnCount(len(X[0]))
+            # self.solutionMatrix_2.setRowCount(len(X))
+            # self.solutionMatrix_2.setColumnCount(len(X))
+            for i in range(len(X)):
+                for j in range(len(X[0])):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
+                    # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
             output.append(answer)
             self.output= output
             self.comments =steps
         
         if self.operation_index == 6:
             # Cholesky LU
-            output,steps = Cholesky(matrix_data.astype(np.float64))
-            L=output
-            if len(output)==0:
+            vector_data_flat = vector_data.flatten()
+            # convert to float
+            vector_data_flat = vector_data_flat.astype(np.float64)
+            # convert matrix to float
+            matrix_data = matrix_data.astype(np.float64)
+            print("flat:",vector_data_flat)
+            output,steps,answer = Cholesky(matrix_data,vector_data_flat,precision)
+            if len(output) == 0:
                 self.solutionErrorLabel.setText("Non Symmetric Positive Definite Matrices")
                 return
-            print(L)
-            U=np.transpose(output)
-            print(U)
-            self.solutionMatrix_1.setRowCount(len(output))
-            self.solutionMatrix_1.setColumnCount(len(output))
-            self.solutionMatrix_2.setRowCount(len(output))
-            self.solutionMatrix_2.setColumnCount(len(output))
-            for i in range(len(output)):
-                for j in range(len(output)):
-                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(L[i][j])))
-                    self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i][j])))
+            print("output: ",output)
+            print("steps: ",steps)
+            print("answer: ",answer)
+
+            print(len(output),len(steps),answer)
+            # L= output[-1]['L']
+            # U= output[-1]['U']
+            X =answer['x']
+
+            self.solutionMatrix_1.setRowCount(len(X))
+            self.solutionMatrix_1.setColumnCount(len(X[0]))
+            # self.solutionMatrix_2.setRowCount(len(X))
+            # self.solutionMatrix_2.setColumnCount(len(X))
+            for i in range(len(X)):
+                for j in range(len(X[0])):
+                    self.solutionMatrix_1.setItem(i,j,QTableWidgetItem(str(X[i,j])))
+                    # self.solutionMatrix_2.setItem(i,j,QTableWidgetItem(str(U[i,j])))
+            output.append(answer)
+            self.output= output
+            self.comments =steps
 
         end_time=time.time()
         total_time =round(end_time-start_time,3)
@@ -368,15 +379,9 @@ class MainWindow(QMainWindow, MainWindowUI):
             
         
     def update_labels(self):
-        if self.operation_index in [0,1,2,3]:
-            self.solutionLabel_1.setText("X")
-            self.matrixLabel.setText("Coefficient Matrix")
-            self.vectorLabel.setText("Vector")
-        
-        if self.operation_index in [4,5,6]:
-            self.solutionLabel_1.setText("L")
-            self.matrixLabel.setText("Matrix")
-            self.solutionLabel_2.setText("U")
+        self.solutionLabel_1.setText("X")
+        self.matrixLabel.setText("Coefficient Matrix")
+        self.vectorLabel.setText("Vector")
 
         
     def add_validatitors(self):
