@@ -1,6 +1,6 @@
 import numpy as np
 import sympy as sp
-from src.operations.CroutLU import SolveLU
+from src.operations.CroutLU import SolveLU, pivoting
 def DoolittleLU(matrix, b=None, precision=5):
     eps = 1e-10
     n = matrix.shape[0]
@@ -19,6 +19,15 @@ def DoolittleLU(matrix, b=None, precision=5):
     L = np.zeros((n, n), dtype=object)
     U = np.zeros((n, n), dtype=object)
     for i in range(n):
+        #pivotting
+        step = ""
+        if not sp.Abs(matrix[i, i]).free_symbols and sp.Abs(matrix[i, i]) < eps:
+            pivotted, matrix, b, st = pivoting(matrix, b, i, n)
+            if pivotted:
+                step += st
+            else:
+                steps.append("matrix is singular")
+                return LUs, steps, answer
         L[i, i] = 1
         step = f"L[{i},{i}] = 1"
         for j in range(i, n):
