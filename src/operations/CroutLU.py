@@ -11,6 +11,26 @@ def getSymbols(matrix):
                 symbols.update(element.free_symbols)
     return list(symbols)
 
+def pivoting(matrix, b, i, n, eps=1e-10):
+    #get max pivot
+    max_row = i
+    max_pivot = sp.Abs(matrix[i, i])
+    for j in range(i + 1, n):
+        if sp.Abs(matrix[j, i]).free_symbols or sp.Abs(matrix[j, i]) >= eps:
+            #Checking Max Pivot
+            if sp.Abs(matrix[j, i]) > max_pivot:
+                max_pivot = sp.Abs(matrix[j, i])
+                max_row = j
+    if max_row != i:
+        #swap rows
+        matrix[[i, max_row], :] = matrix[[max_row, i], :]
+        if b is not None:
+            temp = b[i]
+            b[i] = b[max_row]
+            b[max_row] = temp
+        return True, matrix, b, f"Swap rows {i} and {max_row}\n"
+    return False, matrix, b, ""
+
 def SolveLU(L, U, b, steps, precision=5):
     eps = 1e-10
     answer = None
@@ -33,7 +53,7 @@ def SolveLU(L, U, b, steps, precision=5):
                 steps.append(step)
                 return steps, answer
         else: 
-            y[i] = (b[i] - sum(L[i, 0:i] * y[0:i])) / L[i, i]
+            y[i] = (b[i] - sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)) / L[i, i]
             y[i] = sp.N(y[i], n=precision)
             step += f"\ny[{i}] = ({b[i]} - {sp.N(sum(L[i, 0:i] * y[0:i]), n=precision)}) / {L[i, i]} = {y[i]}"
     #steps.append(step)
@@ -51,7 +71,7 @@ def SolveLU(L, U, b, steps, precision=5):
                 steps.append(step)
                 return steps, answer
         else:
-            x[i] = (y[i] - sum(U[i, i + 1:n] * x[i + 1:n])) / U[i, i]
+            x[i] = (y[i] - sp.N(sum(U[i, i + 1:n] * x[i + 1:n]), n=precision)) / U[i, i]
             x[i] = sp.N(x[i], n=precision)
             step += f"\nx[{i}] = ({y[i]} - {sp.N(sum(U[i, i + 1:n] * x[i + 1:n]), n=precision)}) / {U[i, i]} = {x[i]}"
     steps.append(step)
@@ -78,8 +98,17 @@ def CroutLU(matrix, b=None, precision=5):
     L = np.zeros((n, n), dtype=object)
     U = np.zeros((n, n), dtype=object)
     for k in range(n):
+        #pivotting
+        step = ""
+        if not sp.Abs(matrix[k, k]).free_symbols and sp.Abs(matrix[k, k]) < eps:
+            pivotted, matrix, b, st = pivoting(matrix, b, k, n)
+            if pivotted:
+                step += st
+            else:
+                steps.append("matrix is singular")
+                return LUs, steps, answer
         U[k, k] = 1
-        step = f"U[{k},{k}] = 1"
+        step += f"U[{k},{k}] = 1"
         for j in range(k, n):
             L[j, k] = matrix[j, k] - sum(L[j, 0:k] * U[0:k, k])
             L[j, k] = sp.N(L[j, k], n=precision)
@@ -117,7 +146,8 @@ if __name__ == '__main__':
     # matrix = sp.Matrix([[5.55557*a, 2.522*b, 3.2587], [2.6678*d, 5.22248, 6.5832], [3.2587*e, 6.5832, 9.010]])
     # matrix = sp.Matrix([[1.555*a, 5.11*b, 11.258*d], [2.12591*a, 1.0028*b, 7.22*a], [3.211*a, 2.009*b, 0.00003*c]])
     # matrix = sp.Matrix([[1, 2, 0], [3, 4, 0], [1, 2, 0]])
-    b = sp.Matrix([3, 7, 3])
+    matrix = sp.Matrix([[0, 2, 5], [2, 1, 1], [3, 1, 0]])
+    b = sp.Matrix([1,1,2])
     matrixx = np.array(matrix).astype(object)
     LUs, steps, answer = CroutLU(matrixx, b, 3)
 
