@@ -52,7 +52,7 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
         return "Invalid function", None
     return None, plt
 
-if name == "__main__":
+if __name__ == "__main__":
     function_string = "x**4 - 3*x**2 + sin(2*x)+exp(-x**2) + 1"
     error, plt = plot_function(function_string, num_points=100000, x_range=(-2, 2))
     plt.show()
