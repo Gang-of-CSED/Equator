@@ -13,6 +13,42 @@ def is_valid_function(function_str):
         print(f"Error: {e}")
         return False
 
+def click_points(plt, function_str, num_clicked_points=2):
+    points = []
+    plt.title(f"Click {num_clicked_points} points on the function line")
+    plt.show(block=False)
+
+    x = sp.symbols('x')
+    expr = sp.sympify(function_str)
+    func = sp.lambdify(x, expr, 'numpy')
+
+    def on_click(event):
+        nonlocal points
+
+        if event.xdata is not None:
+            x_clicked = event.xdata
+
+            # Find the y-value on the function line for the clicked x-coordinate
+            y_clicked = func(x_clicked)
+
+            points.append((x_clicked, y_clicked))
+            print(f"Clicked at (x, y) = ({x_clicked:.2f}, {y_clicked:.2f}) on the function line")
+
+            # Annotate the clicked points on the graph with their x-values
+            plt.annotate(f'x={x_clicked:.4f}', (x_clicked, y_clicked), textcoords="offset points", xytext=(0,10), ha='center', fontsize=10, color='black')
+            plt.scatter(x_clicked, y_clicked, color='black', marker='x')
+            if len(points) == num_clicked_points:
+                plt.gcf().canvas.mpl_disconnect(cid)
+                print(f"{num_clicked_points} points clicked. Returning array:", points)
+
+    if num_clicked_points > 0:
+        cid = plt.gcf().canvas.mpl_connect('button_press_event', on_click)
+
+    while len(points) < num_clicked_points:
+        plt.pause(0.1)
+    plt.pause(1)
+    return points
+
 def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
 
     if is_valid_function(function_str) is False:
@@ -55,5 +91,8 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
 if __name__ == "__main__":
     function_string = "x**4 - 3*x**2 + sin(2*x)+exp(-x**2) + 1"
     error, plt = plot_function(function_string, num_points=100000, x_range=(-2, 2))
-    plt.show()
-    print(error)
+    if error is None:
+        points = click_points(plt, function_string, num_clicked_points=2)
+        print(points)
+    else:
+        print(error)
