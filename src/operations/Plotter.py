@@ -15,6 +15,7 @@ def is_valid_function(function_str):
 
 def click_points(plt, function_str, num_clicked_points=2):
     points = []
+    old_title = plt.gca().get_title()
     plt.title(f"Click {num_clicked_points} points on the function line")
     plt.show(block=False)
 
@@ -46,7 +47,8 @@ def click_points(plt, function_str, num_clicked_points=2):
 
     while len(points) < num_clicked_points:
         plt.pause(0.1)
-    plt.pause(1)
+    plt.title(old_title)
+    plt.pause(0.5)
     return points
 
 def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
@@ -96,3 +98,4 @@ if __name__ == "__main__":
         print(points)
     else:
         print(error)
+    plt.show()
