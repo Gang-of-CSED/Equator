@@ -538,6 +538,8 @@ class MainWindow(QMainWindow, MainWindowUI):
         steps_window.show_steps()
 
     def plotButton_clicked_root(self):
+        if self.valid_equation == False:
+            return
         # clear layout first
         if self.plotWidget.layout():
             for i in reversed(range(self.plotWidget.layout().count())): 
