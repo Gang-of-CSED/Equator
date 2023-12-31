@@ -22,7 +22,7 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationTool
 from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 from src.operations.Plotter import is_valid_function
-
+from src.operations.Bisection import bisection
 import time
 
 class MainWindow(QMainWindow, MainWindowUI):
@@ -522,19 +522,48 @@ class MainWindow(QMainWindow, MainWindowUI):
         # TODO:
         try:
             # add default values
+            precision=0.00001
+            signficant_digits=4
+            max_iterations=50
 
-            # get items from lineedit
+            # get items from lineEdit
+            equation = self.equationLineEdit.text()
+            a = float(self.input1LineEdit.text())
+            b = float(self.input2LineEdit.text())
 
+            if self.errorLine_root.text() != "":
+                precision = float(self.errorLine_root.text())
+            
+            if self.signLine_root.text() != "":
+                signficant_digits = int(self.signLine_root.text())
+            
+            if self.iterationLine_root.text() != "":
+                max_iterations = int(self.iterationLine_root.text())
+
+            if self.valid_equation == False:
+                self.solutionErrorLabel_root.setText("Invalid Equation")
+                return
             # solve and update steps
-            pass
+            if self.operation_index_root == 0:
+                # bisection
+                error,steps,roots = bisection(equation,a,b,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+
 
         except:
             # add error message
-            pass
+            self.solutionErrorLabel_root.setText("Sorry can't solve using this method!")
 
 
     def stepsButton_clicked_root(self):
-        steps_window = StepsWindowRoot(output=[5,4,6],comments=["hello","iam fine","tmam"])
+        steps_window = StepsWindowRoot(output=self.output,comments=self.comments,theme=self.color_theme)
         steps_window.show_steps()
 
     def plotButton_clicked_root(self):
@@ -548,7 +577,9 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.plotWidget.setLayout(QVBoxLayout())
         # get function from line edit
         function_text = self.equationLineEdit.text()
-        x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))
+        x_range=(-10,10)
+        if self.range1LineEdit.text() != "" and self.range2LineEdit.text() != "":
+            x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))
         sc= MplCanvas(function_text,x_range=x_range)
         layout = self.plotWidget.layout()
         toolbar = NavigationToolbar(sc, self)

@@ -752,6 +752,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="text">
+         <string>0</string>
+        </property>
        </widget>
        <widget class="QLineEdit" name="input2LineEdit">
         <property name="geometry">
@@ -761,6 +764,9 @@
           <width>113</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
        <widget class="QLabel" name="input2Label">
@@ -790,6 +796,9 @@
           <width>151</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>50</string>
         </property>
        </widget>
        <widget class="QLabel" name="iteartionsLabel_root">
@@ -821,6 +830,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="text">
+         <string>0.0001</string>
+        </property>
        </widget>
        <widget class="QLabel" name="errorLabel_root">
         <property name="geometry">
@@ -850,6 +862,9 @@
           <width>151</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>4</string>
         </property>
        </widget>
        <widget class="QLabel" name="signLabel_root">
@@ -960,6 +975,9 @@
           <height>21</height>
          </rect>
         </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
        <widget class="QLabel" name="rootLabel">
         <property name="geometry">
@@ -1065,6 +1083,26 @@
           <width>113</width>
           <height>22</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="solutionErrorLabel_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>301</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
         </property>
        </widget>
       </widget>
