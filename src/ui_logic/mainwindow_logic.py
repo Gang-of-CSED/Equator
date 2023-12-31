@@ -528,6 +528,8 @@ class MainWindow(QMainWindow, MainWindowUI):
     def solveButton_clicked_root(self):
         # TODO:
         try:
+            start_time=time.time()
+            self.solutionErrorLabel_root.setText("")
             # add default values
             precision=0.00001
             signficant_digits=4
@@ -643,6 +645,11 @@ class MainWindow(QMainWindow, MainWindowUI):
                 self.rootLineEdit.setText(str(roots[-1]))
                 self.output = roots
                 self.comments = steps
+            
+            end_time=time.time()
+            total_time =round(end_time-start_time,3)
+            print("time",total_time)
+            self.solutionErrorLabel_root.setText(f"Time: {total_time} seconds")
 
 
         except:
