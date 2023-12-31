@@ -26,6 +26,7 @@ from src.operations.Bisection import bisection
 from src.operations.FalsePosition import FalsePosition
 from src.operations.Fixed_Point import fixed_point
 from src.operations.Secant_Method import secant_method
+from src.operations.NewtonRaphson import *
 import time
 
 class MainWindow(QMainWindow, MainWindowUI):
@@ -477,7 +478,7 @@ class MainWindow(QMainWindow, MainWindowUI):
     
     def update_visiblity_root(self):
         # TODO: 
-        if self.operation_index_root in [0,1,6]:
+        if self.operation_index_root in [0,1,4,6]:
             self.input2Label.setVisible(True)
             self.input2LineEdit.setVisible(True)
         else:
@@ -492,6 +493,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         elif self.operation_index_root in [0,1]:
             self.input1Label.setText("a")
             self.input2Label.setText("b")
+        elif self.operation_index_root in [2,3,4]:
+            self.input1Label.setText("X0")
+            self.input2Label.setText("m")
     
     def add_validatitors_root(self):
 
@@ -578,6 +582,50 @@ class MainWindow(QMainWindow, MainWindowUI):
                 # if error != None:
                 #     self.solutionErrorLabel_root.setText(error)
                 #     return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 3:
+                # newton raphson
+                error,roots,steps = ModificationOne(equation,a,1,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                print(len(roots),len(steps))
+
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 4:
+                # newton raphson
+                error,roots,steps = ModificationOne(equation,a,b,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                print(len(roots),len(steps))
+
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 5:
+                # newton raphson
+                error,roots,steps = ModificationTwo(equation,a,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                print(len(roots),len(steps))
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
                 self.output = roots
