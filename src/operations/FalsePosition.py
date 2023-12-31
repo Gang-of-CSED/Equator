@@ -1,6 +1,6 @@
 import sympy as sp
 # from src.operations.Bisection import relative_error
-from Bisection import relative_error, infinite_check
+from .Bisection import relative_error, infinite_check
 def FalsePosition(str_equation, a, b, precision=5, eps=1e-5, max_iterations=50):
     """
     False Position method for finding a root of a function

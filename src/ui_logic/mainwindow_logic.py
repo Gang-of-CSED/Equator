@@ -23,6 +23,7 @@ from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 from src.operations.Plotter import is_valid_function
 from src.operations.Bisection import bisection
+from src.operations.FalsePosition import FalsePosition
 import time
 
 class MainWindow(QMainWindow, MainWindowUI):
@@ -547,6 +548,18 @@ class MainWindow(QMainWindow, MainWindowUI):
             if self.operation_index_root == 0:
                 # bisection
                 error,steps,roots = bisection(equation,a,b,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 1:
+                # false position
+                error,steps,roots = FalsePosition(equation,a,b,signficant_digits,precision,max_iterations)
                 print("error",error,"steps",steps,"roots",roots)
                 if error != None:
                     self.solutionErrorLabel_root.setText(error)

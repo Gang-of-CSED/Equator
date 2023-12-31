@@ -348,7 +348,7 @@ class Ui_MainWindow(object):
         self.range2LineEdit.setGeometry(QRect(710, 490, 113, 22))
         self.solutionErrorLabel_root = QLabel(self.tabRoot)
         self.solutionErrorLabel_root.setObjectName(u"solutionErrorLabel_root")
-        self.solutionErrorLabel_root.setGeometry(QRect(20, 90, 301, 16))
+        self.solutionErrorLabel_root.setGeometry(QRect(20, 80, 411, 31))
         self.solutionErrorLabel_root.setFont(font)
         self.tabWidget.addTab(self.tabRoot, "")
 
