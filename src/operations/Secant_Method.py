@@ -1,5 +1,5 @@
 import sympy as sp
-import relative_error
+from .utils import relative_error
 
 def secant_method(f, x0, x1, rel_err=0.00001, maxiter=100, signif_digits=5):
     flag, steps, roots = True, [], []

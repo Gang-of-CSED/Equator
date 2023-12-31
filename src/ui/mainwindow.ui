@@ -913,12 +913,17 @@
         </item>
         <item>
          <property name="text">
-          <string>Original Newton-Raphson</string>
+          <string>Newton-Raphson Original</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Modified Newton-Raphson</string>
+          <string>Newton-Raphson Modified 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Newton-Raphson Modified 2</string>
          </property>
         </item>
         <item>

@@ -25,6 +25,7 @@ from src.operations.Plotter import is_valid_function
 from src.operations.Bisection import bisection
 from src.operations.FalsePosition import FalsePosition
 from src.operations.Fixed_Point import fixed_point
+from src.operations.Secant_Method import secant_method
 import time
 
 class MainWindow(QMainWindow, MainWindowUI):
@@ -476,7 +477,7 @@ class MainWindow(QMainWindow, MainWindowUI):
     
     def update_visiblity_root(self):
         # TODO: 
-        if self.operation_index_root in [0,1,2]:
+        if self.operation_index_root in [0,1,6]:
             self.input2Label.setVisible(True)
             self.input2LineEdit.setVisible(True)
         else:
@@ -485,10 +486,10 @@ class MainWindow(QMainWindow, MainWindowUI):
     
     def update_labels_root(self):
         # TODO:
-        if self.operation_index_root == 0:
+        if self.operation_index_root == 6:
             self.input1Label.setText("X0")
-            self.input2Label.setText("Y1")
-        elif self.operation_index_root == 1:
+            self.input2Label.setText("X1")
+        elif self.operation_index_root in [0,1]:
             self.input1Label.setText("a")
             self.input2Label.setText("b")
     
@@ -583,7 +584,17 @@ class MainWindow(QMainWindow, MainWindowUI):
                 self.comments = steps
 
             
-            
+            if self.operation_index_root ==6:
+                # secant method
+                error,steps,roots = secant_method(equation,a,b,precision,max_iterations,signficant_digits)
+                print("error",error,"steps",steps,"roots",roots)
+                # if error != None:
+                #     self.solutionErrorLabel_root.setText(error)
+                #     return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
 
 
         except:
