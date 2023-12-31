@@ -1,6 +1,6 @@
 import sys
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem
-from PySide6.QtCore import QRegularExpression
+from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QVBoxLayout, QWidget
+from PySide6.QtCore import QRegularExpression, QRect
 from PySide6.QtGui import QRegularExpressionValidator
 import sympy as sp
 from src.ui.mainwindow_ui import Ui_MainWindow as MainWindowUI
@@ -12,9 +12,16 @@ from src.operations.DoolittleLU import DoolittleLU
 from src.operations.CholeskyLU import Cholesky
 from src.operations.Gauss_Seidel_Method import gauss_seidel_method
 from src.operations.Gacobi_Method import gacobi_method
+from src.operations.Plotter import plot_function
 from PySide6.QtGui import QColor
+
 from src.ui_logic.steps_window_logic import StepsWindow
 from src.ui_logic.steps_window_root_logic import StepsWindowRoot
+from src.ui_logic.plotter_logic import MplCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+from matplotlib import pyplot as plt
+from src.operations.Plotter import click_points
 
 import time
 
@@ -530,8 +537,57 @@ class MainWindow(QMainWindow, MainWindowUI):
         steps_window.show_steps()
 
     def plotButton_clicked_root(self):
-        pass
-    
+        # clear layout first
+        if self.plotWidget.layout():
+            for i in reversed(range(self.plotWidget.layout().count())): 
+                self.plotWidget.layout().itemAt(i).widget().setParent(None)
+        else:
+            self.plotWidget.setLayout(QVBoxLayout())
+        # get function from line edit
+        function_text = self.equationLineEdit.text()
+        sc= MplCanvas(function_text)
+        layout = self.plotWidget.layout()
+        toolbar = NavigationToolbar(sc, self)
+        layout.addWidget(toolbar)
+        layout.addWidget(sc)
+        print("layout",layout)
+        # points=self.click_points(sc, function_text, num_clicked_points=2)
+        # print("points",points)
 
+    def click_points(self,sc, function_str, num_clicked_points=2):
+        points = []
+        old_title = plt.gca().get_title()
+        plt.title(f"Click {num_clicked_points} points on the function line")
+        plt.show(block=False)
 
-        
+        x = sp.symbols('x')
+        expr = sp.sympify(function_str)
+        func = sp.lambdify(x, expr, 'numpy')
+
+        def on_click(event):
+            nonlocal points
+
+            if event.xdata is not None:
+                x_clicked = event.xdata
+
+                # Find the y-value on the function line for the clicked x-coordinate
+                y_clicked = func(x_clicked)
+
+                points.append((x_clicked, y_clicked))
+                print(f"Clicked at (x, y) = ({x_clicked:.2f}, {y_clicked:.2f}) on the function line")
+
+                # Annotate the clicked points on the graph with their x-values
+                sc.axes.annotate(f'x={x_clicked:.4f}', (x_clicked, y_clicked), textcoords="offset points", xytext=(0,10), ha='center', fontsize=10, color='black')
+                sc.axes.scatter(x_clicked, y_clicked, color='black', marker='x')
+                if len(points) == num_clicked_points:
+                    sc.mpl_disconnect(cid)
+                    print(f"{num_clicked_points} points clicked. Returning array:", points)
+
+        if num_clicked_points > 0:
+            cid = sc.mpl_connect('button_press_event', on_click)
+
+        while len(points) < num_clicked_points:
+            plt.pause(0.1)
+        plt.title(old_title)
+        plt.pause(0.5)
+        return points

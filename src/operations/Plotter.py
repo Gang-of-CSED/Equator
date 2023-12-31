@@ -55,7 +55,7 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
 
     if is_valid_function(function_str) is False:
         print(f"Error: {function_str} is not a valid function")
-        return "Invalid function", None
+        return "Invalid function", None, None
     try:
         x = sp.symbols('x')
         expr = sp.sympify(function_str)
@@ -90,8 +90,8 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
         fig.tight_layout()
     except Exception as e:
         print(f"Error: {e}")
-        return "Invalid function", None
-    return None, fig
+        return "Invalid function", None, None
+    return None, fig,ax
 
 if __name__ == "__main__":
     function_string = "x**4 - 3*x**2 + sin(2*x)+exp(-x**2) + 1"

@@ -721,7 +721,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Equation</string>
+         <string>Function</string>
         </property>
        </widget>
        <widget class="QLabel" name="input1Label">
@@ -978,6 +978,35 @@
         </property>
         <property name="text">
          <string>Root</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="plotWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>40</y>
+          <width>601</width>
+          <height>401</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="plotLabel">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>20</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>PLot</string>
         </property>
        </widget>
       </widget>

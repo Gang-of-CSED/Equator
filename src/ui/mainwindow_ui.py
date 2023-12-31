@@ -324,6 +324,13 @@ class Ui_MainWindow(object):
         self.rootLabel.setObjectName(u"rootLabel")
         self.rootLabel.setGeometry(QRect(110, 200, 55, 16))
         self.rootLabel.setFont(font2)
+        self.plotWidget = QWidget(self.tabRoot)
+        self.plotWidget.setObjectName(u"plotWidget")
+        self.plotWidget.setGeometry(QRect(470, 40, 601, 401))
+        self.plotLabel = QLabel(self.tabRoot)
+        self.plotLabel.setObjectName(u"plotLabel")
+        self.plotLabel.setGeometry(QRect(470, 20, 55, 16))
+        self.plotLabel.setFont(font2)
         self.tabWidget.addTab(self.tabRoot, "")
 
         self.gridLayout.addWidget(self.tabWidget, 1, 0, 1, 1)
@@ -459,7 +466,7 @@ class Ui_MainWindow(object):
 
         self.iteartionsLabel.setText(QCoreApplication.translate("MainWindow", u"Max iterations", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabMatrix), QCoreApplication.translate("MainWindow", u"Solve System of Eauations", None))
-        self.equationLabel.setText(QCoreApplication.translate("MainWindow", u"Equation", None))
+        self.equationLabel.setText(QCoreApplication.translate("MainWindow", u"Function", None))
         self.input1Label.setText(QCoreApplication.translate("MainWindow", u"a", None))
         self.input2Label.setText(QCoreApplication.translate("MainWindow", u"b", None))
         self.iteartionsLabel_root.setText(QCoreApplication.translate("MainWindow", u"Max iterations", None))
@@ -476,6 +483,7 @@ class Ui_MainWindow(object):
         self.solveButton_root.setText(QCoreApplication.translate("MainWindow", u"Solve", None))
         self.plotButton.setText(QCoreApplication.translate("MainWindow", u"Plot", None))
         self.rootLabel.setText(QCoreApplication.translate("MainWindow", u"Root", None))
+        self.plotLabel.setText(QCoreApplication.translate("MainWindow", u"PLot", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabRoot), QCoreApplication.translate("MainWindow", u"Find Root", None))
     # retranslateUi
 
