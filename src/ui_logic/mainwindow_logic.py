@@ -24,6 +24,7 @@ from matplotlib import pyplot as plt
 from src.operations.Plotter import is_valid_function
 from src.operations.Bisection import bisection
 from src.operations.FalsePosition import FalsePosition
+from src.operations.Fixed_Point import fixed_point
 import time
 
 class MainWindow(QMainWindow, MainWindowUI):
@@ -569,6 +570,21 @@ class MainWindow(QMainWindow, MainWindowUI):
                 self.output = roots
                 self.comments = steps
 
+            if self.operation_index_root == 2:
+                # fixed point
+                error,steps,roots = fixed_point(equation,a,precision,max_iterations,signficant_digits)
+                print("error",error,"steps",steps,"roots",roots)
+                # if error != None:
+                #     self.solutionErrorLabel_root.setText(error)
+                #     return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+
+            
+            
+
 
         except:
             # add error message
@@ -590,6 +606,9 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.plotWidget.setLayout(QVBoxLayout())
         # get function from line edit
         function_text = self.equationLineEdit.text()
+        if self.operation_index_root==2:
+            function_text+=" - x"
+        
         x_range=(-10,10)
         if self.range1LineEdit.text() != "" and self.range2LineEdit.text() != "":
             x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))

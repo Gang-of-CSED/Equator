@@ -1,5 +1,5 @@
 import sympy as sp 
-from utils import relative_error
+from .utils import relative_error
 
 def fixed_point(g, x0, rel_err=0.00001, maxiter=10, signif_digits=6):
     flag, steps, roots = True, [], []
