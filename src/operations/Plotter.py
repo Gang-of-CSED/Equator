@@ -72,27 +72,30 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
         # Find points where y = 0
         zero_points = x_vals[np.where(np.diff(np.sign(y_vals)))[0]]
         # Plot the function
-        plt.plot(x_vals, y_vals, label='f(x)')
+        # Create a figure
+        fig, ax = plt.subplots()
+        # Plot the function
+        ax.plot(x_vals, y_vals, label='f(x)')
         # Mark points where y = 0
-        plt.scatter(zero_points, np.zeros_like(zero_points), color='red', label='y=0 points')
+        ax.scatter(zero_points, np.zeros_like(zero_points), color='red', label='y=0 points')
         # Display x-coordinates on the right outside the graph
         zero_points_str = '\n'.join([f'x{i} = {x:.2f}' for i, x in enumerate(zero_points, start=1)])
-        plt.legend([f'f(x)', f'y=0 points:\n{zero_points_str}'], loc='upper left', bbox_to_anchor=(1, 1))
-        plt.title(f'Plot of {function_str}')
-        plt.xlabel('x')
-        plt.ylabel('f(x)')
+        ax.legend([f'f(x)', f'y=0 points:\n{zero_points_str}'], loc='upper left', bbox_to_anchor=(1, 1))
+        ax.set_title(f'Plot of {function_str}')
+        ax.set_xlabel('x')
+        ax.set_ylabel('f(x)')
         # Add x-axis line
-        plt.axhline(0, color='black', linewidth=0.8, linestyle='--', alpha=0.5)  
-        plt.grid(True)
-        plt.tight_layout()
+        ax.axhline(0, color='black', linewidth=0.8, linestyle='--', alpha=0.5)  
+        ax.grid(True)
+        fig.tight_layout()
     except Exception as e:
         print(f"Error: {e}")
         return "Invalid function", None
-    return None, plt
+    return None, fig
 
 if __name__ == "__main__":
     function_string = "x**4 - 3*x**2 + sin(2*x)+exp(-x**2) + 1"
-    error, plt = plot_function(function_string, num_points=100000, x_range=(-2, 2))
+    error, fig = plot_function(function_string, num_points=100000, x_range=(-2, 2))
     if error is None:
         points = click_points(plt, function_string, num_clicked_points=2)
         print(points)
