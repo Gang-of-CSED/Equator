@@ -6,680 +6,1071 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1107</width>
-    <height>622</height>
+    <width>1110</width>
+    <height>675</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Equator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableWidget" name="matrixTable">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>60</y>
-      <width>411</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string>a</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>b</string>
-     </property>
-    </column>
-    <column>
-     <property name="text">
-      <string>c</string>
-     </property>
-    </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string>1</string>
-     </property>
-    </item>
-    <item row="0" column="1">
-     <property name="text">
-      <string>2</string>
-     </property>
-    </item>
-    <item row="0" column="2">
-     <property name="text">
-      <string>3</string>
-     </property>
-    </item>
+   <layout class="QGridLayout" name="gridLayout">
     <item row="1" column="0">
-     <property name="text">
-      <string>4</string>
-     </property>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tabMatrix">
+       <attribute name="title">
+        <string>Solve System of Eauations</string>
+       </attribute>
+       <widget class="QPushButton" name="stepsButton">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>560</y>
+          <width>151</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Steps</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="solutionErrorLabel">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>20</y>
+          <width>301</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="precisionLine">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>480</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="errorLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>430</y>
+          <width>161</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Absolute Relative Error</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="vectorLabel">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>30</y>
+          <width>131</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>vector_label</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="initialLabel">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>340</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Initial Vector</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="operationComboBox">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>350</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Gauss Elimination</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gauss-Jordan</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Gauss-Seidel </string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Jacobi-Iteration</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Doolittle Decomposition</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Crout Decomposition</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cholesky Decomposition</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="solutionLabel_1">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>40</y>
+          <width>121</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>solution1_label</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="matrixLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>131</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>matrix_label</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="solutionLabel">
+        <property name="geometry">
+         <rect>
+          <x>700</x>
+          <y>0</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Solution:</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="solveButton">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>520</y>
+          <width>151</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Solve</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="errorLine">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>460</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="parametersLabel">
+        <property name="geometry">
+         <rect>
+          <x>140</x>
+          <y>300</y>
+          <width>81</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Parameters</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="noRowsLabel">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>390</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>No. rows</string>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="initialTable">
+        <property name="geometry">
+         <rect>
+          <x>210</x>
+          <y>370</y>
+          <width>151</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="precisionLabel">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>450</y>
+          <width>61</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Precision</string>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="solutionMatrix_1">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>70</y>
+          <width>341</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="showGrid">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLineEdit" name="iterationLine">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>400</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="solutionMatrix_2">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>350</y>
+          <width>341</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <property name="showGrid">
+         <bool>true</bool>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string/>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string/>
+         </property>
+        </item>
+       </widget>
+       <widget class="QTableWidget" name="vectorTable">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>50</y>
+          <width>151</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>X</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>0</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLabel" name="solutionLabel_2">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>320</y>
+          <width>121</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>solution1_label</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="themeButton">
+        <property name="geometry">
+         <rect>
+          <x>960</x>
+          <y>0</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Dark</string>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="matrixTable">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>50</y>
+          <width>411</width>
+          <height>231</height>
+         </rect>
+        </property>
+        <attribute name="horizontalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+        <row>
+         <property name="text">
+          <string>1</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>2</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>3</string>
+         </property>
+        </row>
+        <column>
+         <property name="text">
+          <string>a</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>b</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>c</string>
+         </property>
+        </column>
+        <item row="0" column="0">
+         <property name="text">
+          <string>1</string>
+         </property>
+        </item>
+        <item row="0" column="1">
+         <property name="text">
+          <string>2</string>
+         </property>
+        </item>
+        <item row="0" column="2">
+         <property name="text">
+          <string>3</string>
+         </property>
+        </item>
+        <item row="1" column="0">
+         <property name="text">
+          <string>4</string>
+         </property>
+        </item>
+        <item row="1" column="1">
+         <property name="text">
+          <string>5</string>
+         </property>
+        </item>
+        <item row="1" column="2">
+         <property name="text">
+          <string>6</string>
+         </property>
+        </item>
+        <item row="2" column="0">
+         <property name="text">
+          <string>7</string>
+         </property>
+        </item>
+        <item row="2" column="1">
+         <property name="text">
+          <string>8</string>
+         </property>
+        </item>
+        <item row="2" column="2">
+         <property name="text">
+          <string>9</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QLineEdit" name="noRowsLine">
+        <property name="geometry">
+         <rect>
+          <x>440</x>
+          <y>420</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="iteartionsLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>370</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Max iterations</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tabRoot">
+       <attribute name="title">
+        <string>Find Root</string>
+       </attribute>
+       <widget class="QLineEdit" name="equationLineEdit">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>40</y>
+          <width>351</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="equationLabel">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>20</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Function</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="input1Label">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>120</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>a</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="input1LineEdit">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>140</y>
+          <width>113</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="input2LineEdit">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>140</y>
+          <width>113</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="input2Label">
+        <property name="geometry">
+         <rect>
+          <x>260</x>
+          <y>120</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>b</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="iterationLine_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>300</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="iteartionsLabel_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>270</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Max iterations</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="errorLine_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>360</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="errorLabel_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>330</y>
+          <width>161</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Relative Error</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="signLine_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>430</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="signLabel_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>400</y>
+          <width>161</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Signifcant Digits</string>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="operationComboBox_root">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>300</y>
+          <width>151</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <item>
+         <property name="text">
+          <string>Bisection</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>False-Position</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Fixed point</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Original Newton-Raphson</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Modified Newton-Raphson</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Secant Method</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QPushButton" name="stepsButton_root">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>430</y>
+          <width>151</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Steps</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="solveButton_root">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>390</y>
+          <width>151</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Solve</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="plotButton">
+        <property name="geometry">
+         <rect>
+          <x>220</x>
+          <y>350</y>
+          <width>151</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Plot</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="rootLineEdit">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>230</y>
+          <width>171</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="rootLabel">
+        <property name="geometry">
+         <rect>
+          <x>110</x>
+          <y>200</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Root</string>
+        </property>
+       </widget>
+       <widget class="QWidget" name="plotWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>40</y>
+          <width>601</width>
+          <height>401</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="plotLabel">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>20</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>PLot</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="range2Label">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>470</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>max X</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="range1LineEdit">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>490</y>
+          <width>113</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="range1Label">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>470</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>min X</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="range2LineEdit">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>490</y>
+          <width>113</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+     </widget>
     </item>
-    <item row="1" column="1">
-     <property name="text">
-      <string>5</string>
-     </property>
-    </item>
-    <item row="1" column="2">
-     <property name="text">
-      <string>6</string>
-     </property>
-    </item>
-    <item row="2" column="0">
-     <property name="text">
-      <string>7</string>
-     </property>
-    </item>
-    <item row="2" column="1">
-     <property name="text">
-      <string>8</string>
-     </property>
-    </item>
-    <item row="2" column="2">
-     <property name="text">
-      <string>9</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QComboBox" name="operationComboBox">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>360</y>
-      <width>151</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <item>
-     <property name="text">
-      <string>Gauss Elimination</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Gauss-Jordan</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Gauss-Seidel </string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Jacobi-Iteration</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Doolittle Decomposition</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Crout Decomposition</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Cholesky Decomposition</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QPushButton" name="solveButton">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>530</y>
-      <width>151</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Solve</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="vectorTable">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>60</y>
-      <width>151</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string>X</string>
-     </property>
-    </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
-    </item>
-    <item row="1" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
-    </item>
-    <item row="2" column="0">
-     <property name="text">
-      <string>0</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="solutionLabel">
-    <property name="geometry">
-     <rect>
-      <x>710</x>
-      <y>10</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Solution:</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="solutionMatrix_1">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>80</y>
-      <width>341</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <property name="showGrid">
-     <bool>true</bool>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string/>
-     </property>
-    </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item row="1" column="0">
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item row="2" column="0">
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="noRowsLabel">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>400</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>No. rows</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="noRowsLine">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>430</y>
-      <width>151</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="precisionLine">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>490</y>
-      <width>151</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="precisionLabel">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>460</y>
-      <width>55</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Precision</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="parametersLabel">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>310</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Parameters</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="initialTable">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>380</y>
-      <width>151</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string>X</string>
-     </property>
-    </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string>1</string>
-     </property>
-    </item>
-    <item row="1" column="0">
-     <property name="text">
-      <string>1</string>
-     </property>
-    </item>
-    <item row="2" column="0">
-     <property name="text">
-      <string>1</string>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="initialLabel">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>350</y>
-      <width>81</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Initial Vector</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="iterationLine">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>410</y>
-      <width>151</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="errorLabel">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>440</y>
-      <width>161</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Absolute Relative Error</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="errorLine">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>470</y>
-      <width>151</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="iteartionsLabel">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>380</y>
-      <width>101</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>8</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Max iterations</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="solutionLabel_1">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>50</y>
-      <width>121</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>solution1_label</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="solutionLabel_2">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>330</y>
-      <width>121</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>solution1_label</string>
-    </property>
-   </widget>
-   <widget class="QTableWidget" name="solutionMatrix_2">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>360</y>
-      <width>341</width>
-      <height>231</height>
-     </rect>
-    </property>
-    <property name="showGrid">
-     <bool>true</bool>
-    </property>
-    <attribute name="horizontalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <attribute name="verticalHeaderVisible">
-     <bool>false</bool>
-    </attribute>
-    <row>
-     <property name="text">
-      <string>1</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>2</string>
-     </property>
-    </row>
-    <row>
-     <property name="text">
-      <string>3</string>
-     </property>
-    </row>
-    <column>
-     <property name="text">
-      <string/>
-     </property>
-    </column>
-    <item row="0" column="0">
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item row="1" column="0">
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-    <item row="2" column="0">
-     <property name="text">
-      <string/>
-     </property>
-    </item>
-   </widget>
-   <widget class="QLabel" name="matrixLabel">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>40</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>matrix_label</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="vectorLabel">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>40</y>
-      <width>131</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>vector_label</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="solutionErrorLabel">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>30</y>
-      <width>301</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>11</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="themeButton">
-    <property name="geometry">
-     <rect>
-      <x>970</x>
-      <y>10</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>75</weight>
-      <bold>true</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Dark</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="stepsButton">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>570</y>
-      <width>151</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Steps</string>
-    </property>
-   </widget>
+   </layout>
   </widget>
  </widget>
  <resources/>

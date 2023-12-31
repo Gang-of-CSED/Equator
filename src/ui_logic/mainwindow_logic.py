@@ -1,8 +1,8 @@
 import sys
-from PySide6.QtWidgets import QMainWindow, QTableWidgetItem
-from PySide6.QtCore import QRegularExpression
+from PySide6.QtWidgets import QMainWindow, QTableWidgetItem, QVBoxLayout, QWidget
+from PySide6.QtCore import QRegularExpression, QRect
 from PySide6.QtGui import QRegularExpressionValidator
-
+import sympy as sp
 from src.ui.mainwindow_ui import Ui_MainWindow as MainWindowUI
 from PySide6.QtCore import SIGNAL
 import numpy as np
@@ -12,8 +12,16 @@ from src.operations.DoolittleLU import DoolittleLU
 from src.operations.CholeskyLU import Cholesky
 from src.operations.Gauss_Seidel_Method import gauss_seidel_method
 from src.operations.Gacobi_Method import gacobi_method
+from src.operations.Plotter import plot_function
 from PySide6.QtGui import QColor
+
 from src.ui_logic.steps_window_logic import StepsWindow
+from src.ui_logic.steps_window_root_logic import StepsWindowRoot
+from src.ui_logic.plotter_logic import MplCanvas
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationToolbar2QT as NavigationToolbar
+from matplotlib.figure import Figure
+from matplotlib import pyplot as plt
+from src.operations.Plotter import is_valid_function
 
 import time
 
@@ -38,6 +46,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.stepsButton.clicked.connect(self.stepsButton_clicked)
         self.output=[]
         self.comments=[]
+        self.init_root_tab()
         # #1c284f
     def themeButton_clicked(self):
         self.themeButton.setText(self.color_theme)
@@ -444,4 +453,105 @@ class MainWindow(QMainWindow, MainWindowUI):
         # self.steps_window = StepsWindow(output=[{"L":[[1,2],[3,4]],"U":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]},{"X":[[5,6],[7,8]]}],comments=["hello","iam fine","tmam"])
         self.steps_window = StepsWindow(output=self.output,comments=self.comments,theme=self.color_theme)
         self.steps_window.show_steps()
-        
+
+###########################  Root Tab ##############################
+    
+    def init_root_tab(self):
+        self.operation_index_root=0
+        self.update_visiblity_root()
+        self.update_labels_root()
+        self.operationComboBox_root.connect(self.operationComboBox_root, SIGNAL("currentIndexChanged(int)"), self.comboBox_changed_root)
+        self.solveButton_root.connect(self.solveButton_root, SIGNAL("clicked()"), self.solveButton_clicked_root)
+        self.add_validatitors_root()
+        self.stepsButton_root.connect(self.stepsButton_root, SIGNAL("clicked()"), self.stepsButton_clicked_root)
+        self.plotButton.connect(self.plotButton, SIGNAL("clicked()"), self.plotButton_clicked_root)
+        self.valid_equation=False
+    def comboBox_changed_root(self, index):
+        self.operation_index_root=index
+        self.update_visiblity_root()
+        self.update_labels_root()
+        print(index)
+    
+    def update_visiblity_root(self):
+        # TODO: 
+        if self.operation_index_root in [0,1,2]:
+            self.input2Label.setVisible(True)
+            self.input2LineEdit.setVisible(True)
+        else:
+            self.input2Label.setVisible(False)
+            self.input2LineEdit.setVisible(False)
+    
+    def update_labels_root(self):
+        # TODO:
+        if self.operation_index_root == 0:
+            self.input1Label.setText("X0")
+            self.input2Label.setText("Y1")
+        elif self.operation_index_root == 1:
+            self.input1Label.setText("a")
+            self.input2Label.setText("b")
+    
+    def add_validatitors_root(self):
+
+        number_regex = QRegularExpression("^[-+]?[0-9]*\.?[0-9]+$")
+        input_validator = QRegularExpressionValidator(number_regex,self.input1LineEdit)
+        self.input1LineEdit.setValidator(input_validator)
+        self.input2LineEdit.setValidator(input_validator)
+        self.range1LineEdit.setValidator(input_validator)
+        self.range2LineEdit.setValidator(input_validator)
+        self.errorLine_root.setValidator(input_validator)
+        integer_regex = QRegularExpression("^[-+]?[0-9]*")
+        integer_validator = QRegularExpressionValidator(integer_regex,self.iterationLine_root)
+        self.iterationLine_root.setValidator(integer_validator)
+        self.signLine_root.setValidator(integer_validator)
+
+        # validate equation using sympy
+        self.equationLineEdit.textChanged.connect(self.equationLineEdit_changed)
+    
+    def equationLineEdit_changed(self):
+        equation = self.equationLineEdit.text()
+        if is_valid_function(equation):
+            self.equationLineEdit.setStyleSheet("QLineEdit { color : black; }")
+            self.valid_equation=True
+        else:
+            self.equationLineEdit.setStyleSheet("QLineEdit { color : red; }")
+            self.valid_equation=False
+
+
+
+    def solveButton_clicked_root(self):
+        # TODO:
+        try:
+            # add default values
+
+            # get items from lineedit
+
+            # solve and update steps
+            pass
+
+        except:
+            # add error message
+            pass
+
+
+    def stepsButton_clicked_root(self):
+        steps_window = StepsWindowRoot(output=[5,4,6],comments=["hello","iam fine","tmam"])
+        steps_window.show_steps()
+
+    def plotButton_clicked_root(self):
+        # clear layout first
+        if self.plotWidget.layout():
+            for i in reversed(range(self.plotWidget.layout().count())): 
+                self.plotWidget.layout().itemAt(i).widget().setParent(None)
+        else:
+            self.plotWidget.setLayout(QVBoxLayout())
+        # get function from line edit
+        function_text = self.equationLineEdit.text()
+        x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))
+        sc= MplCanvas(function_text,x_range=x_range)
+        layout = self.plotWidget.layout()
+        toolbar = NavigationToolbar(sc, self)
+        layout.addWidget(toolbar)
+        layout.addWidget(sc)
+        print("layout",layout)
+        # points=self.click_points(sc, function_text, num_clicked_points=2)
+        # print("points",points)
