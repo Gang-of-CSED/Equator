@@ -493,7 +493,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         elif self.operation_index_root in [0,1]:
             self.input1Label.setText("a")
             self.input2Label.setText("b")
-        elif self.operation_index_root in [2,3,4]:
+        elif self.operation_index_root in [2,3,4,5]:
             self.input1Label.setText("X0")
             self.input2Label.setText("m")
     
