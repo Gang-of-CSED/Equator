@@ -28,10 +28,10 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
             error = "Method diverges at " + (f"it: {i}")
             return error, [], []
         roots.append(root)
+        steps.append(f"Iteration {i+1}:  X = {x0} - {f} * {f1} /  [{f1}]^2 - {f} * {f2}")
         if abs(root - x0) < eps:
             break
-        else:
-            steps.append(f"Iteration {i+1}:  X = {x0} - {f} * {f1} /  [{f1}]^2 - {f} * {f2}")
+            
         x0 = root
 
     return error, roots, steps
@@ -61,10 +61,10 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
             error = "Method diverges at " + (f"it: {i}")
             return error, [], []
         roots.append(root)
+        steps.append(f"Iteration {i+1}:  X = {x0} - {m} * {f} / {f1}")
         if abs(root - x0) < eps:
             break
-        else:
-            steps.append(f"Iteration {i+1}:  X = {x0} - {m} * {f} / {f1}")
+        
         x0 = root
 
     return error, roots, steps
