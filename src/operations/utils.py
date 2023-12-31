@@ -1,5 +1,18 @@
 import numpy as np
 
+def relative_error(x, x0):
+    """
+    :return: relative error
+    """
+    if x == None:
+        return 1e10
+    if x == x0:
+        return 0
+    if x0 == 0:
+        return 1e10
+    return abs(x - x0) / abs(x)
+
+
 # Function to round all the elements of an array to a given number of significant digits
 def round_to_n_significant(x, n):
     # Define a function to round each element of the array
