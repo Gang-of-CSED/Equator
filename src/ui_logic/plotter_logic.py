@@ -10,8 +10,8 @@ from matplotlib import pyplot as plt
 
 class MplCanvas(FigureCanvasQTAgg):
 
-    def __init__(self, function,parent=None, width=5, height=4, dpi=100):
-        error,fig,self.axes=plot_function(function)
+    def __init__(self, function, x_range=(-10, 10),parent=None, width=5, height=4, dpi=100):
+        error,fig,self.axes=plot_function(function,x_range=x_range)
         super(MplCanvas, self).__init__(fig)
      
 

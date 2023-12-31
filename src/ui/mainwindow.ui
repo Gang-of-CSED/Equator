@@ -1009,6 +1009,64 @@
          <string>PLot</string>
         </property>
        </widget>
+       <widget class="QLabel" name="range2Label">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>470</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>max X</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="range1LineEdit">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>490</y>
+          <width>113</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="range1Label">
+        <property name="geometry">
+         <rect>
+          <x>470</x>
+          <y>470</y>
+          <width>101</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>min X</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="range2LineEdit">
+        <property name="geometry">
+         <rect>
+          <x>710</x>
+          <y>490</y>
+          <width>113</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
       </widget>
      </widget>
     </item>

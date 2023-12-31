@@ -496,6 +496,8 @@ class MainWindow(QMainWindow, MainWindowUI):
         input_validator = QRegularExpressionValidator(number_regex,self.input1LineEdit)
         self.input1LineEdit.setValidator(input_validator)
         self.input2LineEdit.setValidator(input_validator)
+        self.range1LineEdit.setValidator(input_validator)
+        self.range2LineEdit.setValidator(input_validator)
         self.errorLine_root.setValidator(input_validator)
         integer_regex = QRegularExpression("^[-+]?[0-9]*")
         integer_validator = QRegularExpressionValidator(integer_regex,self.iterationLine_root)
@@ -545,7 +547,8 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.plotWidget.setLayout(QVBoxLayout())
         # get function from line edit
         function_text = self.equationLineEdit.text()
-        sc= MplCanvas(function_text)
+        x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))
+        sc= MplCanvas(function_text,x_range=x_range)
         layout = self.plotWidget.layout()
         toolbar = NavigationToolbar(sc, self)
         layout.addWidget(toolbar)
