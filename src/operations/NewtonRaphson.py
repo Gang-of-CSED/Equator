@@ -7,30 +7,35 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
     roots = []
     error = None
     
-    diff = sp.diff(equation, x)
+    diff = sp.N(sp.diff(equation, x), precision)
     if diff == 0:
         error = "linear equation, has no roots"
         return error, roots, steps
     
-    diff2 = sp.diff(diff, x)
+    diff2 = sp.N(sp.diff(diff, x), precision)
     
     for i in range(max_iterations):
         root = 0
-        f = equation.subs(x, x0)
-        f1 = diff.subs(x, x0)
+        # f = equation.evalf(subs={x: x0}, n=precision)
+        f = equation.subs(x, x0).evalf(n=precision)
+        # f1 = diff.evalf(subs={x: x0}, n=precision)
+        f1 = diff.subs(x, x0).evalf(n=precision)
         if f1 == 0:
             error = "First derivative of equation becomes zero at " + (f"it: {i+1}")
+            steps.append(error)
             return error, roots, steps
         
-        f2 = diff2.subs(x, x0)
-        root = x0 - (f * f1) / (f1 ** 2 - f * f2)
-        if roots.count(root) > 1:
-            error = "Method diverges at " + (f"it: {i}")
-            return error, [], []
+        # f2 = diff2.evalf(subs={x: x0}, n=precision)
+        f2 = diff2.subs(x, x0).evalf(n=precision)
+        root = round((x0 - (f * f1) / (f1 ** 2 - f * f2)), precision)
         roots.append(root)
         steps.append(f"Iteration {i+1}:  X = {x0} - {f} * {f1} /  [{f1}]^2 - {f} * {f2}")
         if abs(root - x0) < eps:
             break
+        if roots.count(root) > 1:
+            error = "Method Starts Occilating at " + (f"it: {i}")
+            steps[-1] = steps[-1] + (error)
+            return error, roots, steps
             
         x0 = root
 
@@ -43,27 +48,31 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
     steps = []
     roots = []
     error = None
-    
-    diff = sp.diff(equation, x)
+
+    diff = sp.N(sp.diff(equation, x), precision)
     if diff == 0:
         error = "linear equation, has no roots"
         return error, roots, steps
     
     for i in range(max_iterations):
         root = 0
-        f = equation.subs(x, x0)
-        f1 = diff.subs(x, x0)
+        # f = equation.evalf(subs={x: x0}, n=precision)
+        f = equation.subs(x, x0).evalf(n=precision)
+        # f1 = diff.evalf(subs={x: x0}, n=precision)
+        f1 = diff.subs(x, x0).evalf(n=precision)
         if f1 == 0:
             error = "First derivative of equation becomes zero at " + (f"it: {i+1}")
+            steps.append(error)
             return error, roots, steps
-        root = x0 - m * (f / f1)
-        if roots.count(root) > 1:
-            error = "Method diverges at " + (f"it: {i}")
-            return error, [], []
+        root = round((x0 - m * (f / f1)), precision)
         roots.append(root)
         steps.append(f"Iteration {i+1}:  X = {x0} - {m} * {f} / {f1}")
         if abs(root - x0) < eps:
             break
+        if roots.count(root) > 1:
+            error = "Method Starts Occilating at " + (f"it: {i}")
+            steps[-1] = steps[-1] + (error)
+            return error, roots, steps
         
         x0 = root
 
@@ -85,18 +94,20 @@ if __name__ == '__main__':
         ("x**6 - 6*x**5 + 15*x**4 - 20*x**3 + 15*x**2 - 6*x + 1", 5, 1, 4, 1e-6, 200),  # root multiplicity: 1
         ("x + 2", 5, 1, 4, 1e-6, 200),  # root multiplicity: 1
         ("10", 5, 0, 4, 1e-6, 200),  # root multiplicity: 0 (constant function)
+        ("sin(x) + x", 1, 1, 5, 1e-5, 50),
+        ("(exp(x) * exp(x)) - 1", 1, 1, 5, 1e-5, 50)
     ]
 
     for i, (str_equation, x0, m, precision, eps, max_iterations) in enumerate(test_cases, 1):
-        x0 = 15
         print(f"Test case {i}: {str_equation}")
-        x = sp.symbols('x')
-        equation = sp.N(sp.sympify(str_equation), precision)
-        root = sp.solve(equation, x)
-        print(f"\nThe true roots of the equation is {root}\n")
+        # x = sp.symbols('x')
+        # equation = sp.N(sp.sympify(str_equation), precision)
+        # rootss = sp.solve(equation, x)
+        # roots = [root.evalf(precision) for root in rootss]
+        # print(f"\nThe true roots of the equation is {roots}\n")
         
-        # error1, roots1, steps1 = ModificationOne(str_equation, x0, m, precision, eps, max_iterations)
-        # print("modification one", error1 ,"\n", roots1 ,"\n" , steps1 ,"\n")
+        error1, roots1, steps1 = ModificationOne(str_equation, x0, m, precision, eps, max_iterations)
+        print("modification one", error1 ,"\n", roots1 ,"\n" , steps1 ,"\n")
 
         error2, roots2, steps2 = ModificationTwo(str_equation, x0, precision, eps, max_iterations)
         print("modification two", error2 ,"\n", roots2 ,"\n" , steps2 ,"\n\n\n")
