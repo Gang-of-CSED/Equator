@@ -15,7 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
        <number>1</number>
@@ -1108,6 +1108,25 @@
         </property>
         <property name="text">
          <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="themeButton_root">
+        <property name="geometry">
+         <rect>
+          <x>960</x>
+          <y>0</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Dark</string>
         </property>
        </widget>
       </widget>

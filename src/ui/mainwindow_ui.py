@@ -351,9 +351,13 @@ class Ui_MainWindow(object):
         self.solutionErrorLabel_root.setObjectName(u"solutionErrorLabel_root")
         self.solutionErrorLabel_root.setGeometry(QRect(20, 80, 411, 31))
         self.solutionErrorLabel_root.setFont(font)
+        self.themeButton_root = QPushButton(self.tabRoot)
+        self.themeButton_root.setObjectName(u"themeButton_root")
+        self.themeButton_root.setGeometry(QRect(960, 0, 93, 28))
+        self.themeButton_root.setFont(font2)
         self.tabWidget.addTab(self.tabRoot, "")
 
-        self.gridLayout.addWidget(self.tabWidget, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -513,6 +517,7 @@ class Ui_MainWindow(object):
         self.range2Label.setText(QCoreApplication.translate("MainWindow", u"max X", None))
         self.range1Label.setText(QCoreApplication.translate("MainWindow", u"min X", None))
         self.solutionErrorLabel_root.setText("")
+        self.themeButton_root.setText(QCoreApplication.translate("MainWindow", u"Dark", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabRoot), QCoreApplication.translate("MainWindow", u"Find Root", None))
     # retranslateUi
 

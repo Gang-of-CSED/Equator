@@ -47,6 +47,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.update_color_theme()
 
         self.themeButton.clicked.connect(self.themeButton_clicked)
+        self.themeButton_root.clicked.connect(self.themeButton_clicked)
         self.stepsButton.clicked.connect(self.stepsButton_clicked)
         self.output=[]
         self.comments=[]
@@ -54,6 +55,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         # #1c284f
     def themeButton_clicked(self):
         self.themeButton.setText(self.color_theme)
+        self.themeButton_root.setText(self.color_theme)
         if self.color_theme == "Light":
             self.color_theme = "Dark"
         else:
@@ -97,6 +99,20 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.operationComboBox.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.stepsButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.themeButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
+        self.stepsButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.plotButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.range1LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.range2LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.signLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.input1LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.input2LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.errorLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.iterationLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.equationLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.rootLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.themeButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
+        self.solveButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.operationComboBox_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
 
         # change labels color to label color
         self.matrixLabel.setStyleSheet(f"color: {label_color};")
@@ -111,6 +127,20 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.precisionLabel.setStyleSheet(f"color: {label_color};")
         self.solutionLabel.setStyleSheet(f"color: {label_color};")
         self.solutionErrorLabel.setStyleSheet(f"color: {error_color};")
+        self.range1Label.setStyleSheet(f"color: {label_color};")
+        self.range2Label.setStyleSheet(f"color: {label_color};")
+        self.input1Label.setStyleSheet(f"color: {label_color};")
+        self.input2Label.setStyleSheet(f"color: {label_color};")
+        self.errorLabel_root.setStyleSheet(f"color: {label_color};")
+        self.iteartionsLabel_root.setStyleSheet(f"color: {label_color};")
+        self.equationLabel.setStyleSheet(f"color: {label_color};")
+        self.rootLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionErrorLabel_root.setStyleSheet(f"color: {error_color};")
+        self.signLabel_root.setStyleSheet(f"color: {label_color};")
+        self.plotLabel.setStyleSheet(f"color: {label_color};")
+
+        # change tabs color
+        self.tabWidget.setStyleSheet(f"background-color: {background_color}; color: {text_color}; border: 1px solid {background_color};")
 
 
 
