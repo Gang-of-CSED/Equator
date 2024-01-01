@@ -1,5 +1,4 @@
 import sympy as sp
-from Bisection import infinite_check
 
 def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
     x = sp.symbols('x')
@@ -18,14 +17,17 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
     
     for i in range(max_iterations):
         root = 0
-        f = equation.subs(x, x0)
-        f1 = diff.subs(x, x0)
+        f = equation.evalf(subs={x: x0}, n=precision)
+        # f = equation.subs(x, x0)
+        f1 = diff.evalf(subs={x: x0}, n=precision)
+        # f1 = diff.subs(x, x0)
         if f1 == 0:
             error = "First derivative of equation becomes zero at " + (f"it: {i+1}")
             steps.append(error)
             return error, roots, steps
         
-        f2 = diff2.subs(x, x0)
+        f2 = diff2.evalf(subs={x: x0}, n=precision)
+        # f2 = diff2.subs(x, x0)
         root = x0 - (f * f1) / (f1 ** 2 - f * f2)
         roots.append(root)
         steps.append(f"Iteration {i+1}:  X = {x0} - {f} * {f1} /  [{f1}]^2 - {f} * {f2}")
@@ -55,10 +57,9 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
         return error, roots, steps
     
     for i in range(max_iterations):
-        print("ho\n")
         root = 0
-        f = equation.subs(x, x0)
-        f1 = diff.subs(x, x0)
+        f = equation.evalf(subs={x: x0}, n=precision)
+        f1 = diff.evalf(subs={x: x0}, n=precision)
         if f1 == 0:
             error = "First derivative of equation becomes zero at " + (f"it: {i+1}")
             steps.append(error)
@@ -96,17 +97,17 @@ if __name__ == '__main__':
     # ]
     
     test_cases = [
-        # ("5*x-sin(x)", 5, 1, 4, 1e-6, 3)
-        ("e**x-5+x", 5, 1, 4, 1e-6, 3)
+        ("sin(x)", 3.15, 1, 10, 1e-6, 50)
+        #("e**x-5+x", 5, 1, 4, 1e-6, 3)
     ]
 
     for i, (str_equation, x0, m, precision, eps, max_iterations) in enumerate(test_cases, 1):
-        x0 = 15
         print(f"Test case {i}: {str_equation}")
         x = sp.symbols('x')
         equation = sp.N(sp.sympify(str_equation), precision)
-        root = sp.solve(equation, x)
-        print(f"\nThe true roots of the equation is {root}\n")
+        rootss = sp.solve(equation, x)
+        roots = [root.evalf(precision) for root in rootss]
+        print(f"\nThe true roots of the equation is {roots}\n")
         
         error1, roots1, steps1 = ModificationOne(str_equation, x0, m, precision, eps, max_iterations)
         print("modification one", error1 ,"\n", roots1 ,"\n" , steps1 ,"\n")
