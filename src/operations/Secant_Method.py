@@ -24,7 +24,7 @@ def secant_method(f, x0, x1, rel_err=0.00001, maxiter=100, signif_digits=5):
         if error > errors[-2]:
             return flag, 'Method diverges', steps, roots
         else:
-            return flag, 'Solution not found', steps, roots
+            return flag, 'Method converges', steps, roots
         
     except Exception as e:
         return False, e, steps, roots
