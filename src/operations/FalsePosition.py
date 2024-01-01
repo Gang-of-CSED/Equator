@@ -60,6 +60,7 @@ def FalsePosition(str_equation, a, b, precision=5, eps=1e-5, max_iterations=50):
                 step+=f"\nrelative error = {relativeError}"
             if equation.subs (x, a) * equation.subs (x, mid) == 0:
                 step+=f"\nf(a) * f(mid) = 0, so we stop"
+                it+=1
                 roots.append(mid)
                 steps.append(step)
                 break

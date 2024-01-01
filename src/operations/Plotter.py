@@ -8,6 +8,11 @@ def is_valid_function(function_str):
         expr = sp.sympify(function_str)
         # we may need to comment this next line if lambdify is not working
         func = sp.lambdify(x, expr, 'numpy')
+        # check if it has any symbols other than x
+        symbols = list(expr.free_symbols)
+        print(symbols)
+        if len(symbols) > 1 or (len(symbols) == 1 and symbols[0] != x):
+            return False
         return True
     except Exception as e:
         print(f"Error: {e}")
@@ -70,7 +75,15 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
         # Evaluate the function
         y_vals = func(x_vals)
         # Find points where y = 0
-        zero_points = x_vals[np.where(np.diff(np.sign(y_vals)))[0]]
+        zero_points = x_vals[np.where(np.abs(y_vals) < 1e-7)[0]]
+        # make sure the zero points are not too close to each other
+        # zero_points = zero_points[np.where(np.abs(np.diff(zero_points)) > 1e-7)[0]]
+        # print(zero_points)
+        # make them unique based on approximation
+        zero_points = np.unique(np.round(zero_points, 3))
+        print(zero_points)
+        # turning only -0.0 to 0.0
+        zero_points = np.array([0.0 if x == -0.0 else x for x in zero_points])
         # Plot the function
         # Create a figure
         fig, ax = plt.subplots()
