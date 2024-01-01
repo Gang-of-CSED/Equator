@@ -19,7 +19,7 @@ def fixed_point(g, x0, rel_err=0.00001, maxiter=10, signif_digits=6):
             if error < rel_err:
                 return True, 'Solution found and method has converged', steps, roots
             x0 = x1
-        if error > errors[-2]:
+        if error > errors[0]:
             return True, 'Method diverges', steps, roots
         else:
             return True, 'Method converges', steps, roots
@@ -30,5 +30,6 @@ if __name__ == "__main__":
     g = 'exp(-x)'
     x0 = 0
     flag, message, steps, roots = fixed_point(g, x0)
+    print(message)
     print(steps)
     print(roots)
