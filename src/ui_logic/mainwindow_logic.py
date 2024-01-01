@@ -551,8 +551,10 @@ class MainWindow(QMainWindow, MainWindowUI):
         layout.addWidget(toolbar)
         layout.addWidget(sc)
         print("layout",layout)
-        # points=self.click_points(sc, function_text, num_clicked_points=2)
-        # print("points",points)
+        # for input on graph
+        sc.connect_click_event(function_text)
+        # points= MplCanvas.get_points(sc, function_text, 2)
+        # print("points",points)        
 
     def click_points(self,sc, function_str, num_clicked_points=2):
         points = []
