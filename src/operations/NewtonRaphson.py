@@ -55,6 +55,7 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
         return error, roots, steps
     
     for i in range(max_iterations):
+        print("ho\n")
         root = 0
         f = equation.subs(x, x0)
         f1 = diff.subs(x, x0)
@@ -95,7 +96,8 @@ if __name__ == '__main__':
     # ]
     
     test_cases = [
-        ("x**5-5", 5, 1, 4, 1e-6, 200)
+        # ("5*x-sin(x)", 5, 1, 4, 1e-6, 3)
+        ("e**x-5+x", 5, 1, 4, 1e-6, 3)
     ]
 
     for i, (str_equation, x0, m, precision, eps, max_iterations) in enumerate(test_cases, 1):
