@@ -547,7 +547,7 @@ class MainWindow(QMainWindow, MainWindowUI):
     def equationLineEdit_changed(self):
         equation = self.equationLineEdit.text()
         if is_valid_function(equation):
-            self.equationLineEdit.setStyleSheet("QLineEdit { color : black; }")
+            self.update_color_theme()
             self.valid_equation=True
         else:
             self.equationLineEdit.setStyleSheet("QLineEdit { color : red; }")
