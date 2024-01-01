@@ -715,44 +715,9 @@ class MainWindow(QMainWindow, MainWindowUI):
         layout.addWidget(sc)
         print("layout",layout)
         # for input on graph
-        sc.connect_click_event(function_text)
+        num_clicked=1
+        if self.operation_index_root in [0,1,6]:
+            num_clicked=2
+        sc.connect_click_event(function_text,num_clicked_points=num_clicked)
         # points= MplCanvas.get_points(sc, function_text, 2)
         # print("points",points)        
-
-    def click_points(self,sc, function_str, num_clicked_points=2):
-        points = []
-        old_title = plt.gca().get_title()
-        plt.title(f"Click {num_clicked_points} points on the function line")
-        plt.show(block=False)
-
-        x = sp.symbols('x')
-        expr = sp.sympify(function_str)
-        func = sp.lambdify(x, expr, 'numpy')
-
-        def on_click(event):
-            nonlocal points
-
-            if event.xdata is not None:
-                x_clicked = event.xdata
-
-                # Find the y-value on the function line for the clicked x-coordinate
-                y_clicked = func(x_clicked)
-
-                points.append((x_clicked, y_clicked))
-                print(f"Clicked at (x, y) = ({x_clicked:.2f}, {y_clicked:.2f}) on the function line")
-
-                # Annotate the clicked points on the graph with their x-values
-                sc.axes.annotate(f'x={x_clicked:.4f}', (x_clicked, y_clicked), textcoords="offset points", xytext=(0,10), ha='center', fontsize=10, color='black')
-                sc.axes.scatter(x_clicked, y_clicked, color='black', marker='x')
-                if len(points) == num_clicked_points:
-                    sc.mpl_disconnect(cid)
-                    print(f"{num_clicked_points} points clicked. Returning array:", points)
-
-        if num_clicked_points > 0:
-            cid = sc.mpl_connect('button_press_event', on_click)
-
-        while len(points) < num_clicked_points:
-            plt.pause(0.1)
-        plt.title(old_title)
-        plt.pause(0.5)
-        return points
