@@ -15,8 +15,11 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
+      <property name="tabShape">
+       <enum>QTabWidget::Triangular</enum>
+      </property>
       <property name="currentIndex">
        <number>1</number>
       </property>
@@ -752,6 +755,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="text">
+         <string>0</string>
+        </property>
        </widget>
        <widget class="QLineEdit" name="input2LineEdit">
         <property name="geometry">
@@ -761,6 +767,9 @@
           <width>113</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>0</string>
         </property>
        </widget>
        <widget class="QLabel" name="input2Label">
@@ -790,6 +799,9 @@
           <width>151</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>50</string>
         </property>
        </widget>
        <widget class="QLabel" name="iteartionsLabel_root">
@@ -821,6 +833,9 @@
           <height>22</height>
          </rect>
         </property>
+        <property name="text">
+         <string>0.0001</string>
+        </property>
        </widget>
        <widget class="QLabel" name="errorLabel_root">
         <property name="geometry">
@@ -850,6 +865,9 @@
           <width>151</width>
           <height>22</height>
          </rect>
+        </property>
+        <property name="text">
+         <string>4</string>
         </property>
        </widget>
        <widget class="QLabel" name="signLabel_root">
@@ -898,12 +916,17 @@
         </item>
         <item>
          <property name="text">
-          <string>Original Newton-Raphson</string>
+          <string>Newton-Raphson Original</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Modified Newton-Raphson</string>
+          <string>Newton-Raphson Modified 1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Newton-Raphson Modified 2</string>
          </property>
         </item>
         <item>
@@ -959,6 +982,9 @@
           <width>171</width>
           <height>21</height>
          </rect>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
         </property>
        </widget>
        <widget class="QLabel" name="rootLabel">
@@ -1065,6 +1091,45 @@
           <width>113</width>
           <height>22</height>
          </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="solutionErrorLabel_root">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>80</y>
+          <width>411</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="themeButton_root">
+        <property name="geometry">
+         <rect>
+          <x>960</x>
+          <y>0</y>
+          <width>93</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Dark</string>
         </property>
        </widget>
       </widget>

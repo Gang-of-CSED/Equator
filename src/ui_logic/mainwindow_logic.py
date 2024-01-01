@@ -22,7 +22,11 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg, NavigationTool
 from matplotlib.figure import Figure
 from matplotlib import pyplot as plt
 from src.operations.Plotter import is_valid_function
-
+from src.operations.Bisection import bisection
+from src.operations.FalsePosition import FalsePosition
+from src.operations.Fixed_Point import fixed_point
+from src.operations.Secant_Method import secant_method
+from src.operations.NewtonRaphson import *
 import time
 
 class MainWindow(QMainWindow, MainWindowUI):
@@ -43,6 +47,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.update_color_theme()
 
         self.themeButton.clicked.connect(self.themeButton_clicked)
+        self.themeButton_root.clicked.connect(self.themeButton_clicked)
         self.stepsButton.clicked.connect(self.stepsButton_clicked)
         self.output=[]
         self.comments=[]
@@ -50,6 +55,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         # #1c284f
     def themeButton_clicked(self):
         self.themeButton.setText(self.color_theme)
+        self.themeButton_root.setText(self.color_theme)
         if self.color_theme == "Light":
             self.color_theme = "Dark"
         else:
@@ -93,6 +99,20 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.operationComboBox.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.stepsButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.themeButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
+        self.stepsButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.plotButton.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.range1LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.range2LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.signLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.input1LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.input2LineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.errorLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.iterationLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.equationLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.rootLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.themeButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
+        self.solveButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.operationComboBox_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
 
         # change labels color to label color
         self.matrixLabel.setStyleSheet(f"color: {label_color};")
@@ -107,6 +127,20 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.precisionLabel.setStyleSheet(f"color: {label_color};")
         self.solutionLabel.setStyleSheet(f"color: {label_color};")
         self.solutionErrorLabel.setStyleSheet(f"color: {error_color};")
+        self.range1Label.setStyleSheet(f"color: {label_color};")
+        self.range2Label.setStyleSheet(f"color: {label_color};")
+        self.input1Label.setStyleSheet(f"color: {label_color};")
+        self.input2Label.setStyleSheet(f"color: {label_color};")
+        self.errorLabel_root.setStyleSheet(f"color: {label_color};")
+        self.iteartionsLabel_root.setStyleSheet(f"color: {label_color};")
+        self.equationLabel.setStyleSheet(f"color: {label_color};")
+        self.rootLabel.setStyleSheet(f"color: {label_color};")
+        self.solutionErrorLabel_root.setStyleSheet(f"color: {error_color};")
+        self.signLabel_root.setStyleSheet(f"color: {label_color};")
+        self.plotLabel.setStyleSheet(f"color: {label_color};")
+
+        # change tabs color
+        self.tabWidget.setStyleSheet(f"background-color: {background_color}; color: {text_color}; border: 1px solid {background_color};")
 
 
 
@@ -474,7 +508,7 @@ class MainWindow(QMainWindow, MainWindowUI):
     
     def update_visiblity_root(self):
         # TODO: 
-        if self.operation_index_root in [0,1,2]:
+        if self.operation_index_root in [0,1,4,6]:
             self.input2Label.setVisible(True)
             self.input2LineEdit.setVisible(True)
         else:
@@ -483,12 +517,15 @@ class MainWindow(QMainWindow, MainWindowUI):
     
     def update_labels_root(self):
         # TODO:
-        if self.operation_index_root == 0:
+        if self.operation_index_root == 6:
             self.input1Label.setText("X0")
-            self.input2Label.setText("Y1")
-        elif self.operation_index_root == 1:
+            self.input2Label.setText("X1")
+        elif self.operation_index_root in [0,1]:
             self.input1Label.setText("a")
             self.input2Label.setText("b")
+        elif self.operation_index_root in [2,3,4,5]:
+            self.input1Label.setText("X0")
+            self.input2Label.setText("m")
     
     def add_validatitors_root(self):
 
@@ -521,23 +558,142 @@ class MainWindow(QMainWindow, MainWindowUI):
     def solveButton_clicked_root(self):
         # TODO:
         try:
+            start_time=time.time()
+            self.solutionErrorLabel_root.setText("")
             # add default values
+            precision=0.00001
+            signficant_digits=4
+            max_iterations=50
 
-            # get items from lineedit
+            # get items from lineEdit
+            equation = self.equationLineEdit.text()
+            a = float(self.input1LineEdit.text())
+            b = float(self.input2LineEdit.text())
 
+            if self.errorLine_root.text() != "":
+                precision = float(self.errorLine_root.text())
+            
+            if self.signLine_root.text() != "":
+                signficant_digits = int(self.signLine_root.text())
+            
+            if self.iterationLine_root.text() != "":
+                max_iterations = int(self.iterationLine_root.text())
+
+            if self.valid_equation == False:
+                self.solutionErrorLabel_root.setText("Invalid Equation")
+                return
             # solve and update steps
-            pass
+            if self.operation_index_root == 0:
+                # bisection
+                error,steps,roots = bisection(equation,a,b,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 1:
+                # false position
+                error,steps,roots = FalsePosition(equation,a,b,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+
+            if self.operation_index_root == 2:
+                # fixed point
+                error,steps,roots = fixed_point(equation,a,precision,max_iterations,signficant_digits)
+                print("error",error,"steps",steps,"roots",roots)
+                # if error != None:
+                #     self.solutionErrorLabel_root.setText(error)
+                #     return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 3:
+                # newton raphson
+                error,roots,steps = ModificationOne(equation,a,1,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                print(len(roots),len(steps))
+
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 4:
+                # newton raphson
+                error,roots,steps = ModificationOne(equation,a,b,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                print(len(roots),len(steps))
+
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            if self.operation_index_root == 5:
+                # newton raphson
+                error,roots,steps = ModificationTwo(equation,a,signficant_digits,precision,max_iterations)
+                print("error",error,"steps",steps,"roots",roots)
+                print(len(roots),len(steps))
+                if error != None:
+                    self.solutionErrorLabel_root.setText(error)
+                    return
+                
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+
+            
+            if self.operation_index_root ==6:
+                # secant method
+                error,steps,roots = secant_method(equation,a,b,precision,max_iterations,signficant_digits)
+                print("error",error,"steps",steps,"roots",roots)
+                # if error != None:
+                #     self.solutionErrorLabel_root.setText(error)
+                #     return
+                self.solutionErrorLabel_root.setText("")
+                self.rootLineEdit.setText(str(roots[-1]))
+                self.output = roots
+                self.comments = steps
+            
+            end_time=time.time()
+            total_time =round(end_time-start_time,3)
+            print("time",total_time)
+            self.solutionErrorLabel_root.setText(f"Time: {total_time} seconds")
+
 
         except:
             # add error message
-            pass
+            self.solutionErrorLabel_root.setText("Sorry can't solve using this method!")
 
 
     def stepsButton_clicked_root(self):
-        steps_window = StepsWindowRoot(output=[5,4,6],comments=["hello","iam fine","tmam"])
+        steps_window = StepsWindowRoot(output=self.output,comments=self.comments,theme=self.color_theme)
         steps_window.show_steps()
 
     def plotButton_clicked_root(self):
+        if self.valid_equation == False:
+            return
         # clear layout first
         if self.plotWidget.layout():
             for i in reversed(range(self.plotWidget.layout().count())): 
@@ -546,12 +702,22 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.plotWidget.setLayout(QVBoxLayout())
         # get function from line edit
         function_text = self.equationLineEdit.text()
-        x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))
+        if self.operation_index_root==2:
+            function_text+=" - x"
+        
+        x_range=(-10,10)
+        if self.range1LineEdit.text() != "" and self.range2LineEdit.text() != "":
+            x_range=(int(self.range1LineEdit.text()),int(self.range2LineEdit.text()))
         sc= MplCanvas(function_text,x_range=x_range)
         layout = self.plotWidget.layout()
         toolbar = NavigationToolbar(sc, self)
         layout.addWidget(toolbar)
         layout.addWidget(sc)
         print("layout",layout)
-        # points=self.click_points(sc, function_text, num_clicked_points=2)
-        # print("points",points)
+        # for input on graph
+        num_clicked=1
+        if self.operation_index_root in [0,1,6]:
+            num_clicked=2
+        sc.connect_click_event(function_text,num_clicked_points=num_clicked)
+        # points= MplCanvas.get_points(sc, function_text, 2)
+        # print("points",points)        
