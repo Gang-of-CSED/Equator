@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
+        self.tabWidget.setTabShape(QTabWidget.Triangular)
         self.tabMatrix = QWidget()
         self.tabMatrix.setObjectName(u"tabMatrix")
         self.stepsButton = QPushButton(self.tabMatrix)
