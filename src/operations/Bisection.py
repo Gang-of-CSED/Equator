@@ -80,6 +80,7 @@ def bisection(str_equation, a, b, precision=5, eps=1e-5, max_iterations=50):
                 step += f"\nf(a) * f(mid) = 0, so we stop"
                 roots.append(mid)
                 steps.append(step)
+                it+=1
                 break
             if equation.subs (x, a) * equation.subs (x, mid) < 0:
                 b = mid

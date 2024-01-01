@@ -8,6 +8,11 @@ def is_valid_function(function_str):
         expr = sp.sympify(function_str)
         # we may need to comment this next line if lambdify is not working
         func = sp.lambdify(x, expr, 'numpy')
+        # check if it has any symbols other than x
+        symbols = list(expr.free_symbols)
+        print(symbols)
+        if len(symbols) > 1 or (len(symbols) == 1 and symbols[0] != x):
+            return False
         return True
     except Exception as e:
         print(f"Error: {e}")
