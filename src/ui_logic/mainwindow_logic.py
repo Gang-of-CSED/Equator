@@ -556,10 +556,10 @@ class MainWindow(QMainWindow, MainWindowUI):
 
 
     def solveButton_clicked_root(self):
-        # TODO:
         try:
             start_time=time.time()
             self.solutionErrorLabel_root.setText("")
+            add_message=""
             # add default values
             precision=0.00001
             signficant_digits=4
@@ -609,11 +609,12 @@ class MainWindow(QMainWindow, MainWindowUI):
 
             if self.operation_index_root == 2:
                 # fixed point
-                error,steps,roots = fixed_point(equation,a,precision,max_iterations,signficant_digits)
+                flag,error,steps,roots = fixed_point(equation,a,precision,max_iterations,signficant_digits)
                 print("error",error,"steps",steps,"roots",roots)
-                # if error != None:
-                #     self.solutionErrorLabel_root.setText(error)
-                #     return
+                if not flag:
+                    self.solutionErrorLabel_root.setText("Sorry can't solve it using this method")
+                    return
+                add_message="("+error+")"
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
                 self.output = roots
@@ -666,11 +667,12 @@ class MainWindow(QMainWindow, MainWindowUI):
             
             if self.operation_index_root ==6:
                 # secant method
-                error,steps,roots = secant_method(equation,a,b,precision,max_iterations,signficant_digits)
+                flag,error,steps,roots = secant_method(equation,a,b,precision,max_iterations,signficant_digits)
                 print("error",error,"steps",steps,"roots",roots)
-                # if error != None:
-                #     self.solutionErrorLabel_root.setText(error)
-                #     return
+                if not flag:
+                    self.solutionErrorLabel_root.setText("Sorry can't solve it using this method")
+                    return
+                add_message="("+error+")"
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
                 self.output = roots
@@ -679,7 +681,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             end_time=time.time()
             total_time =round(end_time-start_time,3)
             print("time",total_time)
-            self.solutionErrorLabel_root.setText(f"Time: {total_time} seconds")
+            self.solutionErrorLabel_root.setText(f"Time: {total_time} seconds"+add_message)
 
 
         except:
