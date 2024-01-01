@@ -17,14 +17,14 @@ def secant_method(f, x0, x1, rel_err=0.00001, maxiter=100, signif_digits=5):
             step = f'Iteration {i+1}:   x{i+1} = {x2}   relative error = {error}'
             steps.append(step)
             if error < rel_err:
-                return flag, 'Solution found and method has converged', steps, roots
+                return True, 'Solution found and method has converged', steps, roots
             x0 = x1
             x1 = x2
         # check whether the method converged or not
         if error > errors[-2]:
-            return flag, 'Method diverges', steps, roots
+            return True, 'Method diverges', steps, roots
         else:
-            return flag, 'Method converges', steps, roots
+            return True, 'Method converges', steps, roots
         
     except Exception as e:
         return False, e, steps, roots
