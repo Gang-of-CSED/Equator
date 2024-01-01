@@ -21,7 +21,7 @@ def secant_method(f, x0, x1, rel_err=0.00001, maxiter=100, signif_digits=5):
             x0 = x1
             x1 = x2
         # check whether the method converged or not
-        if error > errors[-2]:
+        if error > errors[0]:
             return True, 'Method diverges', steps, roots
         else:
             return True, 'Method converges', steps, roots
@@ -34,5 +34,6 @@ if __name__ == "__main__":
     x0 = 0.5
     x1 = 1
     flag, converge, steps, roots = secant_method(f, x0, x1)
+    print(message)
     print(steps)
     print(roots)
