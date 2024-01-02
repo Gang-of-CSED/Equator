@@ -609,6 +609,7 @@ class MainWindow(QMainWindow, MainWindowUI):
 
             if self.operation_index_root == 2:
                 # fixed point
+                equation+=" + x"
                 flag,error,steps,roots = fixed_point(equation,a,precision,max_iterations,signficant_digits)
                 print("error",error,"steps",steps,"roots",roots)
                 if not flag:
@@ -704,8 +705,8 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.plotWidget.setLayout(QVBoxLayout())
         # get function from line edit
         function_text = self.equationLineEdit.text()
-        if self.operation_index_root==2:
-            function_text+=" - x"
+        # if self.operation_index_root==2:
+            # function_text+=" - x"
         
         x_range=(-10,10)
         if self.range1LineEdit.text() != "" and self.range2LineEdit.text() != "":
