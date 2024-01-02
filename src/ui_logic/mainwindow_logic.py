@@ -110,6 +110,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.iterationLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.equationLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.rootLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.noIterationsLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.themeButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
         self.solveButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.operationComboBox_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
@@ -135,6 +136,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.iteartionsLabel_root.setStyleSheet(f"color: {label_color};")
         self.equationLabel.setStyleSheet(f"color: {label_color};")
         self.rootLabel.setStyleSheet(f"color: {label_color};")
+        self.noIterationsLabel.setStyleSheet(f"color: {label_color};")
         self.solutionErrorLabel_root.setStyleSheet(f"color: {error_color};")
         self.signLabel_root.setStyleSheet(f"color: {label_color};")
         self.plotLabel.setStyleSheet(f"color: {label_color};")
@@ -516,7 +518,10 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.input2LineEdit.setVisible(False)
     
     def update_labels_root(self):
-        # TODO:
+        if self.operation_index_root ==2:
+            self.equationLabel.setText("g(x)")
+        else:
+            self.equationLabel.setText("f(x)")
         if self.operation_index_root == 6:
             self.input1Label.setText("X0")
             self.input2Label.setText("X1")
@@ -592,6 +597,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                     return
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
             
@@ -604,6 +610,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                     return
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
 
@@ -617,6 +624,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 add_message="("+error+")"
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
             
@@ -632,6 +640,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
             
@@ -647,6 +656,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
             
@@ -661,6 +671,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
 
@@ -675,6 +686,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                 add_message="("+error+")"
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
+                self.noIterationsLineEdit.setText(str(len(steps)))
                 self.output = roots
                 self.comments = steps
             
