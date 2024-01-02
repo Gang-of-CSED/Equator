@@ -74,13 +74,18 @@ def plot_function(function_str, num_points=100000, x_range=(-10, 10)):
         x_vals = np.linspace(x_range[0], x_range[1], num_points)
         # Evaluate the function
         y_vals = func(x_vals)
-        # Find points where y = 0
+        # Find points where y is close to zero
         zero_points = x_vals[np.where(np.abs(y_vals) < 1e-7)[0]]
-        # make sure the zero points are not too close to each other
-        # zero_points = zero_points[np.where(np.abs(np.diff(zero_points)) > 1e-7)[0]]
-        # print(zero_points)
         # make them unique based on approximation
         zero_points = np.unique(np.round(zero_points, 3))
+        print(zero_points)
+        # Find points where y changes sign
+        zero_points2 = x_vals[np.where(np.diff(np.sign(y_vals)))[0]]
+        # make them unique based on approximation
+        zero_points2 = np.unique(np.round(zero_points2, 3))
+        print(zero_points2)
+        # Combine the two sets of points
+        zero_points = np.unique(np.concatenate((zero_points, zero_points2)))
         print(zero_points)
         # turning only -0.0 to 0.0
         zero_points = np.array([0.0 if x == -0.0 else x for x in zero_points])
