@@ -99,6 +99,7 @@ if __name__ == '__main__':
     ]
 
     for i, (str_equation, x0, m, precision, eps, max_iterations) in enumerate(test_cases, 1):
+        precision = 2
         print(f"Test case {i}: {str_equation}")
         # x = sp.symbols('x')
         # equation = sp.N(sp.sympify(str_equation), precision)
