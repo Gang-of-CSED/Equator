@@ -12,7 +12,7 @@ def fixed_point(g, x0, rel_err=0.00001, maxiter=10, signif_digits=6):
             x1 = sp.N(gx.subs(x, x0), signif_digits)
             roots.append(x1)
             #explaine the steps
-            error = relative_error(x1, x0)
+            error = sp.N(relative_error(x1, x0), signif_digits)
             errors.append(error)
             step = f'Iteration {i+1}:   x{i+1} = {x1}   relative error = {error}\n'
             steps.append(step)
