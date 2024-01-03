@@ -17,11 +17,17 @@ class StepsWindowRoot(QDialog,Ui_stepsDialog):
             comment = self.comments[i]
             step_page = self.get_step_page(i,step,comment)
             self.stackedWidget.addWidget(step_page)
+            print("added step",step_page)
+        # add final step
+        
+        step_page = self.get_step_page(len(self.output),self.output[-1],"End of steps")
+        self.stackedWidget.addWidget(step_page)
+        print("added all steps",self.stackedWidget.count())
 
     def show_steps(self):
         self.show()
 
-        
+
     def get_step_page(self,index,step,comment):
         # update theme
         background_color = "#FFFFFF"
