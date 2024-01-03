@@ -504,6 +504,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.stepsButton_root.connect(self.stepsButton_root, SIGNAL("clicked()"), self.stepsButton_clicked_root)
         self.plotButton.connect(self.plotButton, SIGNAL("clicked()"), self.plotButton_clicked_root)
         self.valid_equation=False
+        self.valid_equation_2=False
     def comboBox_changed_root(self, index):
         self.operation_index_root=index
         self.update_visiblity_root()
@@ -599,7 +600,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             if self.iterationLine_root.text() != "":
                 max_iterations = int(self.iterationLine_root.text())
 
-            if self.valid_equation == False or self.valid_equation_2 == False:
+            if self.valid_equation == False or (self.valid_equation_2 == False and self.operation_index_root == 2):
                 self.solutionErrorLabel_root.setText("Invalid Equation")
                 return
             # solve and update steps
