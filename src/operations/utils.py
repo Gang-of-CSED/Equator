@@ -8,7 +8,7 @@ def relative_error(x, x0):
         return 1e10
     if x == x0:
         return 0
-    if x0 == 0:
+    if x == 0:
         return 1e10
     return abs(x - x0) / abs(x)
 

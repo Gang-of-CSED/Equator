@@ -13,17 +13,19 @@ def fixed_point(g, x0, rel_err=0.00001, maxiter=10, signif_digits=6):
             roots.append(x1)
             #explaine the steps
             error = sp.N(relative_error(x1, x0), signif_digits)
+            print("err",error,x1)
             errors.append(error)
-            step = f'Iteration {i+1}:   x{i+1} = {x1}   relative error = {error}\n'
+            step = f'Iteration {i+1}:   x{i+1} = {str(x1)}   relative error = {error}\n'
             steps.append(step)
             if error < rel_err:
                 return True, 'Solution found and method has converged', steps, roots
             x0 = x1
-        if error > errors[0]:
-            return True, 'Method diverges', steps, roots
+            if i>1 and error > errors[i-2]:
+                return True, 'Method diverges', steps, roots
         else:
             return True, 'Method converges', steps, roots
     except Exception as e:
+        raise e
         return False, e, steps, roots
 
 if __name__ == "__main__":
