@@ -22,11 +22,9 @@ def fixed_point(g, x0, rel_err=0.00001, maxiter=10, signif_digits=6):
             x0 = x1
             if i>1 and error > errors[i-2]:
                 return True, 'Method diverges', steps, roots
-        else:
-            return True, 'Method converges', steps, roots
+        return True, 'Method converges', steps, roots
     except Exception as e:
         raise e
-        return False, e, steps, roots
 
 if __name__ == "__main__":
     g = 'exp(-x)'
