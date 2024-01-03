@@ -63,6 +63,7 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
 
     if errors[-1] > errors[0]:
         steps[-1] = steps[-1] + ("\nMethod diverges")
+        error="Method diverges"
     else:
         steps[-1] = steps[-1] + ("\nMethod converges")
     
@@ -125,6 +126,7 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
 
     if errors[-1] > errors[0]:
         steps[-1] = steps[-1] + ("\nMethod diverges")
+        error="Method diverges"
     else:
         steps[-1] = steps[-1] + ("\nMethod converges")
     

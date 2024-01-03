@@ -684,7 +684,9 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.solutionErrorLabel_root.setText(f"Time: {total_time} seconds"+add_message)
 
 
-        except:
+        except Exception as e:
+            print(e)
+            raise e
             # add error message
             self.solutionErrorLabel_root.setText("Sorry can't solve using this method!")
 
