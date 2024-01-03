@@ -20,8 +20,8 @@ def fixed_point(g, x0, rel_err=0.00001, maxiter=10, signif_digits=6):
             if error < rel_err:
                 return True, 'Solution found and method has converged', steps, roots
             x0 = x1
-        if error > errors[0]:
-            return True, 'Method diverges', steps, roots
+            if i>1 and error > errors[i-2]:
+                return True, 'Method diverges', steps, roots
         else:
             return True, 'Method converges', steps, roots
     except Exception as e:
