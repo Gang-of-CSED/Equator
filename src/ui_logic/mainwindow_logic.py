@@ -736,8 +736,8 @@ class MainWindow(QMainWindow, MainWindowUI):
             self.plotWidget.setLayout(QVBoxLayout())
         # get function from line edit
         function_text = self.equationLineEdit.text()
-        if self.operation_index_root==2:
-            function_text+=" - x"
+        # if self.operation_index_root==2:
+        #     function_text+=" - x"
         
         x_range=(-10,10)
         if self.range1LineEdit.text() != "" and self.range2LineEdit.text() != "":
