@@ -686,7 +686,7 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         except Exception as e:
             print(e)
-            raise e
+            # raise e
             # add error message
             self.solutionErrorLabel_root.setText("Sorry can't solve using this method!")
 
