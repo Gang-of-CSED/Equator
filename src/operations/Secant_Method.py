@@ -20,14 +20,13 @@ def secant_method(f, x0, x1, rel_err=0.00001, maxiter=100, signif_digits=5):
                 return True, 'Solution found and method has converged', steps, roots
             x0 = x1
             x1 = x2
-        # check whether the method converged or not
-        if error > errors[0]:
-            return True, 'Method diverges', steps, roots
-        else:
-            return True, 'Method converges', steps, roots
+            # check whether the method converged or not
+            if i>1 and error > errors[i-2]:
+                return True, 'Method diverges', steps, roots
+        return True, 'Method converges', steps, roots
         
     except Exception as e:
-        return False, e, steps, roots
+        raise e
 
 if __name__ == "__main__":
     f = 'x**2 - 2'
