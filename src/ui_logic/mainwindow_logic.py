@@ -613,7 +613,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                     return
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
-                self.noIterationsLineEdit.setText(str(len(steps)))
+                self.noIterationsLineEdit.setText(str(len(steps)-1))
                 self.output = roots
                 self.comments = steps
             
@@ -626,7 +626,7 @@ class MainWindow(QMainWindow, MainWindowUI):
                     return
                 self.solutionErrorLabel_root.setText("")
                 self.rootLineEdit.setText(str(roots[-1]))
-                self.noIterationsLineEdit.setText(str(len(steps)))
+                self.noIterationsLineEdit.setText(str(len(steps)-1))
                 self.output = roots
                 self.comments = steps
 
