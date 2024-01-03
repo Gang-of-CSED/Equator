@@ -109,6 +109,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.errorLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.iterationLine_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.equationLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
+        self.equationLineEdit_2.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.rootLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.noIterationsLineEdit.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color};")
         self.themeButton_root.setStyleSheet(f"background-color: {input_color}; color: {text_color}; border: 1px solid {background_color}; border-radius: 25px;")
@@ -135,6 +136,7 @@ class MainWindow(QMainWindow, MainWindowUI):
         self.errorLabel_root.setStyleSheet(f"color: {label_color};")
         self.iteartionsLabel_root.setStyleSheet(f"color: {label_color};")
         self.equationLabel.setStyleSheet(f"color: {label_color};")
+        self.equationLabel_2.setStyleSheet(f"color: {label_color};")
         self.rootLabel.setStyleSheet(f"color: {label_color};")
         self.noIterationsLabel.setStyleSheet(f"color: {label_color};")
         self.solutionErrorLabel_root.setStyleSheet(f"color: {error_color};")
@@ -516,12 +518,15 @@ class MainWindow(QMainWindow, MainWindowUI):
         else:
             self.input2Label.setVisible(False)
             self.input2LineEdit.setVisible(False)
+        if self.operation_index_root == 2:
+            self.equationLabel_2.setVisible(True)
+            self.equationLineEdit_2.setVisible(True)
+        else:
+            self.equationLabel_2.setVisible(False)
+            self.equationLineEdit_2.setVisible(False)
     
     def update_labels_root(self):
-        if self.operation_index_root ==2:
-            self.equationLabel.setText("g(x)")
-        else:
-            self.equationLabel.setText("f(x)")
+        self.equationLabel.setText("f(x)")
         if self.operation_index_root == 6:
             self.input1Label.setText("X0")
             self.input2Label.setText("X1")
@@ -548,6 +553,7 @@ class MainWindow(QMainWindow, MainWindowUI):
 
         # validate equation using sympy
         self.equationLineEdit.textChanged.connect(self.equationLineEdit_changed)
+        self.equationLineEdit_2.textChanged.connect(self.equationLineEdit_changed_2)
     
     def equationLineEdit_changed(self):
         equation = self.equationLineEdit.text()
@@ -557,6 +563,15 @@ class MainWindow(QMainWindow, MainWindowUI):
         else:
             self.equationLineEdit.setStyleSheet("QLineEdit { color : red; }")
             self.valid_equation=False
+    
+    def equationLineEdit_changed_2(self):
+        equation = self.equationLineEdit_2.text()
+        if is_valid_function(equation):
+            self.update_color_theme()
+            self.valid_equation_2=True
+        else:
+            self.equationLineEdit_2.setStyleSheet("QLineEdit { color : red; }")
+            self.valid_equation_2=False
 
 
 
@@ -584,7 +599,7 @@ class MainWindow(QMainWindow, MainWindowUI):
             if self.iterationLine_root.text() != "":
                 max_iterations = int(self.iterationLine_root.text())
 
-            if self.valid_equation == False:
+            if self.valid_equation == False or self.valid_equation_2 == False:
                 self.solutionErrorLabel_root.setText("Invalid Equation")
                 return
             # solve and update steps
@@ -616,7 +631,9 @@ class MainWindow(QMainWindow, MainWindowUI):
 
             if self.operation_index_root == 2:
                 # fixed point
-                flag,error,steps,roots = fixed_point(equation,a,precision,max_iterations,signficant_digits)
+                equation_2 = self.equationLineEdit_2.text()
+
+                flag,error,steps,roots = fixed_point(equation_2,a,precision,max_iterations,signficant_digits)
                 print("error",error,"steps",steps,"roots",roots)
                 if not flag:
                     self.solutionErrorLabel_root.setText("Sorry can't solve it using this method")
@@ -697,10 +714,10 @@ class MainWindow(QMainWindow, MainWindowUI):
 
 
         except Exception as e:
-            print(e)
-            # raise e
+            print("Errrroorrr",e)
             # add error message
             self.solutionErrorLabel_root.setText("Sorry can't solve using this method!")
+            # raise e
 
 
     def stepsButton_clicked_root(self):

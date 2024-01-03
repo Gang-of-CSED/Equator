@@ -724,14 +724,14 @@
          </font>
         </property>
         <property name="text">
-         <string>Function</string>
+         <string>f(X)</string>
         </property>
        </widget>
        <widget class="QLabel" name="input1Label">
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>120</y>
+          <y>170</y>
           <width>101</width>
           <height>16</height>
          </rect>
@@ -750,7 +750,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>140</y>
+          <y>190</y>
           <width>113</width>
           <height>22</height>
          </rect>
@@ -763,7 +763,7 @@
         <property name="geometry">
          <rect>
           <x>260</x>
-          <y>140</y>
+          <y>190</y>
           <width>113</width>
           <height>22</height>
          </rect>
@@ -776,7 +776,7 @@
         <property name="geometry">
          <rect>
           <x>260</x>
-          <y>120</y>
+          <y>170</y>
           <width>101</width>
           <height>16</height>
          </rect>
@@ -978,7 +978,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>230</y>
+          <y>250</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -991,7 +991,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>200</y>
+          <y>220</y>
           <width>55</width>
           <height>16</height>
          </rect>
@@ -1097,7 +1097,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>80</y>
+          <y>130</y>
           <width>441</width>
           <height>31</height>
          </rect>
@@ -1139,7 +1139,7 @@
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>230</y>
+          <y>250</y>
           <width>171</width>
           <height>21</height>
          </rect>
@@ -1152,7 +1152,7 @@
         <property name="geometry">
          <rect>
           <x>220</x>
-          <y>200</y>
+          <y>220</y>
           <width>101</width>
           <height>16</height>
          </rect>
@@ -1165,6 +1165,35 @@
         </property>
         <property name="text">
          <string>No. iterations</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="equationLineEdit_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>90</y>
+          <width>351</width>
+          <height>31</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="equationLabel_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>70</y>
+          <width>55</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>g(x)</string>
         </property>
        </widget>
       </widget>
