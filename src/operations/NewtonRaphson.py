@@ -31,9 +31,8 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
         f1 = sp.N(diff.subs(x, x0).evalf(), precision)
         
         if f1 == 0:
-            error = "First derivative of equation becomes zero at " + (f"it: {i+1}")
-            steps.append(error)
-            break
+            error = "First derivative of equation becomes zero at " + (f"it: {i+1}" + "\nMethod diverges")
+            return error, roots, steps
         
         f2 = sp.N(diff2.subs(x, x0).evalf(), precision)
         
@@ -98,9 +97,9 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
         f1 = sp.N(diff.subs(x, x0).evalf(n=precision), precision)
         
         if f1 == 0:
-            error = "First derivative of equation becomes zero at " + (f"it: {i+1}")
-            steps.append(error)
-            break
+            error = "First derivative of equation becomes zero at " + (f"it: {i+1}" + "\nMethod diverges")
+            #steps.append(error)
+            return error, roots, steps
         
         root = sp.N((x0 - m * (f / f1)), precision)
         roots.append(root)
