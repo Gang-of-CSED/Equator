@@ -1,5 +1,5 @@
 import sympy as sp
-from .utils import relative_error
+from .Bisection import relative_error
 
 def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
     x0 = sp.N(x0, precision)
@@ -41,7 +41,7 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
         aRE = sp.N(relative_error(root, x0), precision)
         roots.append(root)
         step = (f"Iteration {i+1}:\nX0 = {x0}, X = {root} , f = {f}, f' = {f1}, f'' = {f2},\nX = {x0} - {f} * {f1} /  [{f1}]^2 - {f} * {f2}\nRelative Error = {aRE}")
-        errors.append(error)
+        errors.append(aRE)
         
         if equation.subs(x, root).evalf(n=precision) == 0:
             step = step + (f"\nf({root}) = 0\n")
@@ -105,7 +105,7 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
         roots.append(root)
         aRE = sp.N(relative_error(root, x0), precision)
         step = (f"Iteration {i+1}:\nX0 = {x0}, X = {root} , f = {f}, f' = {f1},\nX = {x0} - {m} * {f} / {f1}\nRelative Error = {aRE}")
-        errors.append(error)
+        errors.append(aRE)
 
         if equation.subs(x, root).evalf(n=precision) == 0:
             step = step + (f"\nf({root}) = 0\n")
