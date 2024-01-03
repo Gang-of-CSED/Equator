@@ -8,6 +8,7 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
     steps = []
     roots = []
     error = None
+    errors = []
     
     if equation.subs(x, x0).evalf(n=precision) == 0:
         root = x0
@@ -39,8 +40,8 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
         root = sp.N((x0 - (f * f1) / (f1 ** 2 - f * f2)), precision)
         aRE = sp.N(relative_error(root, x0), precision)
         roots.append(root)
-        
         step = (f"Iteration {i+1}:\nX0 = {x0}, X = {root} , f = {f}, f' = {f1}, f'' = {f2},\nX = {x0} - {f} * {f1} /  [{f1}]^2 - {f} * {f2}\nRelative Error = {aRE}")
+        errors.append(error)
         
         if equation.subs(x, root).evalf(n=precision) == 0:
             step = step + (f"\nf({root}) = 0\n")
@@ -60,6 +61,11 @@ def ModificationTwo(str_equation, x0, precision=5, eps=1e-5, max_iterations=50):
         steps.append(step)
         x0 = root
 
+    if errors[-1] > errors[0]:
+        steps[-1] = steps[-1] + ("\nMethod diverges")
+    else:
+        steps[-1] = steps[-1] + ("\nMethod converges")
+    
     return error, roots, steps
 
 
@@ -70,6 +76,7 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
     steps = []
     roots = []
     error = None
+    errors = []
     
     if equation.subs(x, x0).evalf(n=precision) == 0:
         root = x0
@@ -98,7 +105,7 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
         roots.append(root)
         aRE = sp.N(relative_error(root, x0), precision)
         step = (f"Iteration {i+1}:\nX0 = {x0}, X = {root} , f = {f}, f' = {f1},\nX = {x0} - {m} * {f} / {f1}\nRelative Error = {aRE}")
-
+        errors.append(error)
 
         if equation.subs(x, root).evalf(n=precision) == 0:
             step = step + (f"\nf({root}) = 0\n")
@@ -116,6 +123,11 @@ def ModificationOne(str_equation, x0, m=1, precision=5, eps=1e-5, max_iterations
         steps.append(step)
         x0 = root
 
+    if errors[-1] > errors[0]:
+        steps[-1] = steps[-1] + ("\nMethod diverges")
+    else:
+        steps[-1] = steps[-1] + ("\nMethod converges")
+    
     return error, roots, steps
 
 ## main function
