@@ -25,6 +25,7 @@ $$
 $$
 f(x) = -12 - 21x + 18x^2 - 2.75x^3
 $$
+
 ![bisection sample run](screenshots/Find%20Root/Bisection/problem.png)
 
 <details>
@@ -91,6 +92,7 @@ $$
 ![false position step 7](screenshots/Find%20Root/False-Position/Step7.png)
 
 </details>
+
 ---
 
 ## 3. Fixed Point
@@ -170,7 +172,6 @@ $$
 
 $$
 x_{i+1} = x_i - m \cdot \frac{f(x_i)}{f'(x_i)}
-
 $$
 
 ### Sample Run
