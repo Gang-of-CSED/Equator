@@ -31,9 +31,11 @@ The project "Equator" stands as a robust mathematical toolkit, built upon the fo
 # Phase 1: System of Linear Equations
 
 ## 1. Gauss Elimination
+
+
 $$
 \begin{align*}
-    \text{Forward Elimination:} \\
+    \text{Forward Elimination:} \\ \\
     \begin{bmatrix}
     \begin{array}{ccc|c}
         a_{11} & a_{12} & a_{13} & b_1 \\
@@ -45,16 +47,15 @@ $$
     \begin{bmatrix}
     \begin{array}{ccc|c}
         a_{11} & a_{12} & a_{13} & b_1 \\
-        0 & a'_{22} & a'_{23} & b'_2 \\
-        0 & 0 & a''_{33} & b''_3 \\
+        0 & a_{22}' & a_{23}' & b_2' \\
+        0 & 0 & a_{33}'' & b_3'' \\
     \end{array}
-    \end{bmatrix}\\ \\
-
+    \end{bmatrix}\\
     \text{Backward Substitution:} \\
     \begin{aligned}
-        x_3 &= \frac{b''_3}{a''_{33}} \\
-        x_2 &= \frac{b'_2 - a'_{23}x_3}{a'_{22}} \\
-        x_1 &= \frac{b'_1 - a'_{12}x_2 - a'_{13}x_3}{a'_{11}} \\
+        x_3 &= \frac{b_3''}{a_{33}''} \\
+        x_2 &= \frac{b_2' - a_{23}'x_3}{a_{22}'} \\
+        x_1 &= \frac{b_1 - a_{12}x_2 - a_{13}x_3}{a_{11}} \\
     \end{aligned}
 \end{align*}
 $$
@@ -112,23 +113,23 @@ $$
     \sim
     \begin{bmatrix}
     \begin{array}{ccc|c}
-        a_{11} & 0 & 0 & b''_1 \\
-        0 & a'_{22} & 0 & b''_2 \\
-        0 & 0 & a''_{33} & b''_3 \\
+        a_{11} & 0 & 0 & b_1'' \\
+        0 & a_{22}' & 0 & b_2'' \\
+        0 & 0 & a_{33}'' & b_3'' \\
     \end{array}
     \end{bmatrix} \\ \\
     &\text{Normalization:} \\
     &\begin{bmatrix}
     \begin{array}{ccc|c}
-        1 & 0 & 0 & b''_1/a_{11} \\
-        0 & 1 & 0 & b''_2/a'_{22} \\
-        0 & 0 & 1 & b''_3/a''_{33} \\
+        1 & 0 & 0 & b_1''/a_{11} \\
+        0 & 1 & 0 & b_2''/a_{22}' \\
+        0 & 0 & 1 & b_3''/a_{33}'' \\
     \end{array}
     \end{bmatrix}
     \begin{aligned}
-        x_1 = \frac{b''_1}{a_{11}},\quad
-        x_2 = \frac{b''_2}{a'_{22}} ,\quad
-        x_3 = \frac{b''_3}{a''_{33}} \\      
+        x_1 = \frac{b_1''}{a_{11}},\quad
+        x_2 = \frac{b_2''}{a_{22}'} ,\quad
+        x_3 = \frac{b_3''}{a_{33}''} \\      
     \end{aligned}
 \end{align*}
 $$
@@ -174,6 +175,9 @@ $$
 
 $$
 A = LU  \text{ where } L \text{ is a lower triangular matrix and } U \text{ is an upper triangular matrix}\\
+$$
+
+$$
 LUx = b \implies Ux = y \text{ and } Ly = b
 $$
 
@@ -185,8 +189,7 @@ $$
     a_{21} & a_{22} & a_{23} \\
     a_{31} & a_{32} & a_{33} \\
 \end{bmatrix}
-=
-\begin{bmatrix}
+=\begin{bmatrix}
     1 & 0 & 0 \\
     l_{21} & 1 & 0 \\
     l_{31} & l_{32} & 1 \\
@@ -233,8 +236,7 @@ $$
     a_{21} & a_{22} & a_{23} \\
     a_{31} & a_{32} & a_{33} \\
 \end{bmatrix}
-=
-\begin{bmatrix}
+=\begin{bmatrix}
     l_{11} & 0 & 0 \\
     l_{21} & l_{22} & 0 \\
     l_{31} & l_{32} & l_{33} \\
@@ -276,14 +278,16 @@ $$
 ## c. Cholesky's Method
 
 $$
-A = A^T \implies A = LL^T \\
+A = A^T \implies A = LL^T \\ 
+$$
+
+$$
 \begin{bmatrix}
     a_{11} & a_{12} & a_{13} \\
     a_{21} & a_{22} & a_{23} \\
     a_{31} & a_{32} & a_{33} \\
 \end{bmatrix}
-=
-\begin{bmatrix}
+=\begin{bmatrix}
     l_{11} & 0 & 0 \\
     l_{21} & l_{22} & 0 \\
     l_{31} & l_{32} & l_{33} \\
