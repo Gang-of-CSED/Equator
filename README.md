@@ -35,15 +35,15 @@ The project "Equator" stands as a robust mathematical toolkit, built upon the fo
 
 $$
 \begin{align*}
-    \text{Forward Elimination:} \\ \\
-    \begin{bmatrix}
+    &\text{Forward Elimination:} \\ 
+    &\begin{bmatrix}
     \begin{array}{ccc|c}
         a_{11} & a_{12} & a_{13} & b_1 \\
         a_{21} & a_{22} & a_{23} & b_2 \\
         a_{31} & a_{32} & a_{33} & b_3 \\
     \end{array}
     \end{bmatrix}
-    &\sim
+    \sim
     \begin{bmatrix}
     \begin{array}{ccc|c}
         a_{11} & a_{12} & a_{13} & b_1 \\
@@ -51,8 +51,8 @@ $$
         0 & 0 & a_{33}'' & b_3'' \\
     \end{array}
     \end{bmatrix}\\
-    \text{Backward Substitution:} \\
-    \begin{aligned}
+    &\text{Backward Substitution:} \\
+    &\begin{aligned}
         x_3 &= \frac{b_3''}{a_{33}''} \\
         x_2 &= \frac{b_2' - a_{23}'x_3}{a_{22}'} \\
         x_1 &= \frac{b_1 - a_{12}x_2 - a_{13}x_3}{a_{11}} \\
